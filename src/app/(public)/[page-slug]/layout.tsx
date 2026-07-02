@@ -1,11 +1,13 @@
 import { ReactNode } from "react";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { pageService } from "@/services/page.service";
 
 type Props = {
     params: Promise<{
         "page-slug": string;
     }>;
+    children: ReactNode;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -33,6 +35,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
 }
 
-export default function CreatorLayout({ children }: { children: ReactNode }) {
+export default async function CreatorLayout({ params, children }: Props) {
+    const resolvedParams = await params;
+    const slug = resolvedParams["page-slug"];
+
+    try {
+        // Validate that the page exists on the server before rendering.
+        // This fetch is deduplicated by Next.js with the identical call in generateMetadata.
+        await pageService.getBySlug(slug);
+    } catch {
+        // Page doesn't exist (NOT_FOUND, NOT_PUBLISHED, or any API error) → 404
+        notFound();
+    }
+
     return <>{children}</>;
 }

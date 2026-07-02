@@ -36,6 +36,15 @@ const StickyJoinBar = ({ page, isOwner, isMember, onJoinSuccess }: StickyJoinBar
         ? Math.min(...plans.map((p: any) => p.price))
         : null;
 
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth <= 1023);
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
+
     // Persist modal open state on refresh if it was triggered here
     useEffect(() => {
         if (shouldHide) return;
@@ -84,14 +93,14 @@ const StickyJoinBar = ({ page, isOwner, isMember, onJoinSuccess }: StickyJoinBar
             <AnimatePresence>
                 {isVisible && (
                     <motion.div
-                        initial={{ y: 100, x: "-50%", opacity: 0 }}
-                        animate={{ y: 0, x: "-50%", opacity: 1 }}
-                        exit={{ y: 100, x: "-50%", opacity: 0 }}
+                        initial={{ y: 100, x: isMobile ? "0%" : "-50%", opacity: 0 }}
+                        animate={{ y: 0, x: isMobile ? "0%" : "-50%", opacity: 1 }}
+                        exit={{ y: 100, x: isMobile ? "0%" : "-50%", opacity: 0 }}
                         transition={{ type: "spring", stiffness: 280, damping: 25 }}
-                        className="fixed bottom-6 left-1/2 z-40 flex items-center justify-between gap-6 px-6 py-3.5 rounded-full bg-white/90 dark:bg-n-1/90 backdrop-blur-md  shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] w-[calc(100%-2rem)] max-w-3xl"
+                        className="fixed bottom-6 lg:bottom-0 left-1/2 lg:left-0 z-40 flex items-center justify-between gap-6 lg:gap-3 px-6 py-3.5 lg:px-4 lg:py-3 rounded-full lg:rounded-none bg-white/90 dark:bg-n-1/90 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.15)] lg:shadow-none dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] lg:dark:shadow-none border-t border-transparent lg:border-n-4 lg:dark:border-n-6 w-[calc(100%-2rem)] lg:w-full max-w-3xl lg:max-w-full"
                     >
-                        <div className="flex items-center gap-3">
-                            <div className="relative shrink-0 w-10 h-10 rounded-full overflow-hidden">
+                        <div className="flex items-center gap-3 min-w-0">
+                            <div className="relative shrink-0 w-10 h-10 rounded-full overflow-hidden md:hidden">
                                 <Image
                                     className="object-cover rounded-full"
                                     family="avatar"
@@ -101,9 +110,9 @@ const StickyJoinBar = ({ page, isOwner, isMember, onJoinSuccess }: StickyJoinBar
                                     alt="Avatar"
                                 />
                             </div>
-                            <div className="flex flex-col text-left">
+                            <div className="flex flex-col text-left min-w-0">
                                 <span className="text-xs font-bold text-n-1 dark:text-n-9 leading-tight">
-                                    Join {page.displayName}'s community and enjoy exclusive member benefits.
+                                    Join {page.displayName}'s community<span className="md:hidden"> and enjoy exclusive member benefits</span>.
                                 </span>
                                 <span className="text-sm font-bold text-n-3 dark:text-n-9 mt-0.5">
                                     {minPrice !== null ? `Starting at PKR ${minPrice.toLocaleString()}/mo` : "Enjoy exclusive member benefits."}
@@ -113,7 +122,7 @@ const StickyJoinBar = ({ page, isOwner, isMember, onJoinSuccess }: StickyJoinBar
 
                         <button
                             onClick={handleOpenJoinModal}
-                            className="btn-purple px-6 h-10 rounded-full "
+                            className="btn-purple px-6 md:px-4 h-10 rounded-full shrink-0"
                         >
                             Become a Member
                         </button>

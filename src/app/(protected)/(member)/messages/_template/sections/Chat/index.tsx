@@ -84,8 +84,8 @@ const Chat = ({
     return (
         <div
             className={`flex flex-col grow lg:fixed lg:inset-0 lg:z-100 lg:bg-white lg:transition-opacity dark:bg-n-1 ${visible
-                    ? "lg:visible lg:opacity-100"
-                    : "lg:invisible lg:opacity-0"
+                ? "lg:visible lg:opacity-100"
+                : "lg:invisible lg:opacity-0"
                 }`}
         >
             <ChatHeader

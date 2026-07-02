@@ -1,6 +1,6 @@
 import Icon from "@/components/Icon";
-import Image from "@/components/Image";
 import MuxVideoPlayer from "@/components/MuxVideoPlayer";
+import Loader from "@/components/Loader";
 import { MediaFile } from "../hooks/useMediaUpload";
 import ActionMenu from "@/components/ActionMenu";
 
@@ -22,20 +22,23 @@ const MediaItem = ({
     retryUpload
 }: MediaItemProps) => {
     return (
-        <div
-            className={`relative w-full group ${index === 0 ? 'col-span-full' : ''}`}
-        >
+        <div className={`relative group ${index === 0 ? 'w-full col-span-full' : 'w-fit'}`}>
             {/* Media Preview */}
-            <div className={`relative ${index === 0 ? 'h-96' : 'h-40'} rounded-lg border border-n-1 dark:border-n-6 overflow-hidden`}>
+            <div className={`relative ${attachmentsLength === 1 ? 'h-96 w-fit max-w-full' : index === 0 ? 'h-96 w-full bg-n-2 dark:bg-n-2 flex items-center justify-center' : 'h-40 w-fit max-w-full'} rounded-md border border-n-1 dark:border-n-6 overflow-hidden`}>
                 {file.type === "image" ? (
-                    <Image
-                        family="post"
-                        slot="feed"
-                        src={file.url}
-                        alt="Preview"
-                        className="object-cover" // Image component handles classNames
-                        fill
-                    />
+                    index === 0 && attachmentsLength > 1 ? (
+                        <img
+                            src={file.url}
+                            alt="Preview"
+                            className="h-full w-full object-contain"
+                        />
+                    ) : (
+                        <img
+                            src={file.url}
+                            alt="Preview"
+                            className="h-full w-auto max-w-full object-contain"
+                        />
+                    )
                 ) : (
                     <MuxVideoPlayer
                         playbackId={file.uploadedData?.type === 'video' ? file.uploadedData.muxPlaybackId : undefined}
@@ -63,11 +66,18 @@ const MediaItem = ({
                     </div>
                 )}
 
+                {/* Uploading State Overlay */}
+                {file.isNew && (file.uploadStatus === 'uploading' || file.uploadStatus === 'pending') && (
+                    <div className="absolute inset-0 dark:bg-n-6 flex flex-col items-center justify-center">
+                        <Loader />
+                    </div>
+                )}
+
                 {/* Actions Menu - Moved inside media container for absolute positioning */}
                 <div className="absolute top-2 right-2 z-10">
                     {index === 0 && attachmentsLength > 1 ? (
                         <ActionMenu
-                            buttonClass="btn-square border border-black btn-small bg-purple-1 rounded-sm text-0 dark:text-n-1 cursor-pointer"
+                            buttonClass="btn-medium btn-stroke btn-square rounded-full bg-white dark:bg-n-1 cursor-pointer flex items-center justify-center"
                             menuItemsClass="absolute right-0 top-8 mt-2 w-32 py-2 border border-n-1 rounded-sm bg-white dark:bg-n-1 dark:border-n-6 z-10 focus:outline-none"
                             items={[
                                 {
@@ -86,34 +96,12 @@ const MediaItem = ({
                         />
                     ) : (
                         <button
-                            className="w-8 h-8 bg-purple-1 border border-n-1 cursor-pointer rounded-sm text-0 flex items-center justify-center dark:text-n-1 "
+                            className="btn-medium btn-stroke btn-square rounded-full bg-white dark:bg-n-1 cursor-pointer flex items-center justify-center"
                             onClick={() => removeAttachment(file.id)}
                             type="button"
                         >
-                            <Icon name="close" />
+                            <Icon name="close" className="fill-n-1 dark:fill-n-9 text-n-1 dark:text-n-9" />
                         </button>
-                    )}
-                </div>
-            </div>
-
-            {/* File Info & Actions */}
-            <div className="flex items-center justify-between mt-2 px-1">
-                <div className="flex-1 min-w-0">
-                    {file.isNew && (file.uploadStatus === 'uploading' || file.uploadStatus === 'completed') && (
-                        <div className="flex flex-col gap-1 w-full">
-                            <div className="flex justify-between items-center text-xs text-n-3 dark:text-n-7">
-                                <p className="text-xs text-n-3 dark:text-n-7 truncate">
-                                    {file.file?.name || 'Existing file'}
-                                </p>
-                                <span>{file.uploadProgress}%</span>
-                            </div>
-                            <div className="h-1 w-full bg-n-3/20 rounded-full overflow-hidden dark:bg-n-7">
-                                <div
-                                    className="h-full bg-purple-1 rounded-full transition-all duration-300 ease-out"
-                                    style={{ width: `${file.uploadProgress}%` }}
-                                />
-                            </div>
-                        </div>
                     )}
                 </div>
             </div>

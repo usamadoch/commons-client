@@ -45,21 +45,21 @@ const PostForm = ({ formState, submitLabel = "Post" }: PostFormProps) => {
                         content={caption}
                         setContent={setCaption}
                         attachmentCount={attachments.length}
-                    />
+                    >
+                        <MediaPreview
+                            attachments={attachments}
+                            removeAttachment={removeAttachment}
+                            removeAllAttachments={removeAllAttachments}
+                            retryUpload={retryUpload}
+                        />
 
-                    <MediaPreview
-                        attachments={attachments}
-                        removeAttachment={removeAttachment}
-                        removeAllAttachments={removeAllAttachments}
-                        retryUpload={retryUpload}
-                    />
-
-                    <PostToolbar
-                        openFileSelector={openFileSelector}
-                        onFileSelection={handleFileSelection}
-                        fileInputRef={fileInputRef}
-                        attachments={attachments}
-                    />
+                        <PostToolbar
+                            openFileSelector={openFileSelector}
+                            onFileSelection={handleFileSelection}
+                            fileInputRef={fileInputRef}
+                            attachments={attachments}
+                        />
+                    </PostInput>
                 </form>
             </div>
 

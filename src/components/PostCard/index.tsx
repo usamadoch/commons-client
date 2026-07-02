@@ -80,67 +80,72 @@ const PostCard = ({ post, page, isOwner = false, imageBig, onCommentClick }: Pos
     };
 
     return (
-        <div className="flex py-5 card bg-white border border-n-4 rounded-sm last:mb-0 mobile:px-4">
-            <div className="relative shrink-0 w-8.5 h-8.5 ml-5 mobile:ml-0">
-                <Image
-                    className="object-cover rounded-full"
-                    family="avatar"
-                    slot="dropdown"
-                    src={item.avatar}
-                    fill
-                    alt="Avatar"
-                />
-            </div>
-            <div className="flex-1 pl-3.5 mobile:pl-3 min-w-0">
-                <div className="flex items-center mr-5 mobile:mr-0">
-                    <div className="flex items-center gap-2">
-                        <div className="capitalize whitespace-nowrap text-base font-bold dark:text-n-9">
-                            {item.author}
-                        </div>
-                        <div className="text-sm text-n-3 dark:text-n-8">•</div>
-                        <div className="truncate text-sm font-medium text-n-3 dark:text-n-8">
-                            {item.time}
-                        </div>
+        <div className="flex flex-col py-5 card bg-white border border-n-4 rounded-sm last:mb-0 mobile:px-4">
+            {/* Header Row (Avatar, Author, Time, Actions) */}
+            <div className="flex items-center px-5 mobile:px-0 mb-3">
+                <div className="relative shrink-0 w-8.5 h-8.5 mr-3.5">
+                    <Image
+                        className="object-cover rounded-full"
+                        family="avatar"
+                        slot="dropdown"
+                        src={item.avatar}
+                        fill
+                        alt="Avatar"
+                    />
+                </div>
+                <div className="flex items-center gap-2 min-w-0">
+                    <div className="capitalize whitespace-nowrap text-base font-bold dark:text-n-9 truncate">
+                        {item.author}
                     </div>
-
-                    <div className="flex items-center gap-2 ml-auto">
-                        {item.isOwner && (
-                            <Link
-                                href={`/posts/${item.id}/edit`}
-                                onClick={(e) => e.stopPropagation()}
-                                className="btn-stroke btn-small rounded-full"
-                            >
-                                <Icon icon={Pencil} className="icon-16" /> Edit
-                            </Link>
-                        )}
-                        <ActionMenu
-                            className="-mt-1.5 -mr-2"
-                            items={[
-                                {
-                                    label: "Copy link",
-                                    icon: Copy,
-                                    onClick: () => {
-                                        const shareUrl = item.shareUrl;
-                                        const fullUrl = shareUrl ? (shareUrl.startsWith('http') ? shareUrl : `${window.location.origin}${shareUrl}`) : window.location.href;
-                                        navigator.clipboard.writeText(fullUrl);
-
-                                    },
-                                }
-                            ]}
-                        />
+                    <div className="text-sm text-n-3 dark:text-n-8">•</div>
+                    <div className="truncate text-sm font-medium text-n-3 dark:text-n-8">
+                        {item.time}
                     </div>
                 </div>
 
-                <div className={`text-base py-2.5 mr-5 mobile:mr-0 ${item.isLocked ? "blur-[3px] select-none" : ""}`}>
+                <div className="flex items-center gap-2 ml-auto">
+                    {item.isOwner && (
+                        <Link
+                            href={`/posts/${item.id}/edit`}
+                            onClick={(e) => e.stopPropagation()}
+                            className="btn-stroke btn-small rounded-full"
+                        >
+                            <Icon icon={Pencil} className="icon-16" /> Edit
+                        </Link>
+                    )}
+                    <ActionMenu
+                        className="-mt-1.5"
+                        items={[
+                            {
+                                label: "Copy link",
+                                icon: Copy,
+                                onClick: () => {
+                                    const shareUrl = item.shareUrl;
+                                    const fullUrl = shareUrl ? (shareUrl.startsWith('http') ? shareUrl : `${window.location.origin}${shareUrl}`) : window.location.href;
+                                    navigator.clipboard.writeText(fullUrl);
+                                },
+                            }
+                        ]}
+                    />
+                </div>
+            </div>
+
+            {/* Content Area */}
+            <div className="pl-17 lg:pl-0 pr-5 lg:pr-0">
+                <div className={`text-base py-2.5 ${item.isLocked ? "blur-[3px] select-none" : ""}`}>
                     <ReadMore words={100} buttonClass="text-n-1 dark:text-purple-1">{item.content}</ReadMore>
                 </div>
 
                 {item.images && item.images.length > 0 && (
-                    <Images items={item.images} imageBig={imageBig} />
+                    <Images
+                        items={item.images}
+                        imageBig={imageBig}
+                        className={`relative pb-2.5 group w-full lg:pr-0 mobile:aspect-square ${imageBig ? "h-80 mobile:h-auto" : "h-120 mobile:h-auto"}`}
+                    />
                 )}
 
                 {item.video && (
-                    <div className="pr-5 mb-2.5 mobile:pr-0">
+                    <div className="mb-2.5">
                         <div className={`relative aspect-video rounded-xs bg-n-2 overflow-hidden ${item.isLocked ? "blur-[3px] select-none" : ""}`}>
                             {item.video.thumbnailUrl ? (
                                 <img
@@ -162,7 +167,6 @@ const PostCard = ({ post, page, isOwner = false, imageBig, onCommentClick }: Pos
                     </div>
                 )}
 
-
                 <Actions
                     postId={item.id}
                     comments={item.comments}
@@ -171,7 +175,6 @@ const PostCard = ({ post, page, isOwner = false, imageBig, onCommentClick }: Pos
                     shareUrl={item.shareUrl}
                     onCommentClick={onCommentClick}
                 />
-
             </div>
         </div>
     );

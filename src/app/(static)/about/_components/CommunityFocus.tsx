@@ -26,13 +26,13 @@ const communities = [
 
 const CommunityFocus = () => {
     return (
-        <section className="py-20 max-w-7xl mx-auto">
+        <section className="py-20 max-w-7xl mx-auto px-16 2xl:px-8 lg:px-6 mobile:px-6">
             <div className="text-center mb-16">
-                <h2 className="text-5xl leading-[0.85] font-normal tracking-tight dark:text-n-9 mb-4">Built for communities.</h2>
-                <p className="text-2xl dark:text-n-8">For creators whose audience already wants to support them.</p>
+                <h2 className="text-5xl md:text-3xl leading-[0.85] font-normal tracking-tight dark:text-n-9 mb-4">Built for communities.</h2>
+                <p className="text-2xl md:text-lg dark:text-n-8">For creators whose audience already wants to support them.</p>
             </div>
 
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-4 xl:grid-cols-2 mobile:grid-cols-1 gap-4">
                 {communities.map((community, index) => (
                     <div key={index} className="dark:bg-n-3 p-8 rounded-md ">
                         <div className="text-3xl dark:bg-n-4 shadow-primary-4 rounded-sm inline-block px-6 py-3 mb-6">

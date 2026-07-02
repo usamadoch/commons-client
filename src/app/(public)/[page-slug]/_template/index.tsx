@@ -1,20 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
-import { notFound } from "next/navigation";
-
 import { useAuth } from "@/store/auth";
 import { useCreatorPage } from "@/hooks/queries";
 import { usePageSlug } from "@/hooks/usePageSlug";
 import { useCreatorPageCache } from "@/hooks/useCreatorPageCache";
-import { ApiClientError } from "@/services/api.client";
-
-import { useCreatorHeader } from "@/context/CreatorHeaderContext";
 
 // import Banner from "../_components/Banner";
 import ProfileHeader from "../_components/ProfileHeader";
 import Content from "../_components/Content";
-import CreatorPageError from "../_components/CreatorPageError";
 import Loader from "@/components/Loader";
 import StickyJoinBar from "../_components/StickyJoinBar";
 
@@ -22,38 +15,19 @@ import StickyJoinBar from "../_components/StickyJoinBar";
 const CreatorPage = () => {
     const slug = usePageSlug();
     const { user } = useAuth();
-
-    const { setHeaderHidden } = useCreatorHeader();
     const { handleImageSuccess, handleJoinSuccess } = useCreatorPageCache(slug, user?._id);
 
-    const { data, isLoading, error } = useCreatorPage(slug);
+    // Page existence is already validated server-side in layout.tsx.
+    // This client-side fetch seeds the React Query cache for interactive features.
+    const { data, isLoading } = useCreatorPage(slug);
     const { page, isOwner, isMember } = data || {};
 
-
-    useEffect(() => {
-        if (error && error instanceof ApiClientError && (error.code === 'NOT_PUBLISHED' || error.code === 'NOT_FOUND')) {
-            setHeaderHidden(true);
-        } else {
-            setHeaderHidden(false);
-        }
-        return () => setHeaderHidden(false);
-    }, [error, setHeaderHidden]);
-
-    if (error && error instanceof ApiClientError && (error.code === 'NOT_PUBLISHED' || error.code === 'NOT_FOUND')) {
-        return <CreatorPageError code={error.code} />;
-    }
-
-    if (isLoading) {
+    if (isLoading || !page) {
         return (
             <div className="flex h-screen items-center justify-center">
                 <Loader text="Loading..." />
             </div>
         );
-    }
-
-    if (!page) {
-        setHeaderHidden(true);
-        notFound();
     }
 
     // Check for missing fields for warning

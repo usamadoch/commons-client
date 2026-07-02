@@ -130,9 +130,9 @@ const PlansSelection = ({
                 ) : (
                     <div className="text-center p-4">
                         <p className="text-n-3 dark:text-n-8 mb-6">Creator hasn&apos;t published any subscription tiers yet.</p>
-                        <button 
-                            className="btn-purple btn-medium" 
-                            onClick={onFreeJoin} 
+                        <button
+                            className="btn-purple btn-medium"
+                            onClick={onFreeJoin}
                             disabled={isFreeJoining}
                         >
                             {isFreeJoining ? <Loader /> : "Join for Free"}

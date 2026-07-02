@@ -17,7 +17,7 @@ const MediaPreview = ({
     if (attachments.length === 0) return null;
 
     return (
-        <div className={`grid mt-4 gap-4 pl-4 pb-4 ${attachments.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+        <div className="flex flex-wrap mt-4 gap-4 pb-4">
             {attachments.map((file, index) => (
                 <MediaItem
                     key={file.id}

@@ -11,7 +11,7 @@
 
 const LocalPricing = () => {
     return (
-        <section className="pb-20 text-start max-w-2xl mx-auto">
+        <section className="pb-20 px-6 text-start max-w-2xl mx-auto">
 
             <h2 className="text-base font-normal tracking-tight dark:text-n-9 leading-snug mb-2">
                 Priced for Pakistan

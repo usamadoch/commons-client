@@ -112,7 +112,7 @@ const Content = ({ pageSlug }: CreatorContentProps) => {
                 </div>
 
                 {/* Right Sidebar - Top Videos */}
-                <div className="col-span-4 lg:col-span-1 pt-10">
+                <div className="col-span-4 lg:col-span-1 pt-10 lg:hidden">
                     <RecentVideos
                         pageSlug={pageSlug}
                     />

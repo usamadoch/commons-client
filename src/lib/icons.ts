@@ -53,6 +53,7 @@ export {
   Square,
   Power,
   Info,
-  OctagonX
+  OctagonX,
+  Image as ImageIcon
 } from "lucide-react";
 
