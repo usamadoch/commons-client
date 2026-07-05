@@ -4,6 +4,7 @@ import { useAuth } from "@/store/auth";
 import { useCreatorPage } from "@/hooks/queries";
 import { usePageSlug } from "@/hooks/usePageSlug";
 import { useCreatorPageCache } from "@/hooks/useCreatorPageCache";
+import { notFound } from "next/navigation";
 
 // import Banner from "../_components/Banner";
 import ProfileHeader from "../_components/ProfileHeader";
@@ -28,6 +29,13 @@ const CreatorPage = () => {
                 <Loader text="Loading..." />
             </div>
         );
+    }
+
+    // Draft pages are only visible to the owner.
+    // This check runs client-side where browser cookies are available,
+    // so isOwner is correctly determined by the backend.
+    if (page.status === 'draft' && !isOwner) {
+        notFound();
     }
 
     // Check for missing fields for warning

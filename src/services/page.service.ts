@@ -7,13 +7,13 @@ export const pageService = {
         return fetchApi('/pages');
     },
 
-    async getBySlug(slug: string): Promise<{
+    async getBySlug(slug: string, options?: RequestInit): Promise<{
         page: CreatorPage;
         isOwner: boolean;
         isMember: boolean;
         isRestricted: boolean;
     }> {
-        return fetchApi(`/pages/${encodeURIComponent(slug)}`);
+        return fetchApi(`/pages/${encodeURIComponent(slug)}`, options);
     },
 
     async getMyPage(): Promise<{ page: CreatorPage }> {
