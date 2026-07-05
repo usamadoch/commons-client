@@ -94,7 +94,7 @@ export const useSocketStore = create<SocketState>((set) => ({
     resetMessageUnreadCount: () => set({ messageUnreadCount: 0 }),
 }));
 
-const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
+const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 export function SocketProvider({ children }: { children: React.ReactNode }) {
     const queryClient = useQueryClient();
