@@ -67,6 +67,13 @@ export const usePageImageUpload = ({ onUploadSuccess }: UsePageImageUploadProps 
             const data = await response.json();
             const imageUrl = data.secure_url;
 
+            // 4. Register pending upload with our backend
+            if (data.public_id && data.secure_url) {
+                await mediaApi.registerCloudinaryUpload(data.public_id, data.secure_url).catch(err => 
+                    console.error('Failed to register pending upload:', err)
+                );
+            }
+
             // 4. Update backend with new URL
             if (imageUrl) {
                 // Apply cache busting for immediate update

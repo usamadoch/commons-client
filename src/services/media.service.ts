@@ -18,6 +18,13 @@ export const mediaService = {
         return fetchApi(`/media/cloudinary/signature?${query}`);
     },
 
+    async registerCloudinaryUpload(cloudinaryPublicId: string, url: string): Promise<void> {
+        return fetchApi('/media/cloudinary/register-upload', {
+            method: 'POST',
+            body: JSON.stringify({ cloudinaryPublicId, url }),
+        });
+    },
+
     async getMuxUploadUrl(refId?: string): Promise<{
         url: string;
         uploadId: string;

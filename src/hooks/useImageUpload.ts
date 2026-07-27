@@ -48,6 +48,14 @@ export const useImageUpload = (): UseImageUploadResult => {
             }
 
             const data = await response.json();
+
+            // 4. Register pending upload with our backend
+            if (data.public_id && data.secure_url) {
+                await mediaApi.registerCloudinaryUpload(data.public_id, data.secure_url).catch(err => 
+                    console.error('Failed to register pending upload:', err)
+                );
+            }
+
             return data.secure_url;
         } catch (err) {
             const message = err instanceof Error ? err.message : 'Unknown upload error';

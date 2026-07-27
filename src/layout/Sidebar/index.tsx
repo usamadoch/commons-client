@@ -1,13 +1,8 @@
-
-
-
-
 "use client"
-
-
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import ActionMenu from "@/components/ActionMenu";
 
 import Logo from "@/components/Logo";
@@ -137,6 +132,15 @@ const Sidebar = ({ isMinimize = false }: SidebarProps) => {
                             ]}
                         />
                     </div>
+                </div>
+            )}
+
+
+            {!isAuthenticated && (
+                <div className="mt-auto flex items-center gap-6.5 border-t border-n-6 pt-2 px-6.5 overflow-x-auto overflow-y-hidden scrollbar-none whitespace-nowrap text-sm text-n-7 dark:text-white/40">
+                    <Link href="/about" className="h-10 flex items-center shrink-0 cursor-pointer transition-colors">about</Link>
+                    <Link href="/privacy" className="h-10 flex items-center shrink-0 cursor-pointer transition-colors">privacy</Link>
+                    <Link href="/terms" className="h-10 flex items-center shrink-0 cursor-pointer transition-colors">terms</Link>
                 </div>
             )}
         </div>

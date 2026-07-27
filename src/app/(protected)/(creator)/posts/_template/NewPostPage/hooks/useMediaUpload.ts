@@ -184,6 +184,13 @@ export const useMediaUpload = (draftId: string, initialAttachments?: MediaAttach
             );
 
             const data = response.data;
+            
+            // Register pending upload with our backend
+            if (data.public_id && data.secure_url) {
+                await mediaApi.registerCloudinaryUpload(data.public_id, data.secure_url).catch(err => 
+                    console.error('Failed to register pending upload:', err)
+                );
+            }
             const uploadedData: MediaAttachment = {
                 type: 'image',
                 url: data.secure_url,
