@@ -41,20 +41,20 @@ const Sidebar = ({ isMinimize = false }: SidebarProps) => {
 
     return (
         <div
-            className={`fixed top-0 left-0 bottom-0 flex flex-col bg-background dark:bg-n-2 border-r border-n-6 overflow-y-auto overflow-x-hidden scroll-smooth xl:z-30 md:hidden ${visible ? "w-75 py-6 px-8" : isMinimize ? "w-16 py-6 px-3" : "w-75 py-6 px-8 xl:w-16 xl:px-3"
+            className={`fixed top-0 left-0 bottom-0 flex flex-col bg-background dark:bg-n-2 border-r border-n-6 overflow-y-auto overflow-x-hidden scroll-smooth xl:z-30 md:hidden ${visible ? "w-75 pb-6 px-8" : isMinimize ? "w-16 pb-6 px-3" : "w-75 pb-6 px-8 xl:w-16 xl:px-3"
                 }`}>
-            <div className={`flex items-center h-[1.625rem] mb-11 ${visible ? "justify-between" : isMinimize ? "justify-center" : "justify-between xl:justify-center"}`}>
+            <div className={`flex items-center h-14 shrink-0 mb-8 ${visible ? "justify-between" : isMinimize ? "justify-center" : "justify-between xl:justify-center"}`}>
                 <Logo
                     className={visible ? "flex" : "xl:hidden"}
                     light
                     textClassName={visible ? "" : isMinimize ? "hidden" : "xl:hidden"}
                 />
                 <button
-                    className="hidden xl:flex"
+                    className="hidden xl:flex items-center justify-center"
                     onClick={() => setVisible(!visible)}
                 >
                     <Icon
-                        className="text-n-9  cursor-pointer"
+                        className="text-n-9 cursor-pointer"
                         icon={visible ? X : MenuIcon}
                     />
                 </button>
