@@ -15,7 +15,7 @@ const SubscriptionSuccess = ({ page, plan, onViewContent, onBackToHome }: Subscr
     return (
         <div className="relative flex flex-col items-center text-center py-10 max-w-80 mx-auto">
             {/* Animated checkmark container - kept simple without motion here */}
-            <div className="w-20 h-20 rounded-full bg-linear-to-br from-green-400 to-green-600 p-[2px] mb-8 shadow-2xl shadow-green-500/20">
+            <div className="w-20 h-20 rounded-full bg-linear-to-br from-green-400 to-green-600 p-0.5 mb-8 shadow-2xl shadow-green-500/20">
                 <div className="w-full h-full rounded-full bg-background dark:bg-n-4 flex items-center justify-center">
                     <Icon name="check" className="w-10 h-10 fill-green-500" />
                 </div>

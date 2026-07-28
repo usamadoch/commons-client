@@ -23,14 +23,13 @@ export interface NotificationPreferences {
         newMembers: boolean;
         newComments: boolean;
         newMessages: boolean;
-        weeklyDigest: boolean;
+        newPosts: boolean;
     };
     push: {
         newMembers: boolean;
         newPosts: boolean;
         newComments: boolean;
         newMessages: boolean;
-        mentions: boolean;
     };
     inApp: {
         all: boolean;

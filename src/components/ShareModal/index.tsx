@@ -2,9 +2,8 @@
 import { toast } from "react-hot-toast";
 import Modal from "@/components/Modal";
 import Image from "@/components/Image";
-import Icon from "@/components/Icon";
 import Alert from "@/components/Alert";
-
+import { getSocialShareItems } from "@/utils/share";
 
 type ShareModalProps = {
     visible: boolean;
@@ -23,7 +22,20 @@ const ShareModal = ({
     avatarUrl,
     title
 }: ShareModalProps) => {
-
+    const shareItems = getSocialShareItems({
+        url: shareUrl,
+        title,
+        onCopySuccess: () => {
+            toast.custom((t) => (
+                <Alert
+                    className="mb-0 shadow-md"
+                    type="success"
+                    message="Link copied to clipboard"
+                    onClose={() => toast.dismiss(t.id)}
+                />
+            ), { position: "bottom-right" });
+        }
+    });
 
     return (
         <Modal
@@ -31,8 +43,6 @@ const ShareModal = ({
             showCloseIcon={false}
             visible={visible}
             onClose={onClose}
-
-
         >
             {title && (
                 <div className="relative z-1 card-title text-n-1 dark:text-white ">
@@ -64,54 +74,16 @@ const ShareModal = ({
                     </div>
                 </div>
 
-
-                {[
-                    {
-                        icon: "copy",
-                        viewBox: "0 0 24 24",
-                        text: "Copy link",
-                        onClick: () => {
-                            const fullUrl = shareUrl.startsWith('http') ? shareUrl : `${window.location.origin}${shareUrl}`;
-                            navigator.clipboard.writeText(fullUrl);
-                            toast.custom((t) => (
-                                <Alert
-                                    className="mb-0 shadow-md"
-                                    type="success"
-                                    message="Link copied to clipboard"
-                                    onClose={() => toast.dismiss(t.id)}
-                                />
-                            ), { position: "bottom-right" });
-
-                        }
-                    },
-                    {
-                        icon: "facebook",
-                        text: "Share on Facebook",
-                        onClick: () => {
-                            const fullUrl = shareUrl.startsWith('http') ? shareUrl : `${window.location.origin}${shareUrl}`;
-                            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fullUrl)}`, '_blank');
-                        }
-                    },
-                    {
-                        icon: "twitter",
-                        text: "Share on Twitter",
-                        onClick: () => {
-                            const fullUrl = shareUrl.startsWith('http') ? shareUrl : `${window.location.origin}${shareUrl}`;
-                            window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(fullUrl)}`, '_blank');
-                        }
-                    }
-                ].map((item, index) => (
+                {shareItems.map((item, index) => (
                     <button
                         key={index}
                         className="flex items-center w-full h-10 mb-1.5 px-6.5 text-sm font-bold last:mb-0 transition-colors hover:bg-n-3/10 dark:hover:bg-white/20"
                         onClick={item.onClick}
                     >
-                        <Icon
-                            className="-mt-0.25 mr-3 fill-n-1 dark:fill-white"
-                            name={item.icon}
-                            viewBox={item.viewBox}
-                        />
-                        {item.text}
+                        <span className="-mt-0.25 mr-3 flex items-center justify-center">
+                            {item.icon}
+                        </span>
+                        {item.label}
                     </button>
                 ))}
             </div>

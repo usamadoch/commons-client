@@ -1,7 +1,7 @@
 
 export type NotificationType =
     | 'new_member' | 'member_left' | 'new_post' | 'post_liked' | 'new_like'
-    | 'new_comment' | 'comment_reply' | 'new_message' | 'mention'
+    | 'new_comment' | 'comment_reply' | 'new_message'
     | 'creator_went_live' | 'membership_expired' | 'system';
 
 export interface Notification {

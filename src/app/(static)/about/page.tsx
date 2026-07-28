@@ -20,7 +20,6 @@ const About = () => {
 
             <LocalPricing />
 
-            <Footer />
         </>
     );
 };

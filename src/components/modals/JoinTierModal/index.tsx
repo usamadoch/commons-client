@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { CreatorPage, Tier } from "@/types";
-import { useCreatorPlans, useJoinPage } from "@/hooks/queries";
+import { useCreatorPlans } from "@/hooks/queries";
 import { membershipService as membershipPlanApi } from "@/services/membership.service";
 import { useAuth } from "@/store/auth";
 import SafepayCardForm from "../SafepayCardForm";
@@ -140,20 +140,6 @@ const JoinTierModal = ({
         onError: (err: any) => toast.error(err.message || 'Failed to subscribe')
     });
 
-    const { mutate: freeJoin, isPending: isFreeJoining } = useJoinPage();
-
-    const handleFreeJoin = () => {
-        freeJoin(
-            { creatorId, pageId: typeof page._id === 'object' ? page._id : page._id },
-            {
-                onSuccess: () => {
-                    handlePaymentSuccess();
-                },
-                onError: (err: any) => toast.error(err.message || 'Failed to join')
-            }
-        );
-    };
-
     const currentStep = showSuccess ? 'success' : safepayData ? 'checkout' : 'plans';
 
     return (
@@ -257,8 +243,6 @@ const JoinTierModal = ({
                                                 onSubscribe={(id) => subscribeMutation.mutate(id)}
                                                 isSubscribing={subscribeMutation.isPending}
                                                 subscribingPlanId={subscribeMutation.variables as string}
-                                                onFreeJoin={handleFreeJoin}
-                                                isFreeJoining={isFreeJoining}
                                             />
                                         </motion.div>
                                     )}

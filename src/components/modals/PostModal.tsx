@@ -109,7 +109,7 @@ const PostModal = ({ visible, onClose, post, page }: PostModalProps) => {
             {showMediaSection && (
                 <div
                     style={{ aspectRatio: mediaAspectRatio }}
-                    className={`bg-n-1 flex items-center justify-center relative overflow-hidden md:w-full md:h-auto md:order-3 ${mediaAspectRatio ? "w-auto h-[80vh] max-w-[56rem] max-w-[calc(100vw-24rem)] xl:max-w-[calc(100vw-22rem)]" : "w-160 lg:w-120 h-[80vh]"}`}
+                    className={`bg-n-1 flex items-center justify-center relative overflow-hidden md:w-full md:h-auto md:order-3 ${mediaAspectRatio ? "w-auto h-[80vh] max-w-[calc(100vw-24rem)] xl:max-w-[calc(100vw-22rem)]" : "w-160 lg:w-120 h-[80vh]"}`}
                 >
                     {displayedImages.length > 0 ? (
                         <Images

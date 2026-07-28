@@ -47,14 +47,13 @@ const Notifications = () => {
             newMembers: true,
             newComments: true,
             newMessages: true,
-            weeklyDigest: true
+            newPosts: true
         },
         push: {
             newMembers: true,
             newPosts: true,
             newComments: true,
-            newMessages: true,
-            mentions: true
+            newMessages: true
         },
         inApp: { all: true },
         quietHours: { enabled: false, startTime: '22:00', endTime: '08:00', timezone: 'UTC' }
@@ -77,9 +76,10 @@ const Notifications = () => {
             ...(isCreator ? [
                 { id: 'newMembers', label: 'New Members', description: 'When someone joins your page', type: 'email' } as NotificationSetting,
             ] : []),
-            { id: 'newComments', label: 'Comments', description: 'When someone comments on your posts', type: 'email' },
+            ...(!isCreator ? [
+                { id: 'newPosts', label: 'New Posts', description: 'When creators you follow publish a new post', type: 'email' } as NotificationSetting,
+            ] : []),
             { id: 'newMessages', label: 'Direct Messages', description: 'When you receive a new message', type: 'email' },
-            { id: 'weeklyDigest', label: 'Weekly Digest', description: 'Summary of your weekly activity', type: 'email' },
         ]
     };
 
@@ -95,7 +95,6 @@ const Notifications = () => {
             ] : []),
             { id: 'newComments', label: 'Comments', description: 'When someone comments on your posts', type: 'push' },
             { id: 'newMessages', label: 'Direct Messages', description: 'When you receive a new message', type: 'push' },
-            { id: 'mentions', label: 'Mentions', description: 'When someone mentions you', type: 'push' },
         ]
     };
 
