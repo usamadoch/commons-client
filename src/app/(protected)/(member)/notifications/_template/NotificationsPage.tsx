@@ -46,22 +46,27 @@ const NotificationsPage = () => {
     const { mounted } = useHydrated();
     const { data, isLoading, error } = useNotifications();
     const markAllReadMutation = useMarkNotificationsAsRead();
-    const { markAllAsReadLocal } = useSocket();
+    const { markAllAsReadLocal, unreadCount } = useSocket();
     const hasMarkedRef = useRef(false);
 
     const notifications = data?.notifications || [];
 
-    // Auto-mark as read on visit (once only)
+    // Auto-mark as read on visit and whenever unreadCount becomes > 0 while on this page
     useEffect(() => {
-        if (hasMarkedRef.current) return;
-        hasMarkedRef.current = true;
-
-        markAllReadMutation.mutate(undefined, {
-            onSuccess: () => {
+        if (unreadCount > 0 || !hasMarkedRef.current) {
+            hasMarkedRef.current = true;
+            
+            // Optimistic update: instantly clear the counter for perfect UX 
+            // and to avoid race conditions if the component unmounts before mutation finishes.
+            // Added a small delay so the user can visually see the transition when they click.
+            setTimeout(() => {
                 markAllAsReadLocal();
-            }
-        });
-    }, []);
+            }, 600);
+            
+            // Fire the API request in the background
+            markAllReadMutation.mutate();
+        }
+    }, [unreadCount, markAllReadMutation, markAllAsReadLocal]);
 
     // console.log(notifications);
 

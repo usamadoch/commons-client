@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { formatAppDate } from "@/lib/date";
 import { Notification as AppNotification, NotificationType } from "@/types";
+import { User, MessageSquare, MessageCircle, Heart, Clock, Bell } from "lucide-react";
 
 type MailDesktopProps = {
     item: AppNotification;
@@ -11,19 +12,21 @@ type MailDesktopProps = {
 const MailDesktop = ({ item }: MailDesktopProps) => {
 
     const getNotificationIcon = (type: NotificationType) => {
+        const iconProps = { className: "w-5 h-5" };
         switch (type) {
             case 'new_member':
-                return '👤';
+                return <User {...iconProps} className="w-5 h-5 text-blue-500" />;
             case 'new_message':
-                return '💬';
+                return <MessageSquare {...iconProps} className="w-5 h-5 text-green-500" />;
             case 'new_comment':
-                return '💭';
+                return <MessageCircle {...iconProps} className="w-5 h-5 text-purple-500" />;
             case 'new_like':
-                return '❤️';
+            case 'post_liked':
+                return <Heart {...iconProps} className="w-5 h-5 text-red-500" />;
             case 'membership_expired':
-                return '⏰';
+                return <Clock {...iconProps} className="w-5 h-5 text-orange-500" />;
             default:
-                return '🔔';
+                return <Bell {...iconProps} className="w-5 h-5 text-primary-1" />;
         }
     };
 
