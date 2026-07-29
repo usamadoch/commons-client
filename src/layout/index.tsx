@@ -14,11 +14,13 @@ import { RequireAuth, useAuth } from "@/store/auth";
 type LayoutProps = {
     children: React.ReactNode;
     requireAuth?: boolean;
+    initialIsAuthenticated?: boolean;
 };
 
 const Layout = ({
     children,
     requireAuth = true,
+    initialIsAuthenticated,
 }: LayoutProps) => {
     const { isAuthenticated, isLoading } = useAuth();
 
@@ -27,7 +29,7 @@ const Layout = ({
 
     const content = (
         <div className={`relative flex pl-75 xl:pl-16 md:pl-0 md:pb-20 bg-n-1 ${showRightAuthSidebar ? 'pr-16 xl:pr-0' : ''}`}>
-            <Sidebar />
+            <Sidebar initialIsAuthenticated={initialIsAuthenticated} />
             <div className="flex flex-col grow w-full min-h-screen md:pt-0 md:min-h-[calc(100vh-5rem)]">
                 <div className="flex grow">
                     <div className="flex flex-col grow max-w-360 mx-auto pt-6 px-16 pb-2 2xl:px-8 lg:px-6 md:px-5 4xl:max-w-full">
