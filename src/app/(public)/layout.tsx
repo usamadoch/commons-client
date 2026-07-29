@@ -2,20 +2,20 @@
 
 
 
-
-
-import CreatorHeader from "@/layout/CreatorHeader";
 import { CreatorHeaderProvider } from "@/context/CreatorHeaderContext";
 import DraftBanner from "@/layout/DraftBanner";
 import PublicSidebarWrapper from "./PublicSidebarWrapper";
+import { cookies } from "next/headers";
 
-const PublicLayout = ({ children }: { children: React.ReactNode }) => {
+const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
+    const cookieStore = await cookies();
+    const hasToken = cookieStore.has('refreshToken') || cookieStore.has('accessToken');
+
     return (
         <CreatorHeaderProvider>
-            <PublicSidebarWrapper>
+            <PublicSidebarWrapper initialIsAuthenticated={hasToken}>
                 <div className="min-h-screen flex flex-col bg-background text-base antialiased dark:bg-n-1 w-full">
                     <DraftBanner />
-                    <CreatorHeader />
 
                     {/* <div className="flex-1 flex flex-col"> */}
                     {children}

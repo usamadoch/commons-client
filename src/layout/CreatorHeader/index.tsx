@@ -18,6 +18,7 @@ import { useAuth } from "@/store/auth";
 
 type CreatorHeaderProps = {
     pageSlug?: string;
+    initialPageData?: any;
 };
 
 const navLinks = [
@@ -31,7 +32,7 @@ const navLinks = [
     },
 ];
 
-const CreatorHeader = ({ pageSlug }: CreatorHeaderProps) => {
+const CreatorHeader = ({ pageSlug, initialPageData }: CreatorHeaderProps) => {
     const [headerStyle, setHeaderStyle] = useState<boolean>(false);
     const { isHeaderHidden } = useCreatorHeader();
     const { isAuthenticated, user } = useAuth();
@@ -60,10 +61,12 @@ const CreatorHeader = ({ pageSlug }: CreatorHeaderProps) => {
     }
 
     const { data, isLoading: isPageLoading } = useCreatorPage(slug);
-    const isLoading = isPageLoading || (!!isValidId && isPostRoute && isPostLoading) || (!!isValidId && isLiveRoomRoute && isSessionLoading);
+    const pageData = data || initialPageData;
+    
+    // If we have initialPageData, we aren't "loading" the page data anymore
+    const isLoading = (!pageData && isPageLoading) || (!!isValidId && isPostRoute && isPostLoading) || (!!isValidId && isLiveRoomRoute && isSessionLoading);
 
-
-    const { page } = data || {};
+    const { page } = pageData || {};
     const isOwner = data?.isOwner;
     const isMember = data?.isMember;
 
@@ -129,6 +132,7 @@ const CreatorHeader = ({ pageSlug }: CreatorHeaderProps) => {
                             </Link>
                         )
                     )}
+
 
                     {/* {isAuthenticated && (
                         <Link

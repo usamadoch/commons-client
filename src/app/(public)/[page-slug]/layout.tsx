@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { pageService } from "@/services/page.service";
+import CreatorLayoutWrapper from "./_components/CreatorLayoutWrapper";
 
 type Props = {
     params: Promise<{
@@ -37,14 +38,18 @@ export default async function CreatorLayout({ params, children }: Props) {
     const resolvedParams = await params;
     const slug = resolvedParams["page-slug"];
 
+    let initialData = null;
     try {
-        // Only checks if the page slug exists in the database.
-        // Draft/ownership logic is handled client-side where auth cookies are available.
-        await pageService.getBySlug(slug, { cache: 'no-store' });
+        // Fetch the initial page data on the server to prevent the client-side loader
+        initialData = await pageService.getBySlug(slug, { cache: 'no-store' });
     } catch {
         notFound();
     }
 
-    return <>{children}</>;
+    return (
+        <CreatorLayoutWrapper initialPageData={initialData}>
+            {children}
+        </CreatorLayoutWrapper>
+    );
 }
 

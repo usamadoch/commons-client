@@ -6,8 +6,6 @@ import { useAuth } from "@/store/auth";
 import { useCreatorPage, useCreatorPosts } from "@/hooks/queries";
 import { useQueryClient } from "@tanstack/react-query";
 import PostModal from "@/components/modals/PostModal";
-import LoginModal from "@/components/modals/LoginModal";
-import JoinTierModal from "@/components/modals/JoinTierModal";
 import Loader from "@/components/Loader";
 import RecentVideos from "./RecentVideos";
 import PostCard from "@/components/PostCard";
@@ -15,9 +13,11 @@ import Empty from "@/components/Empty";
 
 type CreatorContentProps = {
     pageSlug: string;
+    onOpenJoinModal?: () => void;
+    onOpenLoginModal?: () => void;
 };
 
-const Content = ({ pageSlug }: CreatorContentProps) => {
+const Content = ({ pageSlug, onOpenJoinModal, onOpenLoginModal }: CreatorContentProps) => {
     // Using cached queries
     const { data: pageData } = useCreatorPage(pageSlug);
     const { data: postsData, isLoading } = useCreatorPosts(pageSlug, { type: ['text', 'image', 'video'] });
@@ -30,38 +30,17 @@ const Content = ({ pageSlug }: CreatorContentProps) => {
     const isOwner = pageData?.isOwner;
 
     const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
-    const [loginModalVisible, setLoginModalVisible] = useState(false);
-    const [joinModalVisible, setJoinModalVisible] = useState(false);
-
-    // Persist modal open state on refresh
-    const slug = page?.pageSlug || pageSlug;
-    useEffect(() => {
-        const wasOpen = sessionStorage.getItem(`join_modal_open_${slug}`);
-        if (wasOpen === 'true' && isAuthenticated) {
-            setJoinModalVisible(true);
-        }
-    }, [slug, isAuthenticated]);
 
     const activePost = posts.find(p => p._id === selectedPostId) || null;
-
-    const handleOpenJoinModal = () => {
-        setJoinModalVisible(true);
-        sessionStorage.setItem(`join_modal_open_${slug}`, 'true');
-    };
-
-    const handleCloseJoinModal = () => {
-        setJoinModalVisible(false);
-        sessionStorage.removeItem(`join_modal_open_${slug}`);
-    };
 
     const handlePostClick = (post: Post) => {
         if (!post.isLocked) {
             setSelectedPostId(post._id);
         } else {
             if (!isAuthenticated) {
-                setLoginModalVisible(true);
+                onOpenLoginModal?.();
             } else {
-                handleOpenJoinModal();
+                onOpenJoinModal?.();
             }
         }
     };
@@ -124,24 +103,6 @@ const Content = ({ pageSlug }: CreatorContentProps) => {
                 page={page}
                 onClose={() => setSelectedPostId(null)}
             />
-
-            <LoginModal
-                visible={loginModalVisible}
-                onClose={() => setLoginModalVisible(false)}
-            />
-
-            {page && (
-                <JoinTierModal
-                    visible={joinModalVisible}
-                    onClose={handleCloseJoinModal}
-                    page={page}
-                    onSubscriptionSuccess={() => {
-                        queryClient.invalidateQueries({ queryKey: ['creator-posts', pageSlug], refetchType: 'all' });
-                        queryClient.invalidateQueries({ queryKey: ['creator-page', pageSlug], refetchType: 'all' });
-                        queryClient.invalidateQueries({ queryKey: ['recent-videos', pageSlug], refetchType: 'all' });
-                    }}
-                />
-            )}
         </div>
     );
 };

@@ -7,8 +7,15 @@ export async function generateMetadata() {
     };
 }
 
+import CreatorHeader from "@/layout/CreatorHeader";
+
 const LiveRoomDetail = () => {
-    return <LiveRoomDetailPage />
+    return (
+        <>
+            <CreatorHeader />
+            <LiveRoomDetailPage />
+        </>
+    );
 };
 
 export default LiveRoomDetail;

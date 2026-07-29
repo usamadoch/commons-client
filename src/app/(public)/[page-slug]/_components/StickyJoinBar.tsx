@@ -4,8 +4,6 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "@/components/Image";
-import LoginModal from "@/components/modals/LoginModal";
-import JoinTierModal from "@/components/modals/JoinTierModal";
 import { useAuth } from "@/store/auth";
 import { useCreatorPlans } from "@/hooks/queries";
 import { CreatorPage } from "@/types";
@@ -15,9 +13,11 @@ type StickyJoinBarProps = {
     isOwner: boolean;
     isMember: boolean;
     onJoinSuccess?: () => void;
+    onOpenJoinModal?: () => void;
+    onOpenLoginModal?: () => void;
 };
 
-const StickyJoinBar = ({ page, isOwner, isMember, onJoinSuccess }: StickyJoinBarProps) => {
+const StickyJoinBar = ({ page, isOwner, isMember, onJoinSuccess, onOpenJoinModal, onOpenLoginModal }: StickyJoinBarProps) => {
     const { isAuthenticated } = useAuth();
     const searchParams = useSearchParams();
     const isPreview = searchParams.get("preview") === "true";
@@ -26,8 +26,6 @@ const StickyJoinBar = ({ page, isOwner, isMember, onJoinSuccess }: StickyJoinBar
     const shouldHide = (isOwner || isMember) && !isPreview;
 
     const [isScrolled, setIsScrolled] = useState(false);
-    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-    const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
 
     const creatorId = typeof page.userId === "object" ? page.userId?._id : page.userId;
     const { data: plans = [] } = useCreatorPlans(creatorId || "");
@@ -45,15 +43,6 @@ const StickyJoinBar = ({ page, isOwner, isMember, onJoinSuccess }: StickyJoinBar
         return () => window.removeEventListener("resize", checkMobile);
     }, []);
 
-    // Persist modal open state on refresh if it was triggered here
-    useEffect(() => {
-        if (shouldHide) return;
-
-        const wasOpen = sessionStorage.getItem(`join_modal_open_${page.pageSlug}`);
-        if (wasOpen === "true" && isAuthenticated) {
-            setIsJoinModalOpen(true);
-        }
-    }, [page.pageSlug, isAuthenticated, shouldHide]);
 
     // Handle scroll visibility
     useEffect(() => {
@@ -74,18 +63,12 @@ const StickyJoinBar = ({ page, isOwner, isMember, onJoinSuccess }: StickyJoinBar
 
     const isVisible = isPreview || isScrolled;
 
-    const handleOpenJoinModal = () => {
+    const handleJoinClick = () => {
         if (!isAuthenticated) {
-            setIsLoginModalOpen(true);
-            return;
+            onOpenLoginModal?.();
+        } else {
+            onOpenJoinModal?.();
         }
-        setIsJoinModalOpen(true);
-        sessionStorage.setItem(`join_modal_open_${page.pageSlug}`, "true");
-    };
-
-    const handleCloseJoinModal = () => {
-        setIsJoinModalOpen(false);
-        sessionStorage.removeItem(`join_modal_open_${page.pageSlug}`);
     };
 
     return (
@@ -121,7 +104,7 @@ const StickyJoinBar = ({ page, isOwner, isMember, onJoinSuccess }: StickyJoinBar
                         </div>
 
                         <button
-                            onClick={handleOpenJoinModal}
+                            onClick={handleJoinClick}
                             className="btn-purple px-6 md:px-4 h-10 rounded-full shrink-0"
                         >
                             Become a Member
@@ -130,14 +113,6 @@ const StickyJoinBar = ({ page, isOwner, isMember, onJoinSuccess }: StickyJoinBar
                 )}
             </AnimatePresence>
 
-            <LoginModal visible={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
-
-            <JoinTierModal
-                visible={isJoinModalOpen}
-                onClose={handleCloseJoinModal}
-                page={page}
-                onSubscriptionSuccess={onJoinSuccess}
-            />
         </>
     );
 };

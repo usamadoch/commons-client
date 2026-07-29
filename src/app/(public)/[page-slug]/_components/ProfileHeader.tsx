@@ -5,9 +5,7 @@ import Link from "next/link";
 
 
 import Image from "@/components/Image";
-import LoginModal from "@/components/modals/LoginModal";
 import ShareModal from "@/components/modals/ShareModal";
-import JoinTierModal from "@/components/modals/JoinTierModal";
 import ReadMore from "@/components/ReadMore";
 import LiveBadge from "@/components/LiveBadge";
 
@@ -28,21 +26,15 @@ type CreatorProfileHeaderProps = {
     isMember: boolean;
     onUpdate?: (type: 'avatar', url: string) => void;
     onJoinSuccess?: () => void;
+    onOpenJoinModal?: () => void;
+    onOpenLoginModal?: () => void;
 };
 
-const ProfileHeader = ({ page, isOwner, isMember, onUpdate, onJoinSuccess }: CreatorProfileHeaderProps) => {
+const ProfileHeader = ({ page, isOwner, isMember, onUpdate, onJoinSuccess, onOpenJoinModal, onOpenLoginModal }: CreatorProfileHeaderProps) => {
     const { isAuthenticated } = useAuth();
-    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-    const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
     const [visible, setVisible] = useState(false);
 
-    // Persist modal open state on refresh
-    React.useEffect(() => {
-        const wasOpen = sessionStorage.getItem(`join_modal_open_${page.pageSlug}`);
-        if (wasOpen === 'true' && isAuthenticated) {
-            setIsJoinModalOpen(true);
-        }
-    }, [page.pageSlug, isAuthenticated]);
+
 
     const handleSuccess = useCallback((type: 'banner' | 'avatar', url: string) => {
         if (type === 'avatar' && onUpdate) {
@@ -64,15 +56,12 @@ const ProfileHeader = ({ page, isOwner, isMember, onUpdate, onJoinSuccess }: Cre
         if (file) await uploadImage(file, 'avatar');
     };
 
-    const handleOpenJoinModal = () => {
-        if (!isAuthenticated) return setIsLoginModalOpen(true);
-        setIsJoinModalOpen(true);
-        sessionStorage.setItem(`join_modal_open_${page.pageSlug}`, 'true');
-    };
-
-    const handleCloseJoinModal = () => {
-        setIsJoinModalOpen(false);
-        sessionStorage.removeItem(`join_modal_open_${page.pageSlug}`);
+    const handleJoinClick = () => {
+        if (!isAuthenticated) {
+            onOpenLoginModal?.();
+        } else {
+            onOpenJoinModal?.();
+        }
     };
 
 
@@ -156,7 +145,7 @@ const ProfileHeader = ({ page, isOwner, isMember, onUpdate, onJoinSuccess }: Cre
                     <ProfileHeaderActions
                         isOwner={isOwner}
                         isMember={isMember}
-                        onJoinClick={handleOpenJoinModal}
+                        onJoinClick={handleJoinClick}
                         onShareClick={() => setVisible(true)}
                     />
                 </div>
@@ -169,19 +158,10 @@ const ProfileHeader = ({ page, isOwner, isMember, onUpdate, onJoinSuccess }: Cre
                 <ProfileHeaderActions
                     isOwner={isOwner}
                     isMember={isMember}
-                    onJoinClick={handleOpenJoinModal}
+                    onJoinClick={handleJoinClick}
                     onShareClick={() => setVisible(true)}
                 />
             </div>
-
-            <LoginModal visible={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
-
-            <JoinTierModal
-                visible={isJoinModalOpen}
-                onClose={handleCloseJoinModal}
-                page={page}
-                onSubscriptionSuccess={onJoinSuccess}
-            />
 
             <ShareModal
                 visible={visible}

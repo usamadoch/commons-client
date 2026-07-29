@@ -1,4 +1,5 @@
 import PostDetailPage from "./_template/PostDetailPage/PostDetailPage";
+import CreatorHeader from "@/layout/CreatorHeader";
 
 type Props = {
     params: Promise<{
@@ -14,9 +15,13 @@ export async function generateMetadata({ params }: Props) {
     };
 }
 
+
 const PostDetail = () => {
     return (
-        <PostDetailPage />
+        <>
+            <CreatorHeader />
+            <PostDetailPage />
+        </>
     );
 };
 
