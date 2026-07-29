@@ -35,7 +35,7 @@ const navLinks = [
 const CreatorHeader = ({ pageSlug, initialPageData }: CreatorHeaderProps) => {
     const [headerStyle, setHeaderStyle] = useState<boolean>(false);
     const { isHeaderHidden } = useCreatorHeader();
-    const { isAuthenticated, user } = useAuth();
+    const { isAuthenticated, user, isLoading: isAuthLoading } = useAuth();
     const pathname = usePathname();
     const params = useParams();
 
@@ -159,7 +159,7 @@ const CreatorHeader = ({ pageSlug, initialPageData }: CreatorHeaderProps) => {
                         </Link>
                     ))}
 
-                    {!isAuthenticated && !isOwner && !isMember && !isLoading && (
+                    {!isAuthenticated && !isOwner && !isMember && !isLoading && !isAuthLoading && (
                         <Link
                             href="/login"
                             className="btn-purple btn-medium px-10 ml-2"
@@ -187,7 +187,7 @@ const CreatorHeader = ({ pageSlug, initialPageData }: CreatorHeaderProps) => {
                     ))}
                 </div>
 
-                {!isAuthenticated && !isOwner && !isMember && !isLoading && (
+                {!isAuthenticated && !isOwner && !isMember && !isLoading && !isAuthLoading && (
                     <Link
                         href="/login"
                         className="text-sm font-bold text-n-1 dark:text-n-9 underline"
