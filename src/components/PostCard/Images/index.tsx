@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "@/components/Image";
 import { Icon } from "@/components/ui/icon";
 import { ChevronLeft, ChevronRight } from "@/lib/icons";
+import { constructSlotImageUrl } from "@/lib/image-slots";
 
 type ImagesProps = {
     items: string[];
@@ -40,9 +41,27 @@ const Images = ({ items, imageBig, className, slot }: ImagesProps) => {
     if (!items || items.length === 0) return null;
 
     const currentIndex = page;
+
+    if (items.length === 1) {
+        const isModal = slot === 'modal';
+        return (
+            <div className={className ? className.replace(/h-\d+|mobile:h-auto/g, '') : `relative pb-2.5 group w-full pr-5 mobile:pr-0`}>
+                <div className={`relative overflow-hidden rounded-sm flex items-center justify-start ${isModal ? 'bg-n-2/20 dark:bg-n-8/20 h-full justify-center w-full' : 'w-fit max-w-full'}`}>
+                    <img
+                        className={`max-w-full ${isModal ? 'h-full w-full object-contain object-center' : 'h-auto max-h-160 object-contain object-left'}`}
+                        src={constructSlotImageUrl(items[0], 'post', slot || 'feed')}
+                        alt=""
+                    />
+                </div>
+            </div>
+        );
+    }
+
+    const isModal = slot === 'modal';
+
     return (
-        <div className={className || `relative pb-2.5 group w-full pr-5 mobile:pr-0 mobile:aspect-square ${imageBig ? "h-80 mobile:h-auto" : "h-120 mobile:h-auto"}`}>
-            <div className="w-full h-full relative overflow-hidden rounded-sm">
+        <div className={className || `relative pb-2.5 group w-full pr-5 mobile:pr-0 mobile:aspect-square ${imageBig ? "aspect-4/3 mobile:aspect-square" : "h-120 mobile:h-auto"}`}>
+            <div className={`w-full h-full relative overflow-hidden rounded-sm ${isModal ? 'bg-n-2/20 dark:bg-n-8/20' : ''}`}>
                 <AnimatePresence initial={false} custom={direction}>
                     <motion.div
                         key={page}
@@ -58,7 +77,7 @@ const Images = ({ items, imageBig, className, slot }: ImagesProps) => {
                         className="absolute inset-0 w-full h-full will-change-transform flex items-center justify-start"
                     >
                         <Image
-                            className="max-w-full max-h-full object-contain object-left"
+                            className={`max-w-full max-h-full object-contain ${slot === 'modal' ? 'object-center' : 'object-left'}`}
                             family="post"
                             slot={slot || "feed"}
                             src={items[currentIndex]}
