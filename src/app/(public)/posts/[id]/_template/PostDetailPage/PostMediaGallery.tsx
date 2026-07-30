@@ -19,7 +19,7 @@ const PostMediaGallery = ({
 
     if (locked) {
         return (
-            <div className="relative w-full h-[512px] bg-n-2 mb-6 overflow-hidden">
+            <div className="relative w-full aspect-video bg-n-2 mb-6 overflow-hidden">
                 <LockedContent
                     type="overlay"
                     text="Join to unlock this content"

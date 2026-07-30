@@ -28,7 +28,7 @@ const MediaBlock = ({ media, className = '' }: MediaBlockProps) => {
 
     return (
         <div
-            className={`w-full h-[512px] bg-gray-100 dark:bg-neutral-800 relative overflow-hidden ${className}`}
+            className={`w-full ${isVideo ? 'aspect-21/9' : 'aspect-video'} bg-gray-100 dark:bg-neutral-800 relative overflow-hidden ${className}`}
         >
             {isVideo ? (
                 <MuxVideoPlayer

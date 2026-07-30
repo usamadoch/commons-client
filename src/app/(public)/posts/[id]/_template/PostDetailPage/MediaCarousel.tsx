@@ -28,7 +28,7 @@ const MediaCarousel = ({ items }: MediaCarouselProps) => {
     return (
         <div className="relative group w-full mb-4">
             {/* Main Carousel Container */}
-            <div className="w-full h-[512px] overflow-hidden rounded-2xl relative">
+            <div className="w-full aspect-video overflow-hidden rounded-2xl relative">
                 <div
                     className="flex h-full transition-transform duration-500 ease-out"
                     style={{ transform: `translateX(-${currentIndex * 100}%)` }}
