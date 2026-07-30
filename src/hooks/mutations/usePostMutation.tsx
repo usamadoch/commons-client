@@ -2,9 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import Alert from "@/components/Alert";
 import { postService as postApi } from "@/services/post.service";
-import { CreatePostPayload, UpdatePostPayload, Post, MediaAttachment, PostType, getUnlockedMediaAttachments } from "@/types";
+import { CreatePostPayload, UpdatePostPayload, Post, MediaAttachment, PostType, getUnlockedMediaAttachments, Poll } from "@/types";
 import { MediaFile } from "@/app/(protected)/(creator)/posts/_template/NewPostPage/hooks/useMediaUpload";
-// import { generateObjectId } from "@/lib/idGenerator";
 
 type UsePostMutationProps = {
     isEditing: boolean;
@@ -17,7 +16,7 @@ export const usePostMutation = ({ isEditing, initialData, draftId, onSuccessCb }
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({ caption, visibility, allowComments, attachments }: { caption: string, visibility: string, allowComments: boolean, attachments: MediaFile[] }) => {
+        mutationFn: async ({ caption, visibility, allowComments, attachments, linkUrl, poll }: { caption: string, visibility: string, allowComments: boolean, attachments: MediaFile[], linkUrl?: string, poll?: Poll }) => {
             const finalAttachments: MediaAttachment[] = attachments.map(fileObj => {
                 if (fileObj.uploadedData) {
                     return fileObj.uploadedData;
@@ -35,6 +34,8 @@ export const usePostMutation = ({ isEditing, initialData, draftId, onSuccessCb }
                 mediaAttachments: finalAttachments,
                 visibility,
                 allowComments,
+                linkUrl,
+                poll,
                 postType: (finalAttachments.length > 0
                     ? (finalAttachments[0].type === 'video' ? 'video' : 'image')
                     : 'text') as PostType,
@@ -59,24 +60,7 @@ export const usePostMutation = ({ isEditing, initialData, draftId, onSuccessCb }
 
             if (isUpdate) {
                 queryClient.invalidateQueries({ queryKey: ['post', initialData._id] });
-                // toast.custom((t) => (
-                //     <Alert
-                //         className="mb-0 shadow-md"
-                //         type="success"
-                //         message="Post updated successfully"
-                //         onClose={() => toast.dismiss(t.id)}
-                //     />
-                // ), { position: "bottom-right" });
             } else {
-                // toast.custom((t) => (
-                //     <Alert
-                //         className="mb-0 shadow-md"
-                //         type="success"
-                //         message="Post created successfully"
-                //         onClose={() => toast.dismiss(t.id)}
-                //     />
-                // ), { position: "bottom-right" });
-
                 onSuccessCb?.();
             }
         },

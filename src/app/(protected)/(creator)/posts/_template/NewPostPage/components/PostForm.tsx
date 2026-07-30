@@ -1,9 +1,13 @@
-
+import { useState } from "react";
 import { usePostForm } from "../usePostForm";
 import PostInput from "./PostInput";
 import MediaPreview from "./MediaPreview";
 import PostToolbar from "./PostToolbar";
 import NewPostSettings from "./NewPostSettings";
+import LinkModal from "./LinkModal";
+import PollModal from "./PollModal";
+import LinkPreview from "./LinkPreview";
+import PollPreview from "./PollPreview";
 
 type PostFormProps = {
     formState: ReturnType<typeof usePostForm>;
@@ -19,6 +23,10 @@ const PostForm = ({ formState, submitLabel = "Post" }: PostFormProps) => {
         setVisibility,
         allowComments,
         setAllowComments,
+        linkUrl,
+        setLinkUrl,
+        poll,
+        setPoll,
         fileInputRef,
         openFileSelector,
         handleFileSelection,
@@ -30,6 +38,9 @@ const PostForm = ({ formState, submitLabel = "Post" }: PostFormProps) => {
         isUploading,
         hasUploadError,
     } = formState;
+
+    const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
+    const [isPollModalOpen, setIsPollModalOpen] = useState(false);
 
     return (
         <div className="flex lg:block">
@@ -53,11 +64,27 @@ const PostForm = ({ formState, submitLabel = "Post" }: PostFormProps) => {
                             retryUpload={retryUpload}
                         />
 
+                        {linkUrl && (
+                            <LinkPreview 
+                                url={linkUrl} 
+                                onRemove={() => setLinkUrl(undefined)} 
+                            />
+                        )}
+
+                        {poll && (
+                            <PollPreview 
+                                poll={poll} 
+                                onRemove={() => setPoll(undefined)} 
+                            />
+                        )}
+
                         <PostToolbar
                             openFileSelector={openFileSelector}
                             onFileSelection={handleFileSelection}
                             fileInputRef={fileInputRef}
                             attachments={attachments}
+                            onOpenLinkModal={() => setIsLinkModalOpen(true)}
+                            onOpenPollModal={() => setIsPollModalOpen(true)}
                         />
                     </PostInput>
                 </form>
@@ -72,6 +99,18 @@ const PostForm = ({ formState, submitLabel = "Post" }: PostFormProps) => {
                 isSubmitting={isSubmitting}
                 isUploading={isUploading}
                 hasUploadError={hasUploadError}
+            />
+
+            <LinkModal 
+                isOpen={isLinkModalOpen} 
+                onClose={() => setIsLinkModalOpen(false)} 
+                onAddLink={setLinkUrl} 
+            />
+
+            <PollModal
+                isOpen={isPollModalOpen}
+                onClose={() => setIsPollModalOpen(false)}
+                onAddPoll={setPoll}
             />
         </div>
     );

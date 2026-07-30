@@ -57,8 +57,21 @@ export const postService = {
         });
     },
 
+    async votePoll(id: string, optionIndexes: number[]): Promise<{ post: Post; userVotedOptions: number[] }> {
+        return fetchApi(`/posts/${id}/vote`, {
+            method: 'POST',
+            body: JSON.stringify({ optionIndexes }),
+        });
+    },
+
     async toggleLike(id: string): Promise<{ liked: boolean; likeCount: number }> {
         return fetchApi(`/posts/${id}/like`, {
+            method: 'POST',
+        });
+    },
+
+    async toggleLikeComment(id: string): Promise<{ liked: boolean; likeCount: number }> {
+        return fetchApi(`/posts/comments/${id}/like`, {
             method: 'POST',
         });
     },

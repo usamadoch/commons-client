@@ -6,11 +6,13 @@ import { usePostComments } from "@/hooks/queries";
 import Modal from "@/components/Modal";
 import Image from "@/components/Image";
 import Images from "@/components/PostCard/Images";
+import PostCardLinkPreview from "@/components/PostCard/LinkPreview";
 import { Icon } from "@/components/ui/icon";
 import { Copy, LockKeyhole } from "@/lib/icons";
 import Comment from "@/components/Comment";
 import { postService as postApi } from "@/services/post.service";
 import { Post, isLockedMedia, CreatorPage, VideoAttachment } from "@/types";
+import { isEmbeddableUrl, toYouTubeEmbedUrl } from "@/lib/embed";
 import MuxVideoPlayer from "@/components/MuxVideoPlayer";
 import Actions from "@/components/PostCard/Actions";
 import Loader from "@/components/Loader";
@@ -91,12 +93,15 @@ const PostModal = ({ visible, onClose, post, page }: PostModalProps) => {
             ? `${displayedVideo.dimensions.width} / ${displayedVideo.dimensions.height}`
             : undefined;
 
+    const hasImages = displayedImages.length > 0;
+    const hasVideo = !!displayedVideo;
+    const hasLink = !!(post.linkUrl || (post as any).linkPreview);
+
+    const isLockedMediaPost = post.isLocked && (post.postType === 'image' || post.postType === 'video');
+    const showMediaSection = hasImages || hasVideo || hasLink || isLockedMediaPost;
+
     // Use centralized creator info logic
     const creator = getCreatorInfo(post, page);
-
-    const showMediaSection = (post.postType === 'image' || post.postType === 'video') && (displayedImages.length > 0 || !!displayedVideo || post.isLocked);
-
-
     return (
         <Modal
             visible={visible}
@@ -126,6 +131,25 @@ const PostModal = ({ visible, onClose, post, page }: PostModalProps) => {
                                 className="w-full h-full"
                                 autoPlay
                             />
+                        </div>
+                    ) : hasLink ? (
+                        <div className="w-full bg-n-6 sm:p-8 max-w-2xl h-full flex flex-col justify-center">
+                            {post.linkUrl && isEmbeddableUrl(post.linkUrl) && !post.isLocked ? (
+                                <iframe
+                                    className="w-full aspect-video border-0 bg-black"
+                                    src={toYouTubeEmbedUrl(post.linkUrl)}
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                            ) : (
+                                <PostCardLinkPreview
+                                    linkUrl={post.linkUrl}
+                                    linkPreview={(post as any).linkPreview}
+                                    isLocked={post.isLocked}
+                                    shareUrl={post.linkUrl}
+                                    showOverlay={post.isLocked && !hasImages && !hasVideo && hasLink}
+                                />
+                            )}
                         </div>
                     ) : (
                         <div className="text-n-3">

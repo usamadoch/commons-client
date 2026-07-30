@@ -17,10 +17,11 @@ type ActionsProps = {
     showComment?: boolean;
     shareUrl?: string;
     type?: 'post' | 'comment';
+    isLocked?: boolean;
     onCommentClick?: () => void;
 };
 
-const Actions = ({ postId, comments, likes: initialLikes, isLiked: initialIsLiked, className, showComment = true, shareUrl, type = 'post', onCommentClick }: ActionsProps) => {
+const Actions = ({ postId, comments, likes: initialLikes, isLiked: initialIsLiked, className, showComment = true, shareUrl, type = 'post', isLocked, onCommentClick }: ActionsProps) => {
 
     // Comment state
     const [isCommentOpen, setIsCommentOpen] = useState(false);
@@ -44,7 +45,7 @@ const Actions = ({ postId, comments, likes: initialLikes, isLiked: initialIsLike
         <>
             <div className={`flex items-center ${className}`}>
 
-                <LikeButton postId={postId} initialLikes={initialLikes} initialIsLiked={initialIsLiked} />
+                <LikeButton postId={postId} initialLikes={initialLikes} initialIsLiked={initialIsLiked} targetType={type} isLocked={isLocked} onLockedClick={onCommentClick} />
 
 
                 {showComment && (

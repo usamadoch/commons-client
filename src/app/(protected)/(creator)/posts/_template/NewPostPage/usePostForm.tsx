@@ -1,13 +1,13 @@
-
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 
 import Alert from "@/components/Alert";
 import { usePostMutation } from "@/hooks/mutations/usePostMutation";
 
-import { PostVisibility, MediaAttachment, Post, getUnlockedMediaAttachments } from "@/types";
-import { useMediaUpload, MediaFile } from "./hooks/useMediaUpload";
+import { PostVisibility, Post, getUnlockedMediaAttachments, Poll } from "@/types";
+import { useMediaUpload } from "./hooks/useMediaUpload";
 import { generateObjectId } from "@/lib/idGenerator";
+import { areAttachmentsEqual } from "@/lib/media-helpers";
 
 export type UsePostFormProps = {
     initialData?: Post;
@@ -16,7 +16,6 @@ export type UsePostFormProps = {
 
 export const usePostForm = ({ initialData, isEditing = false }: UsePostFormProps = {}) => {
 
-
     // Use existing ID if editing, otherwise generate a new draft ID for this session
     const [draftId, setDraftId] = useState(() => initialData?._id || generateObjectId());
 
@@ -24,6 +23,8 @@ export const usePostForm = ({ initialData, isEditing = false }: UsePostFormProps
     const [caption, setCaption] = useState("");
     const [visibility, setVisibility] = useState<PostVisibility>("public");
     const [allowComments, setAllowComments] = useState(true);
+    const [linkUrl, setLinkUrl] = useState<string | undefined>(undefined);
+    const [poll, setPoll] = useState<Poll | undefined>(undefined);
     const [isDirty, setIsDirty] = useState(false);
 
     // Media Upload Hook
@@ -47,6 +48,8 @@ export const usePostForm = ({ initialData, isEditing = false }: UsePostFormProps
             setCaption(initialData.caption || "");
             setVisibility(initialData.visibility || "public");
             setAllowComments(initialData.allowComments ?? true);
+            setLinkUrl(initialData.linkUrl);
+            setPoll(initialData.poll);
             setDraftId(initialData._id || generateObjectId());
         }
     }, [initialData]);
@@ -54,7 +57,7 @@ export const usePostForm = ({ initialData, isEditing = false }: UsePostFormProps
     // Track dirty state
     useEffect(() => {
         if (!initialData) {
-            if (caption || attachments.length > 0) setIsDirty(true);
+            if (caption || attachments.length > 0 || linkUrl || poll) setIsDirty(true);
             else setIsDirty(false);
             return;
         }
@@ -69,9 +72,12 @@ export const usePostForm = ({ initialData, isEditing = false }: UsePostFormProps
             attachments.some(a => a.isNew) ||
             !areAttachmentsEqual(attachments, initialMediaAttachments);
 
-        setIsDirty(isCaptionChanged || isVisibilityChanged || isCommentsChanged || isAttachmentsChanged);
+        const isLinkUrlChanged = linkUrl !== initialData.linkUrl;
+        const isPollChanged = JSON.stringify(poll) !== JSON.stringify(initialData.poll);
 
-    }, [caption, visibility, allowComments, attachments, initialData]);
+        setIsDirty(isCaptionChanged || isVisibilityChanged || isCommentsChanged || isAttachmentsChanged || isLinkUrlChanged || isPollChanged);
+
+    }, [caption, visibility, allowComments, attachments, linkUrl, poll, initialData]);
 
     const mutation = usePostMutation({
         isEditing,
@@ -81,13 +87,15 @@ export const usePostForm = ({ initialData, isEditing = false }: UsePostFormProps
             if (!isEditing) {
                 setCaption("");
                 setAttachments([]);
+                setLinkUrl(undefined);
+                setPoll(undefined);
                 setDraftId(generateObjectId());
             }
         }
     });
 
     const handleSubmit = async () => {
-        if (!caption.trim() && attachments.length === 0) {
+        if (!caption.trim() && attachments.length === 0 && !linkUrl && !poll) {
             toast.custom((t) => (
                 <Alert
                     className="mb-0 shadow-md"
@@ -120,7 +128,7 @@ export const usePostForm = ({ initialData, isEditing = false }: UsePostFormProps
             ), { position: "bottom-right" });
             return;
         }
-        mutation.mutate({ caption, visibility, allowComments, attachments });
+        mutation.mutate({ caption, visibility, allowComments, attachments, linkUrl, poll });
     };
 
     return {
@@ -131,6 +139,10 @@ export const usePostForm = ({ initialData, isEditing = false }: UsePostFormProps
         setVisibility,
         allowComments,
         setAllowComments,
+        linkUrl,
+        setLinkUrl,
+        poll,
+        setPoll,
         fileInputRef,
         openFileSelector,
         handleFileSelection,
@@ -146,12 +158,3 @@ export const usePostForm = ({ initialData, isEditing = false }: UsePostFormProps
         allUploadsComplete
     };
 };
-
-function areAttachmentsEqual(current: MediaFile[], original: MediaAttachment[]) {
-    if (current.length !== original.length) return false;
-    return current.every((c, i) => {
-        if (c.isNew) return false;
-        const originalUrl = original[i].url;
-        return c.url === originalUrl;
-    });
-}

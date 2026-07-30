@@ -1,16 +1,18 @@
 
 import { MediaFile } from "../hooks/useMediaUpload";
 import { Icon as LucideIcon } from "@/components/ui/icon";
-import { BarChart2, Smile, Clock, Video, ImageIcon } from "@/lib/icons";
+import { BarChart2, Video, ImageIcon, LinkIcon } from "@/lib/icons";
 
 type ToolbarProps = {
     openFileSelector: () => void;
     onFileSelection: (e: React.ChangeEvent<HTMLInputElement>) => void;
     fileInputRef: React.RefObject<HTMLInputElement | null>;
     attachments?: MediaFile[];
+    onOpenLinkModal?: () => void;
+    onOpenPollModal?: () => void;
 };
 
-const PostToolbar = ({ openFileSelector, onFileSelection, fileInputRef, attachments = [] }: ToolbarProps) => {
+const PostToolbar = ({ openFileSelector, onFileSelection, fileInputRef, attachments = [], onOpenLinkModal, onOpenPollModal }: ToolbarProps) => {
     const hasVideo = attachments.some(a => a.type === 'video');
     const hasImages = attachments.some(a => a.type === 'image');
 
@@ -41,16 +43,20 @@ const PostToolbar = ({ openFileSelector, onFileSelection, fileInputRef, attachme
                     <LucideIcon icon={ImageIcon} />
                 </button>
 
-                {/* Mock Buttons for UI Screenshot */}
-                {/* <button className="btn-stroke p-2 h-10 rounded-md md:grow" type="button">
+                <button 
+                    className="btn-stroke p-2 h-10 rounded-md md:grow" 
+                    type="button"
+                    onClick={onOpenPollModal}
+                >
                     <LucideIcon icon={BarChart2} />
                 </button>
-                <button className="btn-stroke p-2 h-10 rounded-md md:grow" type="button">
-                    <LucideIcon icon={Clock} />
+                <button 
+                    className="btn-stroke p-2 h-10 rounded-md md:grow" 
+                    type="button"
+                    onClick={onOpenLinkModal}
+                >
+                    <LucideIcon icon={LinkIcon} />
                 </button>
-                <button className="btn-stroke p-2 h-10 rounded-md md:grow" type="button">
-                    <LucideIcon icon={Smile} />
-                </button> */}
 
 
                 <input
