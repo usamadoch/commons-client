@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { formatAppDate } from "@/lib/date";
 import { Notification as AppNotification, NotificationType } from "@/types";
-import { User, MessageSquare, MessageCircle, Heart, Clock, Bell } from "lucide-react";
 
 type MailDesktopProps = {
     item: AppNotification;
@@ -86,18 +85,18 @@ const MailDesktop = ({ item }: MailDesktopProps) => {
 
 
     return (
-        <div className="flex items-start border-b border-n-4 text-sm last:border-none dark:border-n-6">
+        <div className="flex items-start border-b border-n-4 text-sm last:border-none dark:border-n-6 w-full min-w-0">
             <Link
                 href={getNotificationLink(item)}
-                className="flex items-start grow p-4"
+                className="flex items-start grow p-4 w-full min-w-0"
             >
-                <div className="flex items-center shrink-0 pr-4  w-[14.7rem]">
+                <div className="flex items-center shrink-0 pr-4 w-[14.7rem]">
                     <div className="relative flex items-center justify-center shrink-0 w-8 h-8 mr-3 text-h6 dark:text-n-9">
                         {getNotificationIcon(item.type)}
                     </div>
                     {item.title || "Notification"}
                 </div>
-                <div className="grow pt-1.5 truncate font-medium dark:text-n-9" >
+                <div className="grow min-w-0 pt-1.5 truncate font-medium dark:text-n-9" >
                     {item.body || item.message}{" "}
                 </div>
                 <div className="shrink-0 w-28 ml-4 pt-1.5 text-right text-n-3 dark:text-n-8">

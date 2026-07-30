@@ -6,6 +6,7 @@
 import Link from "next/link";
 import { useColorMode } from "@chakra-ui/color-mode";
 import Image from "@/components/Image";
+import { useAuth } from "@/store/auth";
 
 type LogoProps = {
     className?: string;
@@ -16,9 +17,13 @@ type LogoProps = {
     textClassName?: string;
 };
 
-const Logo = ({ className, light, href = "/dashboard", disabled, hideText, textClassName }: LogoProps) => {
+const Logo = ({ className, light, href, disabled, hideText, textClassName }: LogoProps) => {
     const { colorMode } = useColorMode();
+    const { user } = useAuth();
     const isDarkMode = colorMode === "dark";
+
+    const defaultHref = user?.role === "creator" ? "/dashboard" : "/";
+    const targetHref = href ?? defaultHref;
 
     const content = (
         <>
@@ -46,7 +51,7 @@ const Logo = ({ className, light, href = "/dashboard", disabled, hideText, textC
     }
 
     return (
-        <Link className={`flex items-center gap-2 h-8 ${className}`} href={href}>
+        <Link className={`flex items-center gap-2 h-8 ${className}`} href={targetHref}>
             {content}
         </Link>
     );

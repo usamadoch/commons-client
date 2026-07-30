@@ -82,7 +82,7 @@ const MailTablet = ({ item }: MailTabletProps) => {
 
     return (
         <Link
-            className="block px-5 py-3.5 border-b border-n-4 text-sm last:border-none dark:border-n-6"
+            className="block px-5 py-3.5 border-b border-n-4 text-sm last:border-none dark:border-n-6 w-full min-w-0"
             href={getNotificationLink(item)}
         >
             <div className="flex items-center justify-between mb-3">
@@ -96,8 +96,8 @@ const MailTablet = ({ item }: MailTabletProps) => {
                     {formatAppDate(item.createdAt, { suffix: true })}
                 </div>
             </div>
-            <div className="flex text-n-1 dark:text-n-9 font-medium">
-                <div className="truncate">
+            <div className="flex text-n-1 dark:text-n-9 font-medium min-w-0">
+                <div className="truncate min-w-0">
                     {item.body || item.message}{" "}
                 </div>
             </div>
