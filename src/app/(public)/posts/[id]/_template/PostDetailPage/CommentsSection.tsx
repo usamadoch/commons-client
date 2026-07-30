@@ -36,7 +36,7 @@ const CommentsSection = ({
                 value={value}
                 setValue={(e: any) => setValue(e.target.value)}
                 onSend={handleCommentSubmit}
-                disabled={!allowComments || !value.trim() || isSubmittingComment}
+                disabled={!allowComments || isSubmittingComment}
                 inputDisabled={!allowComments}
             />
 

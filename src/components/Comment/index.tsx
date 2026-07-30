@@ -130,9 +130,9 @@ const Comment = ({
                             <LucideIcon icon={Smile} />
                         </button>
                         <button
-                            className={`btn-purple btn-square btn-small ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                            className={`btn-purple btn-square btn-small ${disabled || !value.trim() ? "opacity-50 cursor-not-allowed" : ""}`}
                             type="submit"
-                            disabled={disabled}
+                            disabled={disabled || !value.trim()}
                         >
                             <Icon name="send" />
                         </button>

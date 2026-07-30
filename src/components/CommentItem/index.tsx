@@ -47,8 +47,8 @@ const CommentItem = ({ comment, variant = 'default' }: CommentItemProps) => {
                     postId={comment._id}
                     comments={0}
 
-                    likes={0}
-                    isLiked={false}
+                    likes={comment.likeCount || 0}
+                    isLiked={comment.isLiked || false}
                     showComment={false}
                     className="mt-2"
                     type="comment"
