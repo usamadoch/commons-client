@@ -1,12 +1,8 @@
 import Layout from "@/layout";
-import { cookies } from "next/headers";
 
-const ProtectedLayout = async ({ children }: { children: React.ReactNode }) => {
-    const cookieStore = await cookies();
-    const hasToken = cookieStore.has('refreshToken') || cookieStore.has('accessToken');
-
+const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <Layout initialIsAuthenticated={hasToken}>
+        <Layout>
             {children}
         </Layout>
     );

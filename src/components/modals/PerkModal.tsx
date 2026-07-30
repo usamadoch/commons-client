@@ -75,7 +75,7 @@ const PerkModal = ({
                     <button
                         type="button"
                         onClick={onClose}
-                        className="btn-stroke btn-medium min-w-[100px]"
+                        className="btn-stroke btn-medium min-w-25"
                     >
                         Cancel
                     </button>
@@ -88,7 +88,7 @@ const PerkModal = ({
                                 onSave(finalPerkTitle);
                             }
                         }}
-                        className="btn-purple btn-medium min-w-[100px] disabled:opacity-50 disabled:pointer-events-none"
+                        className="btn-purple btn-medium min-w-25 disabled:opacity-50 disabled:pointer-events-none"
                     >
                         {editingIndex !== null ? "Save" : "Add"}
                     </button>

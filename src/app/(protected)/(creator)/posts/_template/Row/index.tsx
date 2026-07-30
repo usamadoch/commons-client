@@ -3,7 +3,7 @@ import Link from "next/link";
 import { toast } from "react-hot-toast";
 import ActionMenu from "@/components/ActionMenu";
 import { format } from "date-fns";
-
+import { getPostTypeIcon, getLinkMediaUrl } from "@/lib/media-helpers";
 import { useDeletePost } from "@/hooks/queries";
 
 import DeletePostModal from "@/components/modals/DeletePostModal";
@@ -24,6 +24,8 @@ interface RowItem {
     publishedAt?: string | null;
     createdAt?: string;
     postType?: string;
+    linkUrl?: string;
+    poll?: any;
 }
 
 type RowProps = {
@@ -39,13 +41,17 @@ const Row = ({ item, showActions = true }: RowProps) => {
     const captionPreview = item.caption || "No caption";
     const truncatedPreview = captionPreview.length > 50 ? captionPreview.substring(0, 80) + "..." : captionPreview;
 
-    // Thumbnail
     const mediaItem = item.mediaAttachments?.find(m => m.type === 'image' || m.type === 'video');
     const isVideo = mediaItem?.type === 'video' || item.postType === 'video';
     const isImage = mediaItem?.type === 'image' || item.postType === 'image';
-    const mediaUrl = mediaItem?.url;
-
-    const postTypeIcon = isVideo ? 'video' : isImage ? 'camera' : 'document';
+    
+    let mediaUrl = mediaItem?.url;
+    let postTypeIcon = getPostTypeIcon(item.postType, mediaItem?.type, item.poll, item.linkUrl);
+    
+    if (item.linkUrl) {
+        const linkMedia = getLinkMediaUrl(item.linkUrl);
+        if (linkMedia) mediaUrl = linkMedia;
+    }
 
     const handleDelete = () => {
         deletePost(item._id, {
@@ -68,12 +74,12 @@ const Row = ({ item, showActions = true }: RowProps) => {
                         href={`/posts/${item._id}`}
                     >
                         <div className="shrink-0 w-32 mr-5 border border-n-1 dark:border-n-6 overflow-hidden aspect-video relative flex justify-center items-center bg-n-2 dark:bg-n-7">
-                            {isImage && mediaUrl && (
+                            {(isImage || mediaUrl) && (
                                 <Image
                                     className="object-cover"
                                     family="thumb"
                                     slot="notification"
-                                    src={mediaUrl}
+                                    src={mediaUrl as string}
                                     fill
                                     alt={item.caption || "Post thumbnail"}
                                 />

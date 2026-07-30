@@ -71,7 +71,7 @@ const MenuItem = ({
                 >
                     {link.suffixText && (
                         <span
-                            className={`max-w-0 opacity-0 overflow-hidden whitespace-nowrap transition-all duration-300 group-hover:max-w-[100px] group-hover:opacity-100 group-hover:ml-1 group-hover:mr-1 text-[10px] uppercase font-bold tracking-wider ${link.suffixIconBg ? "text-n-9" : ""
+                            className={`max-w-0 opacity-0 overflow-hidden whitespace-nowrap transition-all duration-300 group-hover:max-w-25 group-hover:opacity-100 group-hover:ml-1 group-hover:mr-1 text-[10px] uppercase font-bold tracking-wider ${link.suffixIconBg ? "text-n-9" : ""
                                 } ${visible ? "block" : isMinimize ? "hidden" : "xl:hidden"}`}
                         >
                             {link.suffixText}

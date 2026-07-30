@@ -8,6 +8,7 @@ import ActionMenu from "@/components/ActionMenu";
 import { useState } from "react";
 import { useAuth } from "@/store/auth";
 import LoginModal from "@/components/modals/LoginModal";
+import { useHydrated } from "@/hooks/useHydrated";
 
 type MenuProps = {};
 
@@ -18,6 +19,7 @@ const Menu = ({ }: MenuProps) => {
     const { isAuthenticated } = useAuth();
 
     const [showLoginModal, setShowLoginModal] = useState(false);
+    const { mounted } = useHydrated();
 
     // Dynamic Mobile Layout: 
     // - Show first 3 authorized items directly
@@ -59,13 +61,22 @@ const Menu = ({ }: MenuProps) => {
                     );
                 })}
                 {hiddenItems.length > 0 && (
-                    <ActionMenu
-                        items={moreItems}
-                        buttonClass="flex justify-center items-center w-12 h-18 tap-highlight-color"
-                        iconName={MoreHorizontal}
-                        iconClass={`icon-22 transition-colors ${hiddenItems.some(item => pathname === item.url) ? "text-purple-1!" : "text-n-7 dark:text-n-9"}`}
-                        anchor="top end"
-                    />
+                    mounted ? (
+                        <ActionMenu
+                            items={moreItems}
+                            buttonClass="flex justify-center items-center w-12 h-18 tap-highlight-color"
+                            iconName={MoreHorizontal}
+                            iconClass={`icon-22 transition-colors ${hiddenItems.some(item => pathname === item.url) ? "text-purple-1!" : "text-n-7 dark:text-n-9"}`}
+                            anchor="top end"
+                        />
+                    ) : (
+                        <button className="flex justify-center items-center w-12 h-18 tap-highlight-color">
+                            <Icon
+                                className={`icon-22 transition-colors ${hiddenItems.some(item => pathname === item.url) ? "text-purple-1!" : "text-n-7 dark:text-n-9"}`}
+                                icon={MoreHorizontal}
+                            />
+                        </button>
+                    )
                 )}
             </div>
 

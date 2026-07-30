@@ -51,6 +51,9 @@ const NotificationsPage = () => {
 
     const notifications = data?.notifications || [];
 
+    // Extract the stable mutate function from the mutation object
+    const { mutate: markAllRead } = markAllReadMutation;
+
     // Auto-mark as read on visit and whenever unreadCount becomes > 0 while on this page
     useEffect(() => {
         if (unreadCount > 0 || !hasMarkedRef.current) {
@@ -64,11 +67,10 @@ const NotificationsPage = () => {
             }, 600);
             
             // Fire the API request in the background
-            markAllReadMutation.mutate();
+            markAllRead();
         }
-    }, [unreadCount, markAllReadMutation, markAllAsReadLocal]);
-
-    // console.log(notifications);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [unreadCount]);
 
     if (isLoading) {
         return (
