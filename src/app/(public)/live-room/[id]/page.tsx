@@ -9,11 +9,34 @@ export async function generateMetadata() {
 
 import CreatorHeader from "@/layout/CreatorHeader";
 
-const LiveRoomDetail = () => {
+import { liveApi } from "@/services/live.service";
+import { getInitialPageData } from "@/lib/ssr-helpers";
+
+type Props = {
+    params: Promise<{
+        id: string;
+    }>;
+};
+
+const LiveRoomDetail = async ({ params }: Props) => {
+    const resolvedParams = await params;
+    const { id } = resolvedParams;
+    let initialPageData = null;
+    let initialSessionData = null;
+    let pageSlug = "";
+
+    try {
+        initialSessionData = await liveApi.getPublicSession(id);
+        pageSlug = initialSessionData?.creatorId?.pageSlug || "";
+        initialPageData = await getInitialPageData(pageSlug);
+    } catch (e) {
+        console.error("Error fetching data for live room detail:", e);
+    }
+
     return (
         <>
-            <CreatorHeader />
-            <LiveRoomDetailPage />
+            <CreatorHeader pageSlug={pageSlug || undefined} initialPageData={initialPageData} />
+            <LiveRoomDetailPage initialSessionData={initialSessionData} />
         </>
     );
 };

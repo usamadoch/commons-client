@@ -15,7 +15,9 @@ import LiveLayout from "@/app/(live)/_template/_components/LiveLayout";
 
 // ─── Component ──────────────────────────────────────────────
 
-const LiveRoomDetailPage = () => {
+import { LiveSession } from "@/services/live.service";
+
+const LiveRoomDetailPage = ({ initialSessionData }: { initialSessionData?: LiveSession | null }) => {
     const params = useParams<{ id: string }>();
     const sessionId = params.id as string;
     const { user } = useAuth();
@@ -32,6 +34,7 @@ const LiveRoomDetailPage = () => {
         queryFn: () => liveApi.getPublicSession(sessionId),
         enabled: !!sessionId && isValidId,
         retry: false,
+        initialData: initialSessionData || undefined,
     });
 
     // ── Error / Not Found States ─────────────────────────────

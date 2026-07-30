@@ -64,7 +64,7 @@ const CreatorHeader = ({ pageSlug, initialPageData }: CreatorHeaderProps) => {
     const pageData = data || initialPageData;
     
     // If we have initialPageData, we aren't "loading" the page data anymore
-    const isLoading = (!pageData && isPageLoading) || (!!isValidId && isPostRoute && isPostLoading) || (!!isValidId && isLiveRoomRoute && isSessionLoading);
+    const isLoading = !pageData && ((!pageData && isPageLoading) || (!!isValidId && isPostRoute && isPostLoading) || (!!isValidId && isLiveRoomRoute && isSessionLoading));
 
     const { page } = pageData || {};
     const isOwner = data?.isOwner;
