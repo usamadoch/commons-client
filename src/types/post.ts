@@ -1,66 +1,14 @@
-
 import { User } from './user';
 import { CreatorPage } from './page';
+import { MediaAttachment, ImageAttachment, VideoAttachment, LockedImageAttachment, LockedVideoAttachment, LockedMediaAttachment, LinkPreview } from './media';
+import { Poll } from './poll';
+
+export * from './media';
+export * from './poll';
+export * from './comment';
 
 export type PostStatus = 'draft' | 'scheduled' | 'published';
 export type PostVisibility = 'public' | 'members';
-
-export interface BaseMediaAttachment {
-    url: string;
-    filename: string;
-    fileSize: number;
-    mimeType: string;
-    _id?: string;
-}
-
-export type MediaStatus = 'preparing' | 'ready' | 'errored';
-
-export interface ImageAttachment extends BaseMediaAttachment {
-    type: 'image';
-    cloudinaryPublicId?: string;
-    thumbnailUrl?: string;
-    dimensions: { width: number; height: number };
-}
-
-export interface VideoAttachment extends BaseMediaAttachment {
-    type: 'video';
-    muxUploadId?: string;
-    muxAssetId?: string;
-    muxPlaybackId?: string;
-    status?: MediaStatus;
-    thumbnailUrl: string;
-    duration: number;
-    dimensions: { width: number; height: number };
-}
-
-export type MediaAttachment = ImageAttachment | VideoAttachment;
-
-export interface LockedImageAttachment {
-    type: 'image';
-    url: null;
-    thumbnailUrl?: string;
-    filename: string;
-    fileSize: number;
-    mimeType: string;
-    dimensions?: { width: number; height: number };
-}
-
-export interface LockedVideoAttachment {
-    type: 'video';
-    url: null;
-    thumbnailUrl?: string;
-    filename: string;
-    fileSize: number;
-    mimeType: string;
-    dimensions?: { width: number; height: number };
-    muxPlaybackId: null;
-    muxAssetId: null;
-    duration?: number;
-    status?: MediaStatus;
-}
-
-export type LockedMediaAttachment = LockedImageAttachment | LockedVideoAttachment;
-export type AnyMediaAttachment = MediaAttachment | LockedMediaAttachment;
 
 interface BasePostFields {
     _id: string;
@@ -80,12 +28,16 @@ interface BasePostFields {
     updatedAt: string;
     isLocked: boolean;
     isLiked?: boolean;
+    linkUrl?: string;
+    poll?: Poll;
+    userVotedOptions?: number[];
 }
 
 type LockedPostState = {
     isLocked: true;
     teaser: string;
     caption: null;
+    linkPreview?: LinkPreview;
 }
 
 type UnlockedPostState = {
@@ -124,30 +76,18 @@ export interface DashboardPost {
     visibility: PostVisibility;
     publishedAt: string | null;
     createdAt: string;
-}
-
-export interface Comment {
-    _id: string;
-    postId: string;
-    authorId: string | User;
-    content: string;
-    createdAt: string;
-    updatedAt: string;
+    poll?: any;
+    linkUrl?: string;
 }
 
 export type PostType = Post['postType'];
 
 export type CreatePostPayload =
-    | { _id?: string; postType: 'text'; caption: string; mediaAttachments?: never; visibility?: PostVisibility; tags?: string[]; allowComments?: boolean; status?: 'draft' | 'published'; scheduledFor?: string; }
-    | { _id?: string; postType: 'image'; caption?: string; mediaAttachments: ImageAttachment[]; visibility?: PostVisibility; tags?: string[]; allowComments?: boolean; status?: 'draft' | 'published'; scheduledFor?: string; }
-    | { _id?: string; postType: 'video'; caption?: string; mediaAttachments: VideoAttachment[]; visibility?: PostVisibility; tags?: string[]; allowComments?: boolean; status?: 'draft' | 'published'; scheduledFor?: string; };
+    | { _id?: string; postType: 'text'; caption: string; mediaAttachments?: never; visibility?: PostVisibility; tags?: string[]; allowComments?: boolean; status?: 'draft' | 'published'; scheduledFor?: string; linkUrl?: string; poll?: Poll; }
+    | { _id?: string; postType: 'image'; caption?: string; mediaAttachments: ImageAttachment[]; visibility?: PostVisibility; tags?: string[]; allowComments?: boolean; status?: 'draft' | 'published'; scheduledFor?: string; linkUrl?: string; poll?: Poll; }
+    | { _id?: string; postType: 'video'; caption?: string; mediaAttachments: VideoAttachment[]; visibility?: PostVisibility; tags?: string[]; allowComments?: boolean; status?: 'draft' | 'published'; scheduledFor?: string; linkUrl?: string; poll?: Poll; };
 
 export type UpdatePostPayload = Partial<CreatePostPayload>;
-
-export interface CreateCommentPayload {
-    content: string;
-    parentId?: string;
-}
 
 export interface ReviewItem {
     id: string;
