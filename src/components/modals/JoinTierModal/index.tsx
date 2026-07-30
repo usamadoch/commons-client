@@ -140,7 +140,7 @@ const JoinTierModal = ({
         onError: (err: any) => toast.error(err.message || 'Failed to subscribe')
     });
 
-    const currentStep = showSuccess ? 'success' : safepayData ? 'checkout' : 'plans';
+    const currentStep = showSuccess ? 'success' : (safepayData || subscribeMutation.isPending) ? 'checkout' : 'plans';
 
     return (
         <Transition show={visible} as={Fragment}>
@@ -208,7 +208,7 @@ const JoinTierModal = ({
                                                 onBackToHome={() => { handleManualClose(); router.push('/'); }}
                                             />
                                         </motion.div>
-                                    ) : currentStep === 'checkout' && safepayData ? (
+                                    ) : currentStep === 'checkout' ? (
                                         <motion.div
                                             key="checkout"
                                             initial={{ x: "100%", opacity: 0 }}
@@ -218,13 +218,14 @@ const JoinTierModal = ({
                                             className="w-full max-w-6xl mx-auto p-6 pt-0"
                                         >
                                             <SafepayCardForm
-                                                trackerToken={safepayData.trackerToken}
-                                                authToken={safepayData.authToken}
+                                                trackerToken={safepayData?.trackerToken}
+                                                authToken={safepayData?.authToken}
                                                 plan={plans.find((p: Tier) => p._id === pageTierId)}
                                                 page={page}
                                                 defaultInterval={interval}
+                                                isInitialLoading={subscribeMutation.isPending}
                                                 onSuccess={handlePaymentSuccess}
-                                                onBack={() => { setSafepayData(null); setPageTierId(null); }}
+                                                onBack={() => { setSafepayData(null); setPageTierId(null); subscribeMutation.reset(); }}
                                             />
                                         </motion.div>
                                     ) : (

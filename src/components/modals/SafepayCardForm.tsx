@@ -1,4 +1,4 @@
-import { Suspense, useRef, useCallback, useState } from 'react';
+import { Suspense, useRef, useCallback, useState, useEffect } from 'react';
 import { CardCapture, PayerAuthentication, Environment } from '@sfpy/atoms';
 import '@sfpy/atoms/styles';
 import Loader from '../Loader';
@@ -19,19 +19,31 @@ const SafepayCardForm = ({
     onBack,
     plan,
     page,
-    defaultInterval = 'MONTHLY'
+    defaultInterval = 'MONTHLY',
+    isInitialLoading = false
 }: {
-    trackerToken: string,
-    authToken: string,
+    trackerToken?: string | null,
+    authToken?: string | null,
     onSuccess?: (data: any) => void,
     onBack?: () => void,
     plan?: Tier,
     page?: CreatorPage,
-    defaultInterval?: 'MONTHLY' | 'YEARLY'
+    defaultInterval?: 'MONTHLY' | 'YEARLY',
+    isInitialLoading?: boolean
 }) => {
     const [interval, setInterval] = useState<'MONTHLY' | 'YEARLY'>(defaultInterval);
-    const [currentTrackerToken, setCurrentTrackerToken] = useState(trackerToken);
-    const [currentAuthToken, setCurrentAuthToken] = useState(authToken);
+    const [currentTrackerToken, setCurrentTrackerToken] = useState(trackerToken || '');
+    const [currentAuthToken, setCurrentAuthToken] = useState(authToken || '');
+
+    // Sync tokens from props when they resolve (e.g. after initial API call completes)
+    useEffect(() => {
+        if (trackerToken) setCurrentTrackerToken(trackerToken);
+    }, [trackerToken]);
+
+    useEffect(() => {
+        if (authToken) setCurrentAuthToken(authToken);
+    }, [authToken]);
+
 
 
     const cardRef = useRef<{
@@ -88,6 +100,8 @@ const SafepayCardForm = ({
             toast.error(err.message || 'Failed to update plan interval');
         }
     });
+
+    const isPending = isInitialLoading || updateTrackerMutation.isPending;
 
     const handleIntervalChange = (newInterval: 'MONTHLY' | 'YEARLY') => {
         setInterval(newInterval);
@@ -148,7 +162,7 @@ const SafepayCardForm = ({
                         onIntervalChange={handleIntervalChange}
                         plan={plan}
                         page={page}
-                        isPending={updateTrackerMutation.isPending}
+                        isPending={isPending}
                     />
 
                     {/* Right side: Payment form */}
@@ -177,7 +191,7 @@ const SafepayCardForm = ({
 
                             {/* Step 1: Card input — user types their card details */}
                             <div className="relative w-full h-full">
-                                {updateTrackerMutation.isPending ? (
+                                {isPending ? (
                                     <div className="absolute inset-0 z-10 w-full h-full bg-n-3/20 dark:bg-n-6/50 animate-pulse rounded-[10px]"></div>
                                 ) : (
                                     <Suspense fallback={<div>Loading card form...</div>}>
@@ -229,8 +243,8 @@ const SafepayCardForm = ({
 
                         <div className=" mb-4 gap-3 text-n-3 flex flex-col dark:text-n-9">
                             <div className='text-sm font-medium'>
-                                {updateTrackerMutation.isPending ? (
-                                    <div className="h-5 w-[280px] max-w-full bg-n-3/20 dark:bg-n-6/50 animate-pulse rounded" />
+                                {isPending ? (
+                                    <div className="h-5 w-70 max-w-full bg-n-3/20 dark:bg-n-6/50 animate-pulse rounded" />
                                 ) : (
                                     `You’ll pay PKR ${plan ? (interval === 'YEARLY' ? plan.price * 12 : plan.price).toLocaleString() : 0} ${interval === 'YEARLY' ? 'yearly' : 'monthly'} starting today.`
                                 )}
@@ -252,10 +266,10 @@ const SafepayCardForm = ({
                         <button
                             className='btn-purple rounded-sm w-full mt-4 font-bold cursor-pointer uppercase tracking-widest flex items-center justify-center'
                             onClick={handlePayNow}
-                            disabled={isProcessing || updateTrackerMutation.isPending}
+                            disabled={isProcessing || isPending}
                         >
                             {isProcessing ? <Loader /> : (
-                                updateTrackerMutation.isPending ? (
+                                isPending ? (
                                     <div className="h-5 w-32 bg-n-1/20 dark:bg-n-3/20 animate-pulse rounded" />
                                 ) : (
                                     `Subscribe now`
