@@ -1,19 +1,17 @@
 import { useState, useEffect } from "react";
-import Modal from "@/components/Modal";
 import Field from "@/components/Field";
 import Switch from "@/components/Switch";
 import Icon from "@/components/Icon";
 import { Icon as LucideIcon } from "@/components/ui/icon";
-import { Plus, Trash2 } from "@/lib/icons";
+import { Trash2 } from "@/lib/icons";
 import { Poll } from "@/types";
 
-type PollModalProps = {
-    isOpen: boolean;
-    onClose: () => void;
+type PollInputProps = {
     onAddPoll: (poll: Poll) => void;
+    onCancel: () => void;
 };
 
-const PollModal = ({ isOpen, onClose, onAddPoll }: PollModalProps) => {
+const PollInput = ({ onAddPoll, onCancel }: PollInputProps) => {
     const [options, setOptions] = useState<string[]>(["", ""]);
     const [hasEndDate, setHasEndDate] = useState(false);
     const [endDate, setEndDate] = useState<string>("");
@@ -62,21 +60,25 @@ const PollModal = ({ isOpen, onClose, onAddPoll }: PollModalProps) => {
             setHasEndDate(false);
             setEndDate("");
             setAllowMultiple(false);
-            onClose();
         }
     };
 
     const isValid = options.filter(o => o.trim().length > 0).length >= 2;
 
     return (
-        <Modal
-            visible={isOpen}
-            onClose={onClose}
-            showCloseIcon={false}
-            title="Create a Poll"
-            classWrap="max-w-xl"
-        >
-            <div className="flex flex-col gap-5">
+        <div className="relative group w-full col-span-full mt-4 pb-4">
+            <div className="w-full p-4 rounded-md border border-n-1 dark:border-n-6 bg-n-2 dark:bg-transparent flex flex-col gap-5">
+                <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-primary-1">Create a Poll</span>
+                    <button
+                        className="btn-medium btn-stroke btn-square rounded-full bg-white dark:bg-n-1 cursor-pointer flex items-center justify-center"
+                        onClick={onCancel}
+                        type="button"
+                    >
+                        <LucideIcon icon={Trash2} size={16} className="fill-n-1 dark:fill-n-9 text-n-1 dark:text-n-9" />
+                    </button>
+                </div>
+
                 <div className="flex flex-col gap-3">
                     {options.map((option, index) => (
                         <div key={index} className="flex items-center gap-2">
@@ -102,11 +104,11 @@ const PollModal = ({ isOpen, onClose, onAddPoll }: PollModalProps) => {
                 </div>
 
                 <div className="flex items-center justify-between mt-2">
-
                     <button
                         className="group inline-flex items-center font-bold transition-colors hover:text-purple-1"
                         onClick={addOption}
                         disabled={options.length >= 10}
+                        type="button"
                     >
                         <Icon name="add-circle" className="mr-2 fill-inherit" />
                         Add Option
@@ -139,12 +141,13 @@ const PollModal = ({ isOpen, onClose, onAddPoll }: PollModalProps) => {
                     className="btn-purple btn w-full mt-4 h-12 rounded-sm"
                     onClick={handleSubmit}
                     disabled={!isValid}
+                    type="button"
                 >
                     Submit Poll
                 </button>
             </div>
-        </Modal>
+        </div>
     );
 };
 
-export default PollModal;
+export default PollInput;

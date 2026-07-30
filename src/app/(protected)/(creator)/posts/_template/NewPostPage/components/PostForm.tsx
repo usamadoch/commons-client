@@ -4,8 +4,8 @@ import PostInput from "./PostInput";
 import MediaPreview from "./MediaPreview";
 import PostToolbar from "./PostToolbar";
 import NewPostSettings from "./NewPostSettings";
-import LinkModal from "./LinkModal";
-import PollModal from "./PollModal";
+import LinkInput from "./LinkInput";
+import PollInput from "./PollInput";
 import LinkPreview from "./LinkPreview";
 import PollPreview from "./PollPreview";
 
@@ -39,8 +39,8 @@ const PostForm = ({ formState, submitLabel = "Post" }: PostFormProps) => {
         hasUploadError,
     } = formState;
 
-    const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
-    const [isPollModalOpen, setIsPollModalOpen] = useState(false);
+    const [isAddingLink, setIsAddingLink] = useState(false);
+    const [isAddingPoll, setIsAddingPoll] = useState(false);
 
     return (
         <div className="flex lg:block">
@@ -64,27 +64,45 @@ const PostForm = ({ formState, submitLabel = "Post" }: PostFormProps) => {
                             retryUpload={retryUpload}
                         />
 
-                        {linkUrl && (
+                        {linkUrl ? (
                             <LinkPreview 
                                 url={linkUrl} 
                                 onRemove={() => setLinkUrl(undefined)} 
                             />
-                        )}
+                        ) : isAddingLink ? (
+                            <LinkInput 
+                                onAddLink={(url) => {
+                                    setLinkUrl(url);
+                                    setIsAddingLink(false);
+                                }}
+                                onCancel={() => setIsAddingLink(false)}
+                            />
+                        ) : null}
 
-                        {poll && (
+                        {poll ? (
                             <PollPreview 
                                 poll={poll} 
                                 onRemove={() => setPoll(undefined)} 
                             />
-                        )}
+                        ) : isAddingPoll ? (
+                            <PollInput 
+                                onAddPoll={(p) => {
+                                    setPoll(p);
+                                    setIsAddingPoll(false);
+                                }}
+                                onCancel={() => setIsAddingPoll(false)}
+                            />
+                        ) : null}
 
                         <PostToolbar
                             openFileSelector={openFileSelector}
                             onFileSelection={handleFileSelection}
                             fileInputRef={fileInputRef}
                             attachments={attachments}
-                            onOpenLinkModal={() => setIsLinkModalOpen(true)}
-                            onOpenPollModal={() => setIsPollModalOpen(true)}
+                            linkUrl={linkUrl}
+                            poll={poll}
+                            onOpenLinkModal={() => setIsAddingLink(true)}
+                            onOpenPollModal={() => setIsAddingPoll(true)}
                         />
                     </PostInput>
                 </form>
@@ -101,17 +119,7 @@ const PostForm = ({ formState, submitLabel = "Post" }: PostFormProps) => {
                 hasUploadError={hasUploadError}
             />
 
-            <LinkModal 
-                isOpen={isLinkModalOpen} 
-                onClose={() => setIsLinkModalOpen(false)} 
-                onAddLink={setLinkUrl} 
-            />
 
-            <PollModal
-                isOpen={isPollModalOpen}
-                onClose={() => setIsPollModalOpen(false)}
-                onAddPoll={setPoll}
-            />
         </div>
     );
 };
