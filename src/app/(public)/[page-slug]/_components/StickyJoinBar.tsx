@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "@/components/Image";
-import { useAuth } from "@/store/auth";
 import { useCreatorPlans } from "@/hooks/queries";
 import { CreatorPage } from "@/types";
 
@@ -18,7 +17,6 @@ type StickyJoinBarProps = {
 };
 
 const StickyJoinBar = ({ page, isOwner, isMember, onJoinSuccess, onOpenJoinModal, onOpenLoginModal }: StickyJoinBarProps) => {
-    const { isAuthenticated } = useAuth();
     const searchParams = useSearchParams();
     const isPreview = searchParams.get("preview") === "true";
     
@@ -64,11 +62,7 @@ const StickyJoinBar = ({ page, isOwner, isMember, onJoinSuccess, onOpenJoinModal
     const isVisible = isPreview || isScrolled;
 
     const handleJoinClick = () => {
-        if (!isAuthenticated) {
-            onOpenLoginModal?.();
-        } else {
-            onOpenJoinModal?.();
-        }
+        onOpenJoinModal?.();
     };
 
     return (

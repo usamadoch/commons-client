@@ -4,7 +4,7 @@
 import { useEffect, useState, Fragment, useCallback } from "react";
 import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, usePathname } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -36,7 +36,7 @@ const JoinTierModal = ({
     const router = useRouter();
     const params = useParams<{ "page-slug": string }>();
     const slug = params["page-slug"] || page.pageSlug;
-
+    const pathname = usePathname();
 
     const [interval, setInterval] = useState<'MONTHLY' | 'YEARLY'>('MONTHLY');
     const [showSuccess, setShowSuccess] = useState(false);
@@ -241,7 +241,15 @@ const JoinTierModal = ({
                                                 loadingPlans={loadingPlans}
                                                 interval={interval}
                                                 setInterval={setInterval}
-                                                onSubscribe={(id) => subscribeMutation.mutate(id)}
+                                                onSubscribe={(id) => {
+                                                    if (!user) {
+                                                        sessionStorage.setItem('redirectAfterLogin', pathname);
+                                                        sessionStorage.setItem(`join_modal_open_${slug}`, 'true');
+                                                        router.push('/login');
+                                                        return;
+                                                    }
+                                                    subscribeMutation.mutate(id);
+                                                }}
                                                 isSubscribing={subscribeMutation.isPending}
                                                 subscribingPlanId={subscribeMutation.variables as string}
                                             />

@@ -1,17 +1,11 @@
-
-
-
-
-
 'use client';
 import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { create } from 'zustand';
 
 import { AuthState, LoginPayload, SignupPayload, ONBOARDING_STEPS } from '@/types';
-import { ApiClientError } from "@/services/api.client";
-import { authService as authApi } from "@/services/auth.service";
-
+import { ApiClientError } from '@/services/api.client';
+import { authService as authApi } from '@/services/auth.service';
 
 // ====================
 // AUTH STORE TYPES
@@ -37,8 +31,6 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     error: null,
 
     init: async () => {
-        // Prevent double initialization if already loaded/loading? 
-        // But for strict replacement of useEffect(() => { init() }, []), we just run it.
         try {
             console.log('[Auth] Checking session...');
             const { user } = await authApi.getMe();
@@ -134,22 +126,23 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 // HELPER HOOK
 // ====================
 
-// Wrap the store to add navigation logic which depends on useRouter
-// The original Context mixed state management with navigation side-effects in 'login'/'signup' and 'logout'.
-// Zustand actions are pure functions often, but can have side effects. However, hooks like useRouter are not available inside vanilla JS functions (the store actions).
-// So we need to handle navigation separately or inject the router.
-// Strategy: The useAuth hook will return the store state + wrapped functions that handle navigation.
-
 export function useAuth() {
     const store = useAuthStore();
     const router = useRouter();
 
-    // Wrapping actions to include navigation, replicating the original Context behavior
     const loginWithRedirect = async (payload: LoginPayload, options?: { redirect?: boolean }) => {
         await store.login(payload);
         if (options?.redirect === false) return;
 
         const user = useAuthStore.getState().user; // Get fresh state
+
+        const redirectPath = sessionStorage.getItem('redirectAfterLogin');
+        if (redirectPath) {
+            sessionStorage.removeItem('redirectAfterLogin');
+            router.push(redirectPath);
+            return;
+        }
+
         if (user?.role === 'creator') {
             if ((user?.onboardingStep ?? 0) < ONBOARDING_STEPS.COMPLETE) {
                 router.push('/register');
@@ -166,6 +159,14 @@ export function useAuth() {
         if (options?.redirect === false) return;
 
         const user = useAuthStore.getState().user;
+
+        const redirectPath = sessionStorage.getItem('redirectAfterLogin');
+        if (redirectPath) {
+            sessionStorage.removeItem('redirectAfterLogin');
+            router.push(redirectPath);
+            return;
+        }
+
         if (user?.role === 'creator') {
             if ((user?.onboardingStep ?? 0) < ONBOARDING_STEPS.COMPLETE) {
                 router.push('/register');
@@ -194,7 +195,6 @@ export function useAuth() {
 // AUTH PROVIDER COMPONENT
 // ====================
 
-// Acts as an initializer for the store
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const init = useAuthStore((state) => state.init);
 
@@ -214,9 +214,6 @@ interface RouteGuardProps {
     fallback?: React.ReactNode;
 }
 
-/**
- * Requires user to be authenticated
- */
 export function RequireAuth({ children, fallback }: RouteGuardProps) {
     const { isAuthenticated, isLoading } = useAuth();
     const router = useRouter();
@@ -224,31 +221,19 @@ export function RequireAuth({ children, fallback }: RouteGuardProps) {
 
     useEffect(() => {
         if (!isLoading && !isAuthenticated) {
-            // Store intended destination for redirect after login
             sessionStorage.setItem('redirectAfterLogin', pathname);
             router.push('/login');
         }
     }, [isLoading, isAuthenticated, router, pathname]);
 
-    if (isLoading) {
-        return fallback || null;
-    }
-
-    if (!isAuthenticated) {
-        return fallback || null;
-    }
+    if (isLoading) return fallback || null;
+    if (!isAuthenticated) return fallback || null;
 
     return <>{children}</>;
 }
 
-/**
- * Requires user to be a creator
- */
 export function RequireCreator({ children, fallback }: RouteGuardProps) {
     const { user, isAuthenticated, isLoading } = useAuth();
-
-    // console.log(user);
-
     const router = useRouter();
 
     useEffect(() => {
@@ -261,20 +246,12 @@ export function RequireCreator({ children, fallback }: RouteGuardProps) {
         }
     }, [isLoading, isAuthenticated, user, router]);
 
-    if (isLoading) {
-        return fallback || null;
-    }
-
-    if (!isAuthenticated || user?.role !== 'creator') {
-        return fallback || null;
-    }
+    if (isLoading) return fallback || null;
+    if (!isAuthenticated || user?.role !== 'creator') return fallback || null;
 
     return <>{children}</>;
 }
 
-/**
- * Requires user to be a member (not creator)
- */
 export function RequireMember({ children, fallback }: RouteGuardProps) {
     const { user, isAuthenticated, isLoading } = useAuth();
     const router = useRouter();
@@ -289,20 +266,12 @@ export function RequireMember({ children, fallback }: RouteGuardProps) {
         }
     }, [isLoading, isAuthenticated, user, router]);
 
-    if (isLoading) {
-        return fallback || null;
-    }
-
-    if (!isAuthenticated || user?.role !== 'member') {
-        return fallback || null;
-    }
+    if (isLoading) return fallback || null;
+    if (!isAuthenticated || user?.role !== 'member') return fallback || null;
 
     return <>{children}</>;
 }
 
-/**
- * Redirects authenticated users away (for login/signup pages)
- */
 export function RedirectIfAuthenticated({ children, fallback }: RouteGuardProps) {
     const { isAuthenticated, isLoading, user } = useAuth();
     const router = useRouter();
@@ -311,37 +280,36 @@ export function RedirectIfAuthenticated({ children, fallback }: RouteGuardProps)
     const isOnboarding = isAuthenticated && user?.role === 'creator' && (user?.onboardingStep ?? 0) < ONBOARDING_STEPS.COMPLETE;
     const isOnRegisterPage = pathname === '/register';
 
+    const hasCheckedInitialAuth = React.useRef(false);
+
     useEffect(() => {
-        if (!isLoading && isAuthenticated) {
-            // If user is still onboarding and on register page, let them stay
-            if (isOnboarding && isOnRegisterPage) {
-                return;
-            }
+        if (isLoading) return;
 
-            // Check for stored redirect path
-            const redirectPath = sessionStorage.getItem('redirectAfterLogin');
-            sessionStorage.removeItem('redirectAfterLogin');
+        if (!hasCheckedInitialAuth.current) {
+            hasCheckedInitialAuth.current = true;
+            
+            if (isAuthenticated) {
+                if (isOnboarding && isOnRegisterPage) return;
 
-            if (redirectPath) {
-                router.push(redirectPath);
-            } else if (user?.role === 'creator') {
-                // If onboarding not complete, redirect to register
-                if ((user?.onboardingStep ?? 0) < ONBOARDING_STEPS.COMPLETE) {
-                    router.push('/register');
+                const redirectPath = sessionStorage.getItem('redirectAfterLogin');
+                sessionStorage.removeItem('redirectAfterLogin');
+
+                if (redirectPath) {
+                    router.push(redirectPath);
+                } else if (user?.role === 'creator') {
+                    if ((user?.onboardingStep ?? 0) < ONBOARDING_STEPS.COMPLETE) {
+                        router.push('/register');
+                    } else {
+                        router.push('/dashboard');
+                    }
                 } else {
-                    router.push('/dashboard');
+                    router.push('/');
                 }
-            } else {
-                router.push('/');
             }
         }
     }, [isLoading, isAuthenticated, user, router, isOnboarding, isOnRegisterPage]);
 
-    // Allow the login/signup form to render immediately even while loading (optimistic UI),
-    // because these pages are server-rendered and we want to avoid a spinner flash for guests.
-
     if (!isLoading && isAuthenticated) {
-        // Let onboarding users stay on the register page
         if (isOnboarding && isOnRegisterPage) {
             return <>{children}</>;
         }

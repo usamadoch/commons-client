@@ -58,6 +58,13 @@ const LoginPage = () => {
                 <>
                     <GoogleButton
                         onSuccess={(user) => {
+                            const redirectPath = sessionStorage.getItem('redirectAfterLogin');
+                            if (redirectPath) {
+                                sessionStorage.removeItem('redirectAfterLogin');
+                                router.push(redirectPath);
+                                return;
+                            }
+
                             if (user?.role === 'creator') {
                                 if ((user?.onboardingStep ?? 0) < ONBOARDING_STEPS.COMPLETE) {
                                     router.push('/register');

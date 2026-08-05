@@ -23,6 +23,34 @@ export class ApiClientError extends Error {
 let isRefreshing = false;
 let refreshPromise: Promise<boolean> | null = null;
 
+let cachedCsrfToken: string | null = null;
+let csrfPromise: Promise<string | null> | null = null;
+
+/**
+ * Fetch and cache CSRF token from the server
+ */
+async function getCsrfToken(): Promise<string | null> {
+    if (cachedCsrfToken) return cachedCsrfToken;
+    if (csrfPromise) return csrfPromise;
+
+    csrfPromise = fetch(`${API_BASE_URL}/auth/csrf`, {
+        credentials: 'include'
+    }).then(res => res.json())
+      .then(data => {
+          if (data.success && data.data?.csrfToken) {
+              cachedCsrfToken = data.data.csrfToken;
+              return cachedCsrfToken;
+          }
+          return null;
+      })
+      .catch(() => null)
+      .finally(() => {
+          csrfPromise = null;
+      });
+
+    return csrfPromise;
+}
+
 /**
  * Core fetch wrapper with error handling and auto-refresh
  */
@@ -50,6 +78,20 @@ export async function fetchApi<T>(
         delete (config.headers as Record<string, string>)['Content-Type'];
     }
 
+    // Attach CSRF token for mutating requests
+    const isMutatingMethod = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(options.method?.toUpperCase() || 'GET');
+    const isCsrfEndpoint = endpoint === '/auth/csrf';
+    
+    if (isMutatingMethod && !isCsrfEndpoint) {
+        const token = await getCsrfToken();
+        if (token) {
+            config.headers = {
+                ...config.headers,
+                'x-csrf-token': token
+            };
+        }
+    }
+
     let response: Response;
 
     try {
@@ -60,6 +102,38 @@ export async function fetchApi<T>(
             { code: 'NETWORK_ERROR', message: 'Unable to connect to server' },
             0
         );
+    }
+
+    // Handle 403 CSRF Token Invalid - Clear cache and retry once
+    if (response.status === 403) {
+        let isCsrfError = false;
+        try {
+            // Clone to peek at the error without consuming the body
+            const peekData = await response.clone().json();
+            if (peekData?.error?.message === 'Invalid CSRF token') {
+                isCsrfError = true;
+            }
+        } catch { }
+
+        if (isCsrfError) {
+            cachedCsrfToken = null; // Clear stale token
+            const newToken = await getCsrfToken();
+            if (newToken) {
+                config.headers = {
+                    ...config.headers,
+                    'x-csrf-token': newToken
+                };
+                try {
+                    response = await fetch(url, config); // Retry request
+                } catch (error) {
+                    console.error('[API] Network error on CSRF retry:', error);
+                    throw new ApiClientError(
+                        { code: 'NETWORK_ERROR', message: 'Unable to connect to server' },
+                        0
+                    );
+                }
+            }
+        }
     }
 
     // Handle 401 - try to refresh token (but not for auth endpoints)
@@ -84,6 +158,16 @@ export async function fetchApi<T>(
                     0
                 );
             }
+        } else {
+            // Token refresh failed (e.g. refresh token expired or revoked)
+            // Dynamically import the store to avoid circular dependencies
+            import('@/store/auth').then(({ useAuthStore }) => {
+                const state = useAuthStore.getState();
+                if (state.isAuthenticated) {
+                    console.log('[API] Token refresh failed, logging out user');
+                    state.logout();
+                }
+            });
         }
     }
 

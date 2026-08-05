@@ -13,8 +13,6 @@ import { CreatorPage } from "@/types";
 
 import { usePageImageUpload } from "@/hooks/usePageImageUpload";
 
-import { useAuth } from "@/store/auth";
-
 import ProfileSocials from "./ProfileSocials";
 import ProfileHeaderActions from "./ProfileHeaderActions";
 import PageImageUploader from "./PageImageUploader";
@@ -31,7 +29,6 @@ type CreatorProfileHeaderProps = {
 };
 
 const ProfileHeader = ({ page, isOwner, isMember, onUpdate, onJoinSuccess, onOpenJoinModal, onOpenLoginModal }: CreatorProfileHeaderProps) => {
-    const { isAuthenticated } = useAuth();
     const [visible, setVisible] = useState(false);
 
 
@@ -57,11 +54,7 @@ const ProfileHeader = ({ page, isOwner, isMember, onUpdate, onJoinSuccess, onOpe
     };
 
     const handleJoinClick = () => {
-        if (!isAuthenticated) {
-            onOpenLoginModal?.();
-        } else {
-            onOpenJoinModal?.();
-        }
+        onOpenJoinModal?.();
     };
 
 
