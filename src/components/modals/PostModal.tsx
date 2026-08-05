@@ -7,6 +7,7 @@ import Modal from "@/components/Modal";
 import Image from "@/components/Image";
 import Images from "@/components/PostCard/Images";
 import PostCardLinkPreview from "@/components/PostCard/LinkPreview";
+import PostCardPoll from "@/components/PostCard/Poll";
 import { Icon } from "@/components/ui/icon";
 import { Copy, LockKeyhole } from "@/lib/icons";
 import Comment from "@/components/Comment";
@@ -96,9 +97,10 @@ const PostModal = ({ visible, onClose, post, page }: PostModalProps) => {
     const hasImages = displayedImages.length > 0;
     const hasVideo = !!displayedVideo;
     const hasLink = !!(post.linkUrl || (post as any).linkPreview);
+    const hasPoll = !!post.poll;
 
     const isLockedMediaPost = post.isLocked && (post.postType === 'image' || post.postType === 'video');
-    const showMediaSection = hasImages || hasVideo || hasLink || isLockedMediaPost;
+    const showMediaSection = hasImages || hasVideo || hasLink || hasPoll || isLockedMediaPost;
 
     // Use centralized creator info logic
     const creator = getCreatorInfo(post, page);
@@ -150,6 +152,17 @@ const PostModal = ({ visible, onClose, post, page }: PostModalProps) => {
                                     showOverlay={post.isLocked && !hasImages && !hasVideo && hasLink}
                                 />
                             )}
+                        </div>
+                    ) : hasPoll ? (
+                        <div className="w-full sm:p-8 max-w-2xl h-full flex flex-col justify-center px-4">
+                            <PostCardPoll
+                                postId={post._id}
+                                initialPoll={post.poll!}
+                                initialVotedOptions={post.userVotedOptions || []}
+                                isLocked={post.isLocked}
+                                shareUrl={`/posts/${post._id}`}
+                                showOverlay={post.isLocked && !hasImages && !hasVideo && !hasLink}
+                            />
                         </div>
                     ) : (
                         <div className="text-n-3">

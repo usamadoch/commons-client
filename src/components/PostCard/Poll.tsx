@@ -4,6 +4,8 @@ import { Lock } from "@/lib/icons";
 import { Poll } from "@/types";
 import { usePollMutation } from "@/hooks/mutations/usePollMutation";
 import LockedOverlay from "@/components/LockedOverlay";
+import { useAuth } from "@/store/auth";
+import LoginModal from "@/components/modals/LoginModal";
 
 interface PostCardPollProps {
     postId: string;
@@ -18,7 +20,10 @@ interface PostCardPollProps {
 const PostCardPoll = ({ postId, initialPoll, initialVotedOptions, isLocked, shareUrl, showOverlay = isLocked, onClick }: PostCardPollProps) => {
     const [localPoll, setLocalPoll] = useState<Poll>(initialPoll);
     const [userVotedOptions, setUserVotedOptions] = useState<number[]>(initialVotedOptions);
+    const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
+
     const { mutateAsync: votePoll, isPending: isVoting } = usePollMutation(postId);
+    const { isAuthenticated } = useAuth();
 
     useEffect(() => {
         setLocalPoll(initialPoll);
@@ -30,6 +35,11 @@ const PostCardPoll = ({ postId, initialPoll, initialVotedOptions, isLocked, shar
 
     const handleVote = async (optionIndex: number) => {
         if (!localPoll || isVoting || isLocked) return;
+
+        if (!isAuthenticated) {
+            setShowLoginModal(true);
+            return;
+        }
 
         let newSelected = [...userVotedOptions];
         if (localPoll.allowMultiple) {
@@ -91,12 +101,15 @@ const PostCardPoll = ({ postId, initialPoll, initialVotedOptions, isLocked, shar
                         return (
                             <div
                                 key={index}
-                                className={`relative flex items-center p-3 rounded-md border transition-colors overflow-hidden ${hasVoted ? (isSelected ? 'border-primary-1 dark:border-primary-1' : 'border-n-1 dark:border-n-6') : 'bg-n-2 dark:bg-transparent border-n-1 dark:border-n-6 cursor-pointer hover:border-n-3 dark:hover:border-n-5'}`}
-                                onClick={() => !hasVoted && handleVote(index)}
+                                className={`relative flex items-center p-3 rounded-md border transition-colors overflow-hidden ${hasVoted ? (isSelected ? 'border-primary-1 dark:border-primary-1' : 'border-n-1 dark:border-n-6') : 'bg-n-2 dark:bg-transparent border-n-1 dark:border-n-6 cursor-pointer hover:border-n-3 dark:hover:border-n-7'}`}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    !hasVoted && handleVote(index);
+                                }}
                             >
                                 {hasVoted && (
                                     <div
-                                        className={`absolute top-0 left-0 bottom-0 transition-all duration-500 ${isSelected ? 'bg-primary-1/10' : 'bg-n-3/30 dark:bg-n-6/30'}`}
+                                        className={`absolute top-0 left-0 bottom-0 transition-all duration-500 ${isSelected ? 'bg-n-9 dark:bg-n-9' : 'bg-n-6 dark:bg-n-6'}`}
                                         style={{ width: `${percentage}%` }}
                                     />
                                 )}
@@ -112,10 +125,10 @@ const PostCardPoll = ({ postId, initialPoll, initialVotedOptions, isLocked, shar
                                         )
                                     )}
 
-                                    <span className={`text-sm font-semibold grow ${hasVoted && isSelected ? 'text-primary-1' : 'dark:text-n-9'}`}>{text}</span>
+                                    <span className={`text-sm font-semibold grow ${hasVoted && isSelected ? 'text-n-1 dark:text-n-1' : 'dark:text-n-9'}`}>{text}</span>
 
                                     {hasVoted && (
-                                        <span className={`text-sm font-bold ${isSelected ? 'text-primary-1' : 'text-n-4 dark:text-n-5'}`}>
+                                        <span className={`text-sm font-bold ${isSelected ? 'text-n-1 dark:text-n-1' : 'text-n-4 dark:text-n-6'}`}>
                                             {percentage}%
                                         </span>
                                     )}
@@ -126,13 +139,25 @@ const PostCardPoll = ({ postId, initialPoll, initialVotedOptions, isLocked, shar
                 </div>
 
                 {userVotedOptions.length > 0 && (
-                    <div className="mt-4 text-xs font-semibold text-n-4 dark:text-n-5">
+                    <div className="mt-4 text-xs font-semibold text-n-4 dark:text-n-8">
                         {localPoll.totalVotes || 0} {(localPoll.totalVotes || 0) === 1 ? 'vote' : 'votes'}
                     </div>
                 )}
+            </div>
+
+            <div
+                onClick={(e) => e.stopPropagation()}
+                onMouseDown={(e) => e.stopPropagation()}
+                onMouseUp={(e) => e.stopPropagation()}
+            >
+                <LoginModal
+                    visible={showLoginModal}
+                    onClose={() => setShowLoginModal(false)}
+                />
             </div>
         </div>
     );
 };
 
 export default PostCardPoll;
+
