@@ -25,6 +25,7 @@ export const viewport: Viewport = {
 
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://commons.pk"),
   title: "Commons",
   description: "Join Commons to access exclusive posts, private creator communities, live streams, and connect directly with your favorite creators.",
   keywords: ["Commons", "creator platform", "exclusive content", "private communities", "creator support", "fan club", "interactive streams"],

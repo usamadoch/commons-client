@@ -9,7 +9,7 @@ import ProfileHeader from "./ProfileHeader";
 import StickyJoinBar from "./StickyJoinBar";
 import JoinTierModal from "@/components/modals/JoinTierModal";
 import LoginModal from "@/components/modals/LoginModal";
-import { useState, useEffect, ReactNode, createContext, useContext } from "react";
+import { useState, useEffect, ReactNode, createContext, useContext, Suspense } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 type CreatorPageContextType = {
@@ -32,21 +32,17 @@ export default function CreatorLayoutWrapper({ children, initialPageData }: { ch
     const pathname = usePathname();
     const isRootPage = pathname === `/${slug}`;
     
-    const { user, isAuthenticated } = useAuth();
+    const { user, isAuthenticated, isLoading: isAuthLoading } = useAuth();
     const { handleImageSuccess, handleJoinSuccess } = useCreatorPageCache(slug, user?._id);
     const queryClient = useQueryClient();
 
-    // Use initialPageData so we don't have a blank screen or loading spinner
-    const { data } = useCreatorPage(slug);
+    // Pass initialPageData directly to the query hook as initialData
+    // We removed setQueryData so it correctly fetches real auth state on mount
+    const { data, isLoading: isPageLoading } = useCreatorPage(slug, initialPageData);
     const pageData = data || initialPageData;
     const { page, isOwner, isMember } = pageData || {};
 
-    // Seed the cache immediately so other components don't blink
-    if (initialPageData && !data) {
-        queryClient.setQueryData(['creator-page', slug, user?._id], initialPageData);
-        // Also seed the undefined user cache just in case
-        queryClient.setQueryData(['creator-page', slug, undefined], initialPageData);
-    }
+    const isPendingAuthCheck = isAuthLoading || isPageLoading;
 
     const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -89,8 +85,9 @@ export default function CreatorLayoutWrapper({ children, initialPageData }: { ch
                         page={page}
                         isOwner={!!isOwner}
                         isMember={!!isMember}
+                        isPendingAuthCheck={isPendingAuthCheck}
                         onUpdate={handleImageSuccess}
-                        onJoinSuccess={handleJoinSuccess}
+                        onJoinSuccess={handleJoinTierSuccess}
                         onOpenJoinModal={handleOpenJoinModal}
                         onOpenLoginModal={() => setIsLoginModalOpen(true)}
                     />
@@ -100,14 +97,16 @@ export default function CreatorLayoutWrapper({ children, initialPageData }: { ch
             </div>
 
             {page && isRootPage && (
-                <StickyJoinBar
-                    page={page}
-                    isOwner={!!isOwner}
-                    isMember={!!isMember}
-                    onJoinSuccess={handleJoinSuccess}
-                    onOpenJoinModal={handleOpenJoinModal}
-                    onOpenLoginModal={() => setIsLoginModalOpen(true)}
-                />
+                <Suspense fallback={null}>
+                    <StickyJoinBar
+                        page={page}
+                        isOwner={!!isOwner}
+                        isMember={!!isMember}
+                        onJoinSuccess={handleJoinSuccess}
+                        onOpenJoinModal={handleOpenJoinModal}
+                        onOpenLoginModal={() => setIsLoginModalOpen(true)}
+                    />
+                </Suspense>
             )}
 
             <LoginModal

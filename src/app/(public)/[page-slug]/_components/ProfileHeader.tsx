@@ -22,13 +22,14 @@ type CreatorProfileHeaderProps = {
     page: CreatorPage;
     isOwner: boolean;
     isMember: boolean;
+    isPendingAuthCheck?: boolean;
     onUpdate?: (type: 'avatar', url: string) => void;
     onJoinSuccess?: () => void;
     onOpenJoinModal?: () => void;
     onOpenLoginModal?: () => void;
 };
 
-const ProfileHeader = ({ page, isOwner, isMember, onUpdate, onJoinSuccess, onOpenJoinModal, onOpenLoginModal }: CreatorProfileHeaderProps) => {
+const ProfileHeader = ({ page, isOwner, isMember, isPendingAuthCheck, onUpdate, onJoinSuccess, onOpenJoinModal, onOpenLoginModal }: CreatorProfileHeaderProps) => {
     const [visible, setVisible] = useState(false);
 
 
@@ -138,6 +139,7 @@ const ProfileHeader = ({ page, isOwner, isMember, onUpdate, onJoinSuccess, onOpe
                     <ProfileHeaderActions
                         isOwner={isOwner}
                         isMember={isMember}
+                        isPendingAuthCheck={isPendingAuthCheck}
                         onJoinClick={handleJoinClick}
                         onShareClick={() => setVisible(true)}
                     />

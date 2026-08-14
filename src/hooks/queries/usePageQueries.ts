@@ -4,7 +4,7 @@ import { ApiClientError } from "@/services/api.client";
 import { useAuth } from "@/store/auth";
 
 // Hook to fetch Creator Page Data (Profile, Banner, etc.)
-export const useCreatorPage = (slug?: string) => {
+export const useCreatorPage = (slug?: string, initialData?: any) => {
     const { user } = useAuth();
     return useQuery({
         queryKey: ['creator-page', slug, user?._id],
@@ -14,7 +14,9 @@ export const useCreatorPage = (slug?: string) => {
             return { page, isOwner, isMember };
         },
         enabled: !!slug,
-        staleTime: 1000 * 60 * 10,
+        initialData,
+        staleTime: 0, // Ensure the authenticated fetch fires on mount
+        refetchOnMount: 'always',
         refetchOnWindowFocus: false,
         retry: (failureCount, error) => {
             if (error instanceof ApiClientError && error.code === 'NOT_PUBLISHED') {

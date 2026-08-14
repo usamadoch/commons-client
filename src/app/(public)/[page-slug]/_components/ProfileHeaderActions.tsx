@@ -11,11 +11,21 @@ import LegacyIcon from "@/components/Icon";
 type ProfileHeaderActionsProps = {
     isOwner: boolean;
     isMember: boolean;
+    isPendingAuthCheck?: boolean;
     onJoinClick: () => void;
     onShareClick: () => void;
 };
 
-const ProfileHeaderActions = ({ isOwner, isMember, onJoinClick, onShareClick }: ProfileHeaderActionsProps) => {
+const ProfileHeaderActions = ({ isOwner, isMember, isPendingAuthCheck, onJoinClick, onShareClick }: ProfileHeaderActionsProps) => {
+    if (isPendingAuthCheck) {
+        return (
+            <div className="flex shrink-0 max-w-80 w-full mobile:max-w-none">
+                <div className="h-10 grow bg-n-3/10 animate-pulse rounded-sm dark:bg-n-7" />
+                <div className="ml-2 w-10 h-10 shrink-0 bg-n-3/10 animate-pulse rounded-sm dark:bg-n-7" />
+            </div>
+        );
+    }
+
     if (isOwner) {
         return (
             <div className="flex shrink-0 max-w-60 w-full mobile:max-w-none">
