@@ -153,6 +153,7 @@ const ProfileHeader = ({ page, isOwner, isMember, isPendingAuthCheck, onUpdate, 
                 <ProfileHeaderActions
                     isOwner={isOwner}
                     isMember={isMember}
+                    isPendingAuthCheck={isPendingAuthCheck}
                     onJoinClick={handleJoinClick}
                     onShareClick={() => setVisible(true)}
                 />
