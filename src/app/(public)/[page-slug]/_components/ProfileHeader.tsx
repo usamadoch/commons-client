@@ -61,11 +61,11 @@ const ProfileHeader = ({ page, isOwner, isMember, isPendingAuthCheck, onUpdate, 
 
 
     return (
-        <div className="relative z-1 flex flex-col items-end h-full pb-10 px-16 2xl:px-8 lg:px-6 mobile:px-6 mobile:pb-8">
-            <div className="flex items-start justify-between w-full pt-8">
+        <div className="relative z-1 flex flex-col items-end h-full pb-10 px-16 2xl:px-8 lg:px-6 mobile:px-3 mobile:pb-3">
+            <div className="flex items-start justify-between w-full pt-8 mobile:pt-4">
                 <div className="flex flex-1 items-start">
                     {/* Avatar Section */}
-                    <div className="relative shrink-0 w-27.5 tablet:w-24 mobile:w-20 aspect-square">
+                    <div className="relative shrink-0 w-27.5 tablet:w-24 mobile:w-16 aspect-square">
                         {/* {(optimisticAvatar || page.avatarUrl) && (
                             <div className="absolute top-1 left-1 w-full aspect-square rounded-full bg-[#4ADBC8] border border-black"></div>
                         )} */}
@@ -88,7 +88,7 @@ const ProfileHeader = ({ page, isOwner, isMember, isPendingAuthCheck, onUpdate, 
                                 <div className="relative w-full aspect-square rounded-full bg-n-1">
                                     {page.activeLiveSessionId && <LiveBadge size="md" />}
                                     {page.activeLiveSessionId ? (
-                                        <Link href={`/live-room/${page.activeLiveSessionId}`} className="block w-full h-full relative rounded-full overflow-hidden cursor-pointer border-2 border-red-500">
+                                        <Link href={`/live-room/${page.activeLiveSessionId}`} className="block w-full h-full relative rounded-full overflow-hidden cursor-pointer border-2 border-yellow-1">
                                             <Image
                                                 className="object-cover"
                                                 family="avatar"
@@ -116,7 +116,7 @@ const ProfileHeader = ({ page, isOwner, isMember, isPendingAuthCheck, onUpdate, 
                     </div>
 
                     <div className="text-n-1 dark:text-n-9 pl-4">
-                        <div className="mb-4">
+                        <div className="mb-4 mobile:mb-2">
                             <h5 className="capitalize text-h5 leading-tight">{page.displayName}</h5>
                             <p className="text-base font-medium text-n-4 dark:text-n-8 mt-1">@{page.pageSlug}</p>
                         </div>
@@ -147,16 +147,18 @@ const ProfileHeader = ({ page, isOwner, isMember, isPendingAuthCheck, onUpdate, 
             </div>
 
 
-            <div className="hidden mobile:flex w-full pt-6 flex-col-reverse gap-4 items-center">
+            <div className="hidden mobile:flex w-full pt-3 items-center justify-between gap-2.5">
                 <ProfileSocials youtube={page.youtube} />
 
-                <ProfileHeaderActions
-                    isOwner={isOwner}
-                    isMember={isMember}
-                    isPendingAuthCheck={isPendingAuthCheck}
-                    onJoinClick={handleJoinClick}
-                    onShareClick={() => setVisible(true)}
-                />
+                <div className="flex-1 min-w-0 flex justify-end">
+                    <ProfileHeaderActions
+                        isOwner={isOwner}
+                        isMember={isMember}
+                        isPendingAuthCheck={isPendingAuthCheck}
+                        onJoinClick={handleJoinClick}
+                        onShareClick={() => setVisible(true)}
+                    />
+                </div>
             </div>
 
             <ShareModal

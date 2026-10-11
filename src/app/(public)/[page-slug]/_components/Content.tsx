@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { Post } from "@/types";
 import { useAuth } from "@/store/auth";
@@ -18,6 +19,7 @@ type CreatorContentProps = {
 };
 
 const Content = ({ pageSlug, onOpenJoinModal, onOpenLoginModal }: CreatorContentProps) => {
+    const router = useRouter();
     // Using cached queries
     const { data: pageData } = useCreatorPage(pageSlug);
     const { data: postsData, isLoading } = useCreatorPosts(pageSlug, { type: ['text', 'image', 'video'] });
@@ -35,6 +37,10 @@ const Content = ({ pageSlug, onOpenJoinModal, onOpenLoginModal }: CreatorContent
 
     const handlePostClick = (post: Post) => {
         if (!post.isLocked) {
+            if (typeof window !== "undefined" && window.innerWidth <= 767) {
+                router.push(`/posts/${post._id}`);
+                return;
+            }
             setSelectedPostId(post._id);
         } else {
             if (!isAuthenticated) {
@@ -47,7 +53,7 @@ const Content = ({ pageSlug, onOpenJoinModal, onOpenLoginModal }: CreatorContent
 
 
     return (
-        <div className="pb-20 px-16 2xl:px-8 lg:px-6 mobile:px-6">
+        <div className="pb-20 px-16 2xl:px-8 lg:px-6 mobile:px-3 mobile:pb-14">
             <div className="grid grid-cols-12 lg:grid-cols-1 gap-8">
                 <div className="col-span-8 lg:col-span-1 pt-10 lg:pt-0">
 
@@ -57,7 +63,7 @@ const Content = ({ pageSlug, onOpenJoinModal, onOpenLoginModal }: CreatorContent
                         </div>
                     ) : (
                         posts.length > 0 ? (
-                            <div className="grid grid-cols-1 gap-5">
+                            <div className="grid grid-cols-1 gap-5 mobile:gap-3">
                                 {posts.map((post: Post) => (
                                     <PostCard
                                         key={post._id}

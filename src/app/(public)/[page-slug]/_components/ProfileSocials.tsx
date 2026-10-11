@@ -10,7 +10,7 @@ const ProfileSocials = ({ youtube }: ProfileSocialsProps) => {
     if (!youtube || !youtube.isVerified) return null;
 
     return (
-        <div className="flex items-center mr-8 space-x-5 md:mr-4 md:space-x-3">
+        <div className="flex items-center mr-8 space-x-5 md:mr-2 md:space-x-2 shrink-0">
             <Link
                 href={`https://youtube.com/channel/${youtube.channelId}`}
                 className="group relative shrink-0"

@@ -16,6 +16,7 @@ export interface ContentHeaderProps {
     actions?: React.ReactNode;
     metadata?: React.ReactNode;
     activeLiveSessionId?: string | null;
+    className?: string;
 }
 
 const ContentHeader = ({
@@ -27,9 +28,10 @@ const ContentHeader = ({
     actions,
     metadata,
     activeLiveSessionId,
+    className = "",
 }: ContentHeaderProps) => {
     return (
-        <div className="max-w-4xl mx-auto p-5 pt-0">
+        <div className={`max-w-4xl mx-auto p-5 pt-0 mobile:px-3 mobile:pb-3 ${className}`}>
             <div className="flex flex-col items-start justify-between w-full">
                 <div className="flex items-start w-full">
                     {/* Avatar Section */}

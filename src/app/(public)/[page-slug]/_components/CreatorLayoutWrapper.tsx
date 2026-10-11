@@ -5,6 +5,7 @@ import { useCreatorPage } from "@/hooks/queries";
 import { usePageSlug } from "@/hooks/usePageSlug";
 import { useCreatorPageCache } from "@/hooks/useCreatorPageCache";
 import { notFound, usePathname } from "next/navigation";
+import Banner from "./Banner";
 import ProfileHeader from "./ProfileHeader";
 import StickyJoinBar from "./StickyJoinBar";
 import JoinTierModal from "@/components/modals/JoinTierModal";
@@ -81,16 +82,23 @@ export default function CreatorLayoutWrapper({ children, initialPageData }: { ch
             <CreatorHeader initialPageData={initialPageData} />
             <div className="max-w-300 w-full mx-auto">
                 {page && isRootPage && (
-                    <ProfileHeader
-                        page={page}
-                        isOwner={!!isOwner}
-                        isMember={!!isMember}
-                        isPendingAuthCheck={isPendingAuthCheck}
-                        onUpdate={handleImageSuccess}
-                        onJoinSuccess={handleJoinTierSuccess}
-                        onOpenJoinModal={handleOpenJoinModal}
-                        onOpenLoginModal={() => setIsLoginModalOpen(true)}
-                    />
+                    <>
+                        <Banner
+                            page={page}
+                            isOwner={!!isOwner}
+                            onUpdate={handleImageSuccess}
+                        />
+                        <ProfileHeader
+                            page={page}
+                            isOwner={!!isOwner}
+                            isMember={!!isMember}
+                            isPendingAuthCheck={isPendingAuthCheck}
+                            onUpdate={handleImageSuccess}
+                            onJoinSuccess={handleJoinTierSuccess}
+                            onOpenJoinModal={handleOpenJoinModal}
+                            onOpenLoginModal={() => setIsLoginModalOpen(true)}
+                        />
+                    </>
                 )}
 
                 {children}

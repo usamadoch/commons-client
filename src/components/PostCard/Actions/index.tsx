@@ -1,9 +1,9 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import ActionMenu from "@/components/ActionMenu";
 import { toast } from "react-hot-toast";
 import { Icon } from "@/components/ui/icon";
 import { MessageCircle, Send } from "@/lib/icons";
-import Alert from "@/components/Alert";
 import Comment from "@/components/Comment";
 import LikeButton from "@/components/LikeButton";
 import { getSocialShareItems } from "@/utils/share";
@@ -22,22 +22,16 @@ type ActionsProps = {
 };
 
 const Actions = ({ postId, comments, likes: initialLikes, isLiked: initialIsLiked, className, showComment = true, shareUrl, type = 'post', isLocked, onCommentClick }: ActionsProps) => {
+    const router = useRouter();
 
     // Comment state
     const [isCommentOpen, setIsCommentOpen] = useState(false);
     const [commentValue, setCommentValue] = useState("");
 
     const shareItems = getSocialShareItems({
-        url: shareUrl || `/post/${postId}`,
+        url: shareUrl || `/posts/${postId}`,
         onCopySuccess: () => {
-            toast.custom((t) => (
-                <Alert
-                    className="mb-0 shadow-md"
-                    type="success"
-                    message="Link copied to clipboard"
-                    onClose={() => toast.dismiss(t.id)}
-                />
-            ), { position: "bottom-right" });
+            toast.success("Post link copied to clipboard");
         }
     });
 
@@ -53,6 +47,10 @@ const Actions = ({ postId, comments, likes: initialLikes, isLiked: initialIsLike
                         className="flex items-center gap-1 ml-4 px-0 cursor-pointer dark:text-n-8"
                         onClick={(e) => {
                             e.stopPropagation();
+                            if (typeof window !== "undefined" && window.innerWidth <= 767) {
+                                router.push(`/posts/${postId}`);
+                                return;
+                            }
                             if (onCommentClick) {
                                 onCommentClick();
                             }
@@ -73,7 +71,7 @@ const Actions = ({ postId, comments, likes: initialLikes, isLiked: initialIsLike
                         iconClass="dark:text-n-8"
                         anchor="bottom end"
                         portal
-                        menuItemsClass="z-[9999] border border-n-4 rounded-sm w-[14.69rem] py-2 bg-white dark:bg-n-1 focus:outline-none [--anchor-gap:10px] transition duration-200 ease-out data-closed:scale-95 data-closed:opacity-0"
+                        menuItemsClass="z-[9999] border border-n-4 rounded-xs min-w-[9.5rem] py-1 bg-white dark:bg-n-1 shadow-primary-4 focus:outline-none [--anchor-gap:10px] transition duration-200 ease-out data-closed:scale-95 data-closed:opacity-0"
                         items={shareItems}
                     />
                 ) : (
@@ -82,6 +80,10 @@ const Actions = ({ postId, comments, likes: initialLikes, isLiked: initialIsLike
                             className={` ml-4 cursor-pointer dark:text-n-8`}
                             onClick={(e) => {
                                 e.stopPropagation();
+                                if (typeof window !== "undefined" && window.innerWidth <= 767) {
+                                    router.push(`/posts/${postId}`);
+                                    return;
+                                }
                                 setIsCommentOpen(!isCommentOpen);
                                 if (onCommentClick) {
                                     onCommentClick();

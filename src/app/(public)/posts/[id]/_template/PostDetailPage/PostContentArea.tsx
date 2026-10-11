@@ -7,8 +7,8 @@ import ContentHeader from "@/components/ContentHeader";
 
 import PostMediaGallery from "./PostMediaGallery";
 import PostMetadata from "./PostMetadata";
-import PostLinkEmbed from "./PostLinkEmbed";
-import PostPoll from "./PostPoll";
+import PostCardLinkPreview from "@/components/PostCard/LinkPreview";
+import PostCardPoll from "@/components/PostCard/Poll";
 
 // ─── Types ──────────────────────────────────────────────────
 
@@ -18,6 +18,7 @@ interface PostContentAreaProps {
     mediaItems: AnyMediaAttachment[];
     unlockedMediaItems: MediaAttachment[];
     displayCaption: string;
+    onLockedClick?: () => void;
 }
 
 // ─── Component ──────────────────────────────────────────────
@@ -28,6 +29,7 @@ const PostContentArea = ({
     mediaItems,
     unlockedMediaItems,
     displayCaption,
+    onLockedClick,
 }: PostContentAreaProps) => {
     const creator = getCreatorInfo(post);
 
@@ -42,19 +44,29 @@ const PostContentArea = ({
                 />
             </div>
 
-            <PostLinkEmbed 
-                linkUrl={post.linkUrl as string} 
-                linkPreview={(post as any).linkPreview} 
-                locked={locked} 
-            />
+            {(post.linkUrl || (post as any).linkPreview) && (
+                <div className="w-full max-w-4xl mx-auto">
+                    <PostCardLinkPreview
+                        linkUrl={post.linkUrl as string}
+                        linkPreview={(post as any).linkPreview}
+                        isLocked={locked}
+                        shareUrl={`/posts/${post._id}`}
+                        onClick={onLockedClick}
+                    />
+                </div>
+            )}
 
             {post.poll && (
-                <PostPoll 
-                    postId={post._id}
-                    initialPoll={post.poll}
-                    initialVotedOptions={post.userVotedOptions}
-                    locked={locked}
-                />
+                <div className="w-full max-w-4xl mx-auto">
+                    <PostCardPoll
+                        postId={post._id}
+                        initialPoll={post.poll}
+                        initialVotedOptions={post.userVotedOptions || []}
+                        isLocked={locked}
+                        shareUrl={`/posts/${post._id}`}
+                        onClick={onLockedClick}
+                    />
+                </div>
             )}
 
             <ContentHeader

@@ -62,7 +62,7 @@ const CreatorHeader = ({ pageSlug, initialPageData }: CreatorHeaderProps) => {
 
     const { data, isLoading: isPageLoading } = useCreatorPage(slug);
     const pageData = data || initialPageData;
-    
+
     // If we have initialPageData, we aren't "loading" the page data anymore
     const isLoading = !pageData && ((!pageData && isPageLoading) || (!!isValidId && isPostRoute && isPostLoading) || (!!isValidId && isLiveRoomRoute && isSessionLoading));
 
@@ -93,7 +93,7 @@ const CreatorHeader = ({ pageSlug, initialPageData }: CreatorHeaderProps) => {
             className={`top-0 left-0 right-0 z-20 border-b border-n-4 dark:border-n-6 transition-colors ${headerStyle ? "bg-white dark:bg-n-1" : "bg-n-1"
                 }`}
         >
-            <div className="flex justify-between items-center mx-auto w-full h-14 px-8 2xl:px-8 lg:px-6 mobile:px-6">
+            <div className="flex justify-between items-center mx-auto w-full h-14 px-8 2xl:px-8 lg:px-6 mobile:px-3">
                 <div className="flex items-center ">
 
                     {isLoading ? (

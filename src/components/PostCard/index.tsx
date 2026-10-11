@@ -6,6 +6,7 @@ import Actions from "./Actions";
 import ReadMore from "@/components/ReadMore";
 import { Icon } from "@/components/ui/icon";
 import { Pencil, Copy, Play } from "@/lib/icons";
+import { toast } from "react-hot-toast";
 import ActionMenu from "@/components/ActionMenu";
 import { formatDuration, formatAppDate } from "@/lib/date";
 import { getCreatorInfo } from "@/lib/post-mapper";
@@ -111,9 +112,9 @@ const PostCard = ({ post, page, isOwner = false, imageBig, onCommentClick }: Pos
     };
 
     return (
-        <div className="flex flex-col py-5 card bg-white border border-n-4 rounded-sm last:mb-0 mobile:px-4">
+        <div className="flex flex-col py-5 mobile:py-3.5 card bg-white border border-n-4 rounded-sm last:mb-0 mobile:px-3.5">
             {/* Header Row */}
-            <div className="flex items-center px-5 mobile:px-0 mb-3">
+            <div className="flex items-center px-5 mobile:px-0 mb-3 mobile:mb-2">
                 <div className="relative shrink-0 w-8.5 h-8.5 mr-3.5">
                     <Image
                         className="object-cover rounded-full"
@@ -139,7 +140,7 @@ const PostCard = ({ post, page, isOwner = false, imageBig, onCommentClick }: Pos
                         <Link
                             href={`/posts/${item.id}/edit`}
                             onClick={(e) => e.stopPropagation()}
-                            className="btn-stroke btn-small rounded-full"
+                            className="btn-stroke btn-small rounded-xs"
                         >
                             <Icon icon={Pencil} className="icon-16" /> Edit
                         </Link>
@@ -154,6 +155,7 @@ const PostCard = ({ post, page, isOwner = false, imageBig, onCommentClick }: Pos
                                     const shareUrl = item.shareUrl;
                                     const fullUrl = shareUrl ? (shareUrl.startsWith('http') ? shareUrl : `${window.location.origin}${shareUrl}`) : window.location.href;
                                     navigator.clipboard.writeText(fullUrl);
+                                    toast.success("Post link copied to clipboard");
                                 },
                             }
                         ]}
@@ -164,7 +166,7 @@ const PostCard = ({ post, page, isOwner = false, imageBig, onCommentClick }: Pos
             {/* Content Area */}
             <div className="pl-17 lg:pl-0 pr-5 lg:pr-0">
                 <div className="relative">
-                    <div className={`text-base py-2.5 ${item.isLocked ? "max-h-40 overflow-hidden select-none" : ""}`}>
+                    <div className={`text-base py-2.5 mobile:py-1 ${item.isLocked ? "max-h-40 overflow-hidden select-none" : ""}`}>
                         {item.content && (
                             <ReadMore words={100} buttonClass="text-n-1 dark:text-purple-1">
                                 {`${item.content}${item.isLocked && !item.poll ? '...' : ''}`}
@@ -182,7 +184,7 @@ const PostCard = ({ post, page, isOwner = false, imageBig, onCommentClick }: Pos
                 </div>
 
                 {hasImages && (
-                    <div className={`relative mb-2.5 ${item.images.length === 1 ? 'w-fit max-w-full' : 'w-full'}`}>
+                    <div className={`relative mb-2.5 mobile:mb-2 ${item.images.length === 1 ? 'w-fit max-w-full' : 'w-full'}`}>
                         <Images
                             items={item.images}
                             imageBig={imageBig}
@@ -195,7 +197,7 @@ const PostCard = ({ post, page, isOwner = false, imageBig, onCommentClick }: Pos
                 )}
 
                 {hasVideo && (
-                    <div className="mb-2.5 relative">
+                    <div className="mb-2.5 mobile:mb-2 relative">
                         <div className="relative w-full overflow-hidden rounded-sm flex items-center justify-center">
                             {item.video?.thumbnailUrl ? (
                                 <img

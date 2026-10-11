@@ -5,8 +5,9 @@
 
 import Link from "next/link";
 import ActionMenu from "@/components/ActionMenu";
-import { Share2 } from "@/lib/icons";
 import LegacyIcon from "@/components/Icon";
+import { Share2, Copy } from "@/lib/icons";
+import { toast } from "react-hot-toast";
 
 type ProfileHeaderActionsProps = {
     isOwner: boolean;
@@ -29,7 +30,7 @@ const ProfileHeaderActions = ({ isOwner, isMember, isPendingAuthCheck, onJoinCli
     if (isOwner) {
         return (
             <div className="flex shrink-0 max-w-60 w-full mobile:max-w-none">
-                <Link href="/settings" className="btn-purple h-10 grow">
+                <Link href="/settings" className="btn-purple h-10 mobile:h-9 grow">
                     <LegacyIcon name="setup" />
                     <span className="">Edit Profile</span>
                 </Link>
@@ -40,7 +41,7 @@ const ProfileHeaderActions = ({ isOwner, isMember, isPendingAuthCheck, onJoinCli
     return (
         <div className="flex shrink-0 max-w-80 w-full mobile:max-w-none">
             <button
-                className={`btn-purple h-10 grow ${isMember ? "opacity-75" : ""}`}
+                className={`btn-purple h-10 mobile:h-9 grow ${isMember ? "opacity-75" : ""}`}
                 onClick={isMember ? undefined : onJoinClick}
                 disabled={isMember}
             >
@@ -50,13 +51,22 @@ const ProfileHeaderActions = ({ isOwner, isMember, isPendingAuthCheck, onJoinCli
 
             <ActionMenu
                 className="ml-2 shrink-0"
-                buttonClass="btn-purple h-10 px-1 focus:outline-none"
+                buttonClass="btn-purple h-10 mobile:h-9 px-2 focus:outline-none"
                 items={[
                     {
                         icon: Share2,
                         label: "Share",
                         onClick: onShareClick,
-                        className: "flex items-center cursor-pointer w-full h-8 mb-1.5 px-6.5 text-sm font-bold text-n-1 transition-colors hover:bg-n-3/10 dark:text-n-9 dark:hover:bg-n-9/20"
+                    },
+                    {
+                        icon: Copy,
+                        label: "Copy Link",
+                        onClick: () => {
+                            if (typeof window !== "undefined") {
+                                navigator.clipboard.writeText(window.location.href);
+                                toast.success("Profile link copied to clipboard");
+                            }
+                        },
                     }
                 ]}
             />

@@ -65,9 +65,10 @@ const PostDetailPage = () => {
                         mediaItems={mediaItems}
                         unlockedMediaItems={unlockedMediaItems}
                         displayCaption={displayCaption}
+                        onLockedClick={handleJoin}
                     />
                     {/* ── Comments / Locked Section ─────────────────── */}
-                    <div className="max-w-4xl mx-auto w-full p-5">
+                    <div className="max-w-4xl mx-auto w-full p-5 mobile:px-3 mobile:py-3">
                         {locked ? (
                             <LockedContent
                                 handleJoin={handleJoin}
@@ -93,7 +94,7 @@ const PostDetailPage = () => {
                     </div>
                 </>
             )}
-            
+
             {creatorPageForModal && (
                 <JoinTierModal
                     visible={isJoinTierModalOpen}

@@ -39,13 +39,16 @@ const Banner = ({ page, isOwner, onUpdate }: CreatorBannerProps) => {
     };
 
 
+    if (!isOwner && !page.bannerUrl) {
+        return null;
+    }
+
     return (
-        <div className="relative w-full aspect-6/1 bg-n-2 border-b border-n-4 tablet:aspect-5/2 mobile:aspect-3/2">
+        <div className="relative w-full aspect-6/1 bg-n-2 border-b border-n-4 tablet:aspect-5/2 mobile:aspect-[3/1]">
             {isOwner ? (
                 <PageImageUploader
                     containerClassName="w-full h-full"
                     imageSrc={optimisticBanner || page.bannerUrl}
-
                     alt="Banner"
                     onFileChange={handleBannerUpload}
                     isLoading={uploadingType === 'banner'}

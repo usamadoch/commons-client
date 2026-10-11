@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useHomeFeed } from "@/hooks/queries";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { Post } from "@/types";
@@ -9,6 +10,7 @@ import CaughtUpMessage from "./CaughtUpMessage";
 import PostCard from "@/components/PostCard";
 
 export default function HomeFeedList() {
+    const router = useRouter();
     const {
         data: feedData,
         fetchNextPage,
@@ -30,6 +32,10 @@ export default function HomeFeedList() {
 
     const handlePostClick = (post: Post) => {
         if (!post.isLocked) {
+            if (typeof window !== "undefined" && window.innerWidth <= 767) {
+                router.push(`/posts/${post._id}`);
+                return;
+            }
             setSelectedPostId(post._id);
         }
     };
