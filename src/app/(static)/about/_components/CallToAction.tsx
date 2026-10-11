@@ -1,25 +1,42 @@
-import Link from "next/link";
+"use client";
 
-
-
-
-
-
+import CtaButton from "./CtaButton";
+import { Reveal } from "./Reveal";
+import styles from "./about.module.css";
 
 const CallToAction = () => {
     return (
-        <section className="py-32 px-6 text-center max-w-3xl mx-auto border-t dark:border-n-6">
-            <h2 className="text-[80px] lg:text-[56px] md:text-[42px] sm:text-[32px] font-normal leading-[0.85] tracking-tighter dark:text-n-9 mb-8">
-                Give them a way<br />to <span className="text-amber">show up.</span>
-            </h2>
-            <p className="text-2xl md:text-lg font-normal dark:text-n-8 leading-relaxed mb-12">
-                Stop making your audience work around the platform to support you.
-            </p>
-            <Link href="/register" className="btn btn-stroke shadow-primary-4 rounded-sm px-12 h-14">Start your page now</Link>
+        <section className="relative w-full py-40 md:py-28 text-center overflow-hidden border-t border-n-6 bg-n-1">
+            {/* Subtle dot grid pattern (5% opacity) */}
+            <div
+                aria-hidden="true"
+                className={`pointer-events-none absolute inset-0 text-white opacity-[0.05] ${styles.dotGrid}`}
+            />
+
+            <div className="relative z-10 mx-auto w-full max-w-4xl px-6 flex flex-col items-center">
+                <Reveal as="div">
+                    <h2 className="font-extrabold text-[clamp(2.5rem,6vw,5rem)] leading-[1.02] tracking-[-0.03em] text-balance text-n-9 mb-6">
+                        Give them a way
+                        <br className="md:hidden" /> to{" "}
+                        <span className="text-purple-1">show up.</span>
+                    </h2>
+                </Reveal>
+
+                <Reveal as="p" delay={0.15} className="text-2xl md:text-lg text-n-8 leading-relaxed max-w-xl mx-auto mb-12">
+                    Stop making your audience work around the platform to support you. A simple way to earn with a flat 9% cut and direct rupee payouts.
+                </Reveal>
+
+                <Reveal delay={0.25}>
+                    <CtaButton
+                        href="/register"
+                        variant="primary"
+                    >
+                        Start your page now
+                    </CtaButton>
+                </Reveal>
+            </div>
         </section>
-    )
-
-}
-
+    );
+};
 
 export default CallToAction;

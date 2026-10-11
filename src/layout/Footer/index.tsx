@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Icon from "@/components/Icon";
 // import ToggleTheme from "./ToggleTheme";
 
@@ -17,9 +20,11 @@ const navigations = [
     },
 ];
 
-type FooterProps = {};
+const Footer = () => {
+    const pathname = usePathname();
+    if (pathname === "/about") return null;
 
-const Footer = ({ }: FooterProps) => (
+    return (
     <footer className="border-t border-n-4 dark:border-n-6 bg-white dark:bg-n-1">
         <div className="flex items-center h-16 px-16 max-w-360 mx-auto 2xl:px-8 lg:px-6 md:px-5 md:h-auto md:py-6 md:flex-col md:gap-4">
             <button className="inline-flex items-center mr-8 text-xs font-bold text-n-1 dark:text-n-9 dark:fill-white transition-colors md:mr-0">
@@ -43,6 +48,7 @@ const Footer = ({ }: FooterProps) => (
             {/* <ToggleTheme /> */}
         </div>
     </footer>
-);
+    );
+};
 
 export default Footer;

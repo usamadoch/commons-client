@@ -1,0 +1,62 @@
+/* Scoped keyframes + decorative patterns for /about. Nothing here is global. */
+
+/* Marquee: track holds two identical halves; shift by exactly one half. */
+.marqueeTrack {
+    animation: marquee 40s linear infinite;
+}
+
+.marqueeTrack[data-paused="true"],
+.marquee:hover .marqueeTrack {
+    animation-play-state: paused;
+}
+
+@keyframes marquee {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(-50%, 0, 0);
+    }
+}
+
+/* Floating decorative chips (y +/- 8px), offset phases. */
+.float {
+    animation: float 5.5s ease-in-out infinite;
+}
+
+.floatAlt {
+    animation: float 6s ease-in-out -2.6s infinite;
+}
+
+.float[data-paused="true"],
+.floatAlt[data-paused="true"] {
+    animation-play-state: paused;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translate3d(0, -8px, 0);
+    }
+
+    50% {
+        transform: translate3d(0, 8px, 0);
+    }
+}
+
+/* Hard-stop dot grid (solid dots, no soft gradient), ~5% opacity via the wrapper. */
+.dotGrid {
+    background-image: radial-gradient(currentColor 1.5px, transparent 1.6px);
+    background-size: 24px 24px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .marqueeTrack,
+    .float,
+    .floatAlt {
+        animation: none;
+    }
+}

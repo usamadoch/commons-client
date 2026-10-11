@@ -1,24 +1,183 @@
-import Link from "next/link";
+"use client";
 
+import { useRef } from "react";
+import Image from "next/image";
+import { motion, useReducedMotion, useSpring } from "framer-motion";
+import Marquee from "./Marquee";
+import CtaButton, { CtaRow } from "./CtaButton";
+import { MaskLines, Reveal } from "./Reveal";
+import { Icon } from "@/components/ui/icon";
+import { Check } from "@/lib/icons";
+import { useActiveWhenVisible, useFinePointer } from "./hooks";
+import styles from "./about.module.css";
+import checkoutImage from "../_assets/checkout-yearly.webp";
 
-
+const SPRING = { stiffness: 180, damping: 20, mass: 0.5 };
+const MAX_TILT = 8;
 
 const Hero = () => {
-    return (
-        <section className="min-h-[80vh] md:min-h-fit md:py-16 flex flex-col items-center justify-center px-16 2xl:px-8 lg:px-6 mobile:px-6 max-w-300 mx-auto text-center">
-            {/* <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-n-9 dark:bg-n-3 border dark:border-n-6 text-[11px] font-bold tracking-widest uppercase mb-10">
-                Built for Pakistan
-            </div> */}
-            <h1 className="text-[108px] lg:text-[72px] md:text-[54px] sm:text-[40px] font-normal dark:text-n-9 leading-[0.85] tracking-tighter mb-8">
-                Turn your audience<br />into <span className="text-purple-2">income.</span>
-            </h1>
-            <p className="text-2xl md:text-lg font-medium dark:text-n-8 leading-relaxed max-w-2xl mx-auto mb-12">
-                One page. PKR in, PKR out.
-                For the creators whose audience already wants to support them — but never had a frictionless way to do it.
-            </p>
+    const reduced = useReducedMotion();
+    const finePointer = useFinePointer();
+    const frameRef = useRef<HTMLDivElement>(null);
+    const chipsRef = useRef<HTMLDivElement>(null);
+    const chipsActive = useActiveWhenVisible(chipsRef);
 
-            <Link href="/register" className="btn-purple btn-shadow rounded-sm px-12 h-14">Start your page — it's free</Link>
+    const tiltX = useSpring(0, SPRING);
+    const tiltY = useSpring(0, SPRING);
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!finePointer || reduced || !frameRef.current) return;
+        const rect = frameRef.current.getBoundingClientRect();
+        const px = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+        const py = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
+        tiltX.set(Math.max(-1, Math.min(1, px)) * MAX_TILT);
+        tiltY.set(Math.max(-1, Math.min(1, py)) * MAX_TILT);
+    };
+
+    const handleMouseLeave = () => {
+        tiltX.set(0);
+        tiltY.set(0);
+    };
+
+    return (
+        <section id="hero-section" className="relative w-full overflow-hidden pt-12 md:pt-8">
+            <div className="mx-auto w-full max-w-[90rem] px-16 2xl:px-10 lg:px-8 md:px-5 pb-24 md:pb-16">
+                <div className="grid grid-cols-[1.1fr_1fr] lg:grid-cols-1 gap-12 lg:gap-14 items-center">
+                    {/* Left Column: Text */}
+                    <div className="flex flex-col items-start text-left">
+
+                        {/* H1 line-by-line reveal */}
+                        <h1 className="font-extrabold text-[clamp(2.75rem,6.5vw,5.5rem)] leading-[1.02] tracking-[-0.03em] text-balance text-n-9 mb-8">
+                            <MaskLines
+                                lines={[
+                                    "Turn your audience",
+                                    <>
+                                        into <span className="text-purple-1">income.</span>
+                                    </>,
+                                ]}
+                                onMount
+                                delay={0.05}
+                            />
+                        </h1>
+
+                        {/* Subhead fade-up */}
+                        <Reveal onMount delay={0.35} as="p" className="text-xl md:text-lg leading-[1.6] text-n-8 max-w-[56ch] text-pretty mb-10">
+                            One page. PKR in, PKR out. For the creators whose audience already wants to support them — but never had a frictionless way to do it.
+                        </Reveal>
+
+                        {/* Button row fade-up */}
+                        <Reveal onMount delay={0.5} className="w-full">
+                            <CtaRow>
+                                <CtaButton href="/register" variant="primary">
+                                    Start your page — it's free
+                                </CtaButton>
+                                <CtaButton href="#toolkit" variant="secondary">
+                                    See how it works
+                                </CtaButton>
+                            </CtaRow>
+                        </Reveal>
+
+                        {/* Payment method logos row */}
+                        <Reveal onMount delay={0.65} className="mt-8 flex flex-wrap items-center gap-3">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-n-8">
+                                Accepted locally:
+                            </span>
+                            <div className="flex items-center gap-2">
+                                <Image
+                                    src="/merchant_logos/jazzcash.svg"
+                                    alt="JazzCash"
+                                    width={36}
+                                    height={25}
+                                    className="h-6 w-auto rounded-xs shadow-[1.5px_1.5px_0_#000]"
+                                />
+                                <Image
+                                    src="/merchant_logos/easypaisa.svg"
+                                    alt="Easypaisa"
+                                    width={36}
+                                    height={25}
+                                    className="h-6 w-auto rounded-xs shadow-[1.5px_1.5px_0_#000]"
+                                />
+                                <Image
+                                    src="/merchant_logos/visa.svg"
+                                    alt="Visa"
+                                    width={36}
+                                    height={25}
+                                    className="h-6 w-auto rounded-xs shadow-[1.5px_1.5px_0_#000]"
+                                />
+                                <Image
+                                    src="/merchant_logos/mastercard.svg"
+                                    alt="Mastercard"
+                                    width={36}
+                                    height={25}
+                                    className="h-6 w-auto rounded-xs shadow-[1.5px_1.5px_0_#000]"
+                                />
+                            </div>
+                        </Reveal>
+                    </div>
+
+                    {/* Right Column: Visual Frame */}
+                    <div
+                        ref={frameRef}
+                        onMouseMove={handleMouseMove}
+                        onMouseLeave={handleMouseLeave}
+                        className="relative w-full flex items-center justify-center lg:mt-4"
+                    >
+                        {/* Product device mockup: clean uncropped frame with Commons border and hard shadow */}
+                        <motion.div
+                            style={finePointer && !reduced ? { x: tiltX, y: tiltY } : undefined}
+                            className="relative w-full max-w-[620px] rounded-xl border-2 border-n-6 bg-n-2 shadow-primary-8 transform -rotate-2 md:rotate-0 transition-transform duration-300 overflow-hidden"
+                        >
+                            <Image
+                                src={checkoutImage}
+                                alt="Commons checkout showing yearly and monthly plan options and card payment form"
+                                width={checkoutImage.width}
+                                height={checkoutImage.height}
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 620px"
+                                preload
+                                placeholder="blur"
+                                className="w-full h-auto block object-contain"
+                            />
+                        </motion.div>
+
+                        {/* Decorative floating chips in project dark theme */}
+                        <div ref={chipsRef} aria-hidden="true" className="pointer-events-none">
+                            {/* JazzCash chip */}
+                            <div
+                                className={`absolute -bottom-4 -left-4 md:bottom-2 md:left-2 z-10 flex items-center gap-2.5 px-3.5 py-2.5 rounded-sm bg-n-2/95 border-2 border-n-6 shadow-primary-4 backdrop-blur-sm ${styles.float}`}
+                                data-paused={!chipsActive}
+                            >
+                                <Image
+                                    src="/merchant_logos/jazzcash.svg"
+                                    alt="JazzCash"
+                                    width={28}
+                                    height={19}
+                                    className="h-5 w-auto rounded-xs shadow-[1px_1px_0_#000]"
+                                />
+                                {/* <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-1 text-n-1 font-bold">
+                                    <Icon icon={Check} size={12} strokeWidth={3} />
+                                </span> */}
+                                <span className="text-sm font-bold text-n-9 tracking-tight">JazzCash · Paid</span>
+                            </div>
+
+                            {/* Super Chat highlight style pill (dark theme with purple accent) */}
+                            <div
+                                className={`absolute -top-4 -right-4 md:top-2 md:right-2 z-10 flex items-center gap-2.5 px-4 py-2.5 rounded-sm bg-n-2/95 border-2 border-n-6 shadow-primary-4 backdrop-blur-sm ${styles.floatAlt}`}
+                                data-paused={!chipsActive}
+                            >
+                                <span className="text-xs font-bold uppercase tracking-wider bg-purple-1 text-n-1 px-2 py-0.5 rounded-xs">
+                                    Rs 1,500
+                                </span>
+                                <span className="text-sm font-bold text-n-9 tracking-tight">Super Message in live</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Marquee ticker strip below hero */}
+            <Marquee />
         </section>
     );
 };
+
 export default Hero;
