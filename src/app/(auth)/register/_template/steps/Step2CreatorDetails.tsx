@@ -29,18 +29,19 @@ const Step2CreatorDetails = ({ onNext, onBack }: Step2Props) => {
     const queryClient = useQueryClient();
 
     const creatorName = watch("creatorName");
+    const [isSlugTouched, setIsSlugTouched] = useState(false);
 
-    // Auto-generate slug when creator name changes
+    // Auto-generate slug when creator name changes unless manually customized
     useEffect(() => {
         const timer = setTimeout(() => {
-            if (creatorName) {
+            if (creatorName && !isSlugTouched) {
                 const slug = slugify(creatorName);
                 setValue("pageSlug", slug, { shouldValidate: true });
             }
         }, 500); // 500ms debounce delay
 
         return () => clearTimeout(timer);
-    }, [creatorName, setValue]);
+    }, [creatorName, isSlugTouched, setValue]);
 
     const handleNext = async () => {
         setError(null);
@@ -103,7 +104,14 @@ const Step2CreatorDetails = ({ onNext, onBack }: Step2Props) => {
                 classInput="h-12"
                 icon="link"
                 error={errors.pageSlug}
-                {...register("pageSlug")}
+                {...register("pageSlug", {
+                    onChange: () => setIsSlugTouched(true),
+                })}
+                onFocus={(e: React.FocusEvent<HTMLInputElement>) => {
+                    if (!isSlugTouched && e.target.value) {
+                        e.target.select();
+                    }
+                }}
             />
             <StepActions
                 onNext={handleNext}

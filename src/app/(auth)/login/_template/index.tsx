@@ -27,7 +27,7 @@ const LoginPage = () => {
         onSignupSuccess: () => router.push('/dashboard'),
     });
 
-    const { register, handleSubmit, watch, clearErrors, formState: { errors } } = form;
+    const { register, handleSubmit, watch, clearErrors, formState: { errors, isSubmitted } } = form;
     const remember = watch("remember");
 
     // Clear stale root errors when the page mounts (e.g., user navigated away and came back)
@@ -106,6 +106,7 @@ const LoginPage = () => {
                     nameAutoFocus={true}
                     passwordAutoFocus={flow === 'login'}
                     onExitComplete={handleFieldsExitComplete}
+                    isSubmitted={isSubmitted}
                 />
 
                 {/* {step === 2 && flow === 'login' && (

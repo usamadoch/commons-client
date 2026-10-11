@@ -50,11 +50,13 @@ type Step3Props = {
 };
 
 const Step3Category = ({ onNext, onBack }: Step3Props) => {
-    const { watch, setValue, trigger, getValues, formState: { errors } } = useFormContext<SignUpFormValues>();
+    const { watch, setValue, trigger, getValues, clearErrors, formState: { errors } } = useFormContext<SignUpFormValues>();
     const selectedCategory = watch("category");
     const [isLoading, setIsLoading] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
 
     const handleNext = async () => {
+        setHasSubmitted(true);
         setIsLoading(true);
         const valid = await trigger("category");
 
@@ -75,15 +77,17 @@ const Step3Category = ({ onNext, onBack }: Step3Props) => {
 
     return (
         <div className="animate-in fade-in slide-in-from-right-8 duration-300">
-            {errors.category && (
+            {hasSubmitted && errors.category && (
                 <Alert
                     type="error"
                     message={errors.category.message}
+                    className="mb-4"
+                    onClose={() => clearErrors("category")}
                 />
             )}
 
             <h4 className="mb-5 text-h4 text-n-1 dark:text-n-9">Choose a category</h4>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-2.5 max-h-[320px] overflow-y-auto pr-2 custom-thin-scrollbar">
                 {CATEGORIES.map((cat) => {
                     const isSelected = selectedCategory?.includes(cat);
                     return (
@@ -94,12 +98,15 @@ const Step3Category = ({ onNext, onBack }: Step3Props) => {
                                 const newCategories = isSelected
                                     ? selectedCategory.filter((c: string) => c !== cat)
                                     : [...(selectedCategory || []), cat];
-                                setValue("category", newCategories, { shouldValidate: true });
+                                setValue("category", newCategories, { shouldValidate: false });
+                                if (hasSubmitted && newCategories.length > 0) {
+                                    clearErrors("category");
+                                }
                             }}
-                            className={`btn-stroke btn-small h-10 px-4 
+                            className={`btn-stroke btn-small h-10 px-4 rounded-md text-xs font-bold transition-colors whitespace-nowrap
                             ${isSelected
                                     ? "bg-black text-white dark:bg-n-9 dark:text-n-1"
-                                    : ""
+                                    : "hover:border-n-9"
                                 }`}
                         >
                             {cat}

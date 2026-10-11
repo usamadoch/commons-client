@@ -18,6 +18,7 @@ type AuthFieldsProps = {
     emailAutoFocus?: boolean;
     passwordAutoFocus?: boolean;
     onExitComplete?: () => void;
+    isSubmitted?: boolean;
 };
 
 const AuthFields = ({
@@ -34,14 +35,11 @@ const AuthFields = ({
     emailAutoFocus = false,
     passwordAutoFocus = false,
     onExitComplete,
+    isSubmitted = false,
 }: AuthFieldsProps) => {
-    // Only show error for a field if the user actually interacted with it
+    // Only show errors when user has attempted submission
     const getError = (fieldName: string) => {
-        if (touchedFields || dirtyFields) {
-            const isTouched = touchedFields?.[fieldName];
-            const isDirty = dirtyFields?.[fieldName];
-            if (!isTouched && !isDirty) return undefined;
-        }
+        if (!isSubmitted) return undefined;
         return errors[fieldName];
     };
 

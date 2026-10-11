@@ -28,14 +28,19 @@ export const useAuthForm = ({ redirect = true, onLoginSuccess, onSignupSuccess }
     const [isCheckingEmail, setIsCheckingEmail] = useState(false);
 
     const form = useForm<AuthFormData>({
-        resolver: zodResolver(step === 1 ? LoginSchema.pick({ email: true }) : (flow === 'login' ? LoginSchema : SignupSchema)) as any,
+        resolver: async (values, context, options) => {
+            const currentSchema = step === 1
+                ? LoginSchema.pick({ email: true })
+                : (flow === 'login' ? LoginSchema : SignupSchema);
+            return (zodResolver(currentSchema) as any)(values, context, options);
+        },
         defaultValues: {
             email: "",
             password: "",
             displayName: "",
             remember: false,
         },
-        mode: "onChange"
+        mode: "onSubmit"
     });
 
     const { trigger, getValues, setError, reset } = form;

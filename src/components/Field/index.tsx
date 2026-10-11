@@ -104,19 +104,23 @@ const Field = forwardRef<HTMLInputElement | HTMLTextAreaElement, FieldProps>(
                                 name={icon}
                             />
                         )}
-                        {type === "password" && !error && (
+                        {type === "password" && (
                             <button
-                                className="group absolute top-0 right-0 bottom-0 w-15 outline-none"
+                                className="group absolute top-0 right-0 bottom-0 w-15 flex items-center justify-center outline-none cursor-pointer"
                                 type="button"
                                 onClick={() => setVisiblePassword(!visiblePassword)}
                             >
                                 <Icon
-                                    className="icon-20 fill-n-2 transition-colors group-hover:fill-n-1 dark:fill-n-9/75 dark:group-hover:fill-n-9"
+                                    className={`icon-20 transition-colors ${
+                                        error
+                                            ? "fill-pink-1 group-hover:fill-pink-1/80"
+                                            : "fill-n-2 group-hover:fill-n-1 dark:fill-n-9/75 dark:group-hover:fill-n-9"
+                                    }`}
                                     name={visiblePassword ? "eye" : "eye-slash"}
                                 />
                             </button>
                         )}
-                        {error && (
+                        {type !== "password" && error && (
                             <Icon
                                 className="absolute top-1/2 right-5 -translate-y-1/2 icon-20 fill-pink-1 pointer-events-none"
                                 name="info-circle"
@@ -139,7 +143,13 @@ const Field = forwardRef<HTMLInputElement | HTMLTextAreaElement, FieldProps>(
                             </div>
                         )}
                     </div>
-                    {error && <div className="mt-2 text-xs text-pink-1">{error.message}</div>}
+                    {error && (
+                        <div className="mt-2 text-xs text-pink-1 text-left">
+                            {typeof error === "string"
+                                ? error
+                                : (error.message || (type === "password" ? "Password is required" : "This field is required"))}
+                        </div>
+                    )}
                 </div>
             </div>
         );

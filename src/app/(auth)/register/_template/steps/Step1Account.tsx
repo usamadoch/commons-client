@@ -30,9 +30,10 @@ const Step1Account = ({ onNext }: Step1Props) => {
     const router = useRouter(); // Initialize router here
     const [isLoading, setIsLoading] = useState(false);
     const [googleError, setGoogleError] = useState<string | null>(null);
-
+    const [hasSubmitted, setHasSubmitted] = useState(false);
 
     const handleNext = async () => {
+        setHasSubmitted(true);
         setIsLoading(true);
         const valid = await trigger(["email", "displayName", "password"]);
 
@@ -112,6 +113,7 @@ const Step1Account = ({ onNext }: Step1Props) => {
                     showPassword={true}
                     className="gap-4 mb-4"
                     emailAutoFocus={true}
+                    isSubmitted={hasSubmitted}
                 />
 
                 <p className="mb-4 text-xs dark:text-n-8 ">
@@ -133,7 +135,7 @@ const Step1Account = ({ onNext }: Step1Props) => {
 
             <div className="flex justify-center mt-20">
                 <Link href="/login" className="btn btn-stroke rounded-md btn-medium px-4">
-                    If not a Creator? Join as a Member
+                    Not a Creator? Join as a Member
                 </Link>
             </div>
         </>
