@@ -16,7 +16,7 @@ const Item = ({ item }: ItemProps) => {
                 <div className="relative w-20 h-20 mx-auto shrink-0 rounded-3xl">
                     {item.activeLiveSessionId && <LiveBadge />}
                     {item.activeLiveSessionId ? (
-                        <Link href={`/live-room/${item.activeLiveSessionId}`} className="block w-full h-full relative rounded-3xl overflow-hidden border-2 border-red-500">
+                        <Link href={`/live-room/${item.activeLiveSessionId}`} className="block w-full h-full relative rounded-3xl overflow-hidden border-2 border-yellow-1">
                             <Image
                                 className="object-cover"
                                 family="avatar"

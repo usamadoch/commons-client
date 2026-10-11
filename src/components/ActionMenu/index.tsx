@@ -37,15 +37,15 @@ const ActionMenu = ({
     anchor,
     portal = false,
     showFooterLinks = false,
-    itemClass = "flex items-center cursor-pointer w-full h-10 mb-1.5 last:mb-0 px-6.5 text-sm font-bold text-n-1 transition-colors dark:text-n-9",
+    itemClass = "flex items-center cursor-pointer w-full h-8 px-3 text-xs font-semibold text-n-1 dark:text-n-9 transition-colors hover:bg-n-2 dark:hover:bg-n-3 hover:text-purple-1 rounded-xs",
     menuItemsClass,
     children,
 }: ActionMenuProps) => {
     const containerClass = `relative inline-flex w-fit ${className || ""}`.trim();
 
     const defaultMenuItemsClass = anchor
-        ? "z-[9999] min-w-[14.69rem] py-2 bg-white dark:bg-n-1 border border-n-6 rounded-sm focus:outline-none [--anchor-gap:8px] transition duration-200 ease-out data-closed:scale-95 data-closed:opacity-0"
-        : "z-[9999] absolute border border-n-6 rounded-sm right-0 top-full mt-2 min-w-[14.69rem] py-2 bg-white dark:bg-n-1 transition duration-200 ease-out data-closed:scale-95 data-closed:opacity-0";
+        ? "z-[9999] min-w-[9.5rem] py-1 bg-white dark:bg-n-1 border-2 border-n-1 dark:border-n-6 shadow-primary-4 rounded-xs focus:outline-none [--anchor-gap:6px] transition duration-150 ease-out data-closed:scale-95 data-closed:opacity-0"
+        : "z-[9999] absolute border-2 border-n-1 dark:border-n-6 shadow-primary-4 rounded-xs right-0 top-full mt-1.5 min-w-[9.5rem] py-1 bg-white dark:bg-n-1 transition duration-150 ease-out data-closed:scale-95 data-closed:opacity-0";
 
     const finalMenuItemsClass = menuItemsClass !== undefined ? menuItemsClass : defaultMenuItemsClass;
 
@@ -74,9 +74,9 @@ const ActionMenu = ({
                         }}
                     >
                         {item.icon && (
-                            <div className="flex items-center -mt-0.25 mr-3 w-5 h-5">
+                            <div className="flex items-center mr-2 w-4 h-4 shrink-0">
                                 {typeof item.icon === 'function' || (typeof item.icon === 'object' && !('type' in (item.icon as any))) ? (
-                                    <Icon icon={item.icon as LucideIcon} />
+                                    <Icon icon={item.icon as LucideIcon} className="w-4 h-4" />
                                 ) : (
                                     item.icon as React.ReactNode
                                 )}

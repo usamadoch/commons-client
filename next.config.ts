@@ -39,6 +39,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/post/:id',
+        destination: '/posts/:id',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
