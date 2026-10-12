@@ -20,6 +20,8 @@ const StaticHeader = () => {
         if (pathname.includes("/about")) return "About";
         if (pathname.includes("/terms")) return "Terms of Service";
         if (pathname.includes("/privacy")) return "Privacy Policy";
+        if (pathname.includes("/cancellation-refund"))
+            return "Cancellation & Refund Policy";
         if (pathname.includes("/help")) return "Help Center";
         return "";
     };

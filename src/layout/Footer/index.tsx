@@ -11,12 +11,16 @@ const navigations = [
         url: "/about",
     },
     {
-        title: "Terms of Service",
+        title: "Terms & Conditions",
         url: "/terms",
     },
     {
         title: "Privacy Policy",
         url: "/privacy",
+    },
+    {
+        title: "Cancellation & Refund Policy",
+        url: "/cancellation-refund",
     },
 ];
 

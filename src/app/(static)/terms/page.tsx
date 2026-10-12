@@ -1,4 +1,6 @@
-import React from "react";
+
+
+import Link from "next/link";
 
 const TermsPage = () => {
     return (
@@ -49,6 +51,13 @@ const TermsPage = () => {
                     <p><strong className="font-bold text-n-1 dark:text-n-9">Cancellations:</strong> Subscribers can cancel their monthly recurring memberships at any time through their account dashboard. Upon cancellation, access to premium content will remain active until the end of the current billing cycle.</p>
                     <p><strong className="font-bold text-n-1 dark:text-n-9">Refunds:</strong> Because access to digital content is granted immediately, all sales—including monthly subscriptions and one-off live tips—are final and non-refundable. If you believe your card was charged fraudulently, please contact our support team immediately.</p>
                 </div>
+                <p className="text-base font-normal text-n-3 dark:text-n-8 leading-relaxed">
+                    For complete details on refund eligibility exceptions, one-time payment rules, dispute resolution, and processing timelines, please review our full{" "}
+                    <Link href="/cancellation-refund" className="text-purple-1 hover:underline">
+                        Cancellation &amp; Refund Policy
+                    </Link>
+                    .
+                </p>
             </section>
 
             <section className="flex flex-col gap-2">

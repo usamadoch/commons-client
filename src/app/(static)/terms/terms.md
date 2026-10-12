@@ -30,6 +30,8 @@ Cancellations: Subscribers can cancel their monthly recurring memberships at any
 
 Refunds: Because access to digital content is granted immediately, all sales—including monthly subscriptions and one-off live tips—are final and non-refundable. If you believe your card was charged fraudulently, please contact our support team immediately.
 
+For complete details on refund eligibility exceptions, one-time payment rules, dispute resolution, and processing timelines, please review our full [Cancellation & Refund Policy](/cancellation-refund).
+
 6. Platform Fees
 Commons charges a platform fee on transactions processed through the site to cover hosting, development, and operational costs. This fee is deducted automatically before funds are transferred to the creator's connected bank or wallet.
 
