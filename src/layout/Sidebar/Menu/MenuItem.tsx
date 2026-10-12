@@ -48,7 +48,7 @@ const MenuItem = ({
     return (
         <Link
             className={twMerge(
-                `flex items-center h-9.5 mb-2 px-4 dark:text-n-9 dark:fill-n-9 font-semibold last:mb-0 transition-colors ${isActive ? "bg-n-5 text-purple-1 fill-purple-1 rounded-md" : ""
+                `flex items-center h-9.5 mb-2 px-4 dark:text-n-9 font-semibold last:mb-0 transition-colors ${isActive ? "bg-n-5 text-purple-1 rounded-md" : ""
                 } ${visible ? "text-sm" : isMinimize ? "text-[0px] px-0 justify-center" : "text-sm xl:text-0 xl:px-0 xl:justify-center"}`
             )}
             href={link.url}
@@ -56,7 +56,7 @@ const MenuItem = ({
             onClick={(e) => onNavClick(e, link)}
         >
             <Icon
-                className={`shrink-0  ${visible ? "mr-3" : isMinimize ? "mr-0" : "mr-3 xl:mr-0"}`}
+                className={`shrink-0 ${visible ? "mr-3" : isMinimize ? "mr-0" : "mr-3 xl:mr-0"}`}
                 icon={link.icon as LucideIcon}
             />
             {link.title}

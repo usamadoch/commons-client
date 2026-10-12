@@ -97,33 +97,45 @@ export default function OrderSummaryPanel({ interval, onIntervalChange, plan, pa
                     </div>
 
                     <div className="flex flex-col gap-3 py-4">
-                        <div className="flex justify-between items-center">
-                            <span className="text-sm font-medium text-n-3 dark:text-n-9">Monthly Total</span>
-                            <div className="text-sm text-n-1 dark:text-white flex items-center">
-                                {isPending ? (
-                                    <div className="h-5 w-16 bg-n-3/20 dark:bg-n-6/50 animate-pulse rounded" />
-                                ) : (
-                                    `PKR ${plan.price.toLocaleString()}`
-                                )}
-                            </div>
-                        </div>
-
-                        {interval === 'YEARLY' && (
+                        {interval === 'YEARLY' ? (
+                            <>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-sm font-medium text-n-3 dark:text-n-9">Base Monthly Rate</span>
+                                    <div className="text-sm text-n-1 dark:text-white flex items-center font-medium">
+                                        {isPending ? (
+                                            <div className="h-5 w-16 bg-n-3/20 dark:bg-n-6/50 animate-pulse rounded" />
+                                        ) : (
+                                            `PKR ${plan.price.toLocaleString()}/mo`
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-sm font-medium text-n-3 dark:text-n-9">Annual Subtotal (12 months)</span>
+                                    <div className="text-sm text-n-1 dark:text-white flex items-center font-semibold">
+                                        {isPending ? (
+                                            <div className="h-5 w-16 bg-n-3/20 dark:bg-n-6/50 animate-pulse rounded" />
+                                        ) : (
+                                            `PKR ${(plan.price * 12).toLocaleString()}`
+                                        )}
+                                    </div>
+                                </div>
+                            </>
+                        ) : (
                             <div className="flex justify-between items-center">
-                                <span className="text-sm font-medium text-n-3 dark:text-n-9">Yearly billing (x12)</span>
-                                <div className="text-sm text-n-1 dark:text-white flex items-center">
+                                <span className="text-sm font-medium text-n-3 dark:text-n-9">Monthly Subtotal</span>
+                                <div className="text-sm text-n-1 dark:text-white flex items-center font-semibold">
                                     {isPending ? (
                                         <div className="h-5 w-16 bg-n-3/20 dark:bg-n-6/50 animate-pulse rounded" />
                                     ) : (
-                                        `PKR ${(plan.price * 12).toLocaleString()}`
+                                        `PKR ${plan.price.toLocaleString()}`
                                     )}
                                 </div>
                             </div>
                         )}
 
-                        <div className="flex justify-between items-center">
-                            <span className="text-sm font-medium text-n-1 dark:text-white">Due Total</span>
-                            <div className="text-base font-bold text-n-1 dark:text-white flex items-center">
+                        <div className="flex justify-between items-center pt-2 border-t border-n-4/20 dark:border-n-6">
+                            <span className="text-base font-bold text-n-1 dark:text-white">Due Today</span>
+                            <div className="text-base font-black text-purple-1 dark:text-purple-1 flex items-center">
                                 {isPending ? (
                                     <div className="h-6 w-24 bg-n-3/20 dark:bg-n-6/50 animate-pulse rounded" />
                                 ) : (

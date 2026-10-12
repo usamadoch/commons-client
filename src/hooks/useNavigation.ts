@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { navigation, NavigationItem } from '@/constants/navigation';
 import { useAuth } from '@/store/auth';
 import { hasPermission } from '@/constants/permissions';
-import { User, ExternalLink } from '@/lib/icons';
+import { SolidUser, ExternalLink } from '@/lib/icons';
 import { UserRole } from '@/types';
 
 import { useMyPage } from '@/hooks/queries';
@@ -35,7 +35,7 @@ const injectYourPageLink = (navItems: NavigationItem[], pageSlug: string): Navig
     const newNav = [...navItems];
     const yourPageLink: NavigationItem = {
         title: "Your Page",
-        icon: User,
+        icon: SolidUser,
         url: `/${pageSlug}`,
         category: "Creator",
         target: "_blank",

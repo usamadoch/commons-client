@@ -91,3 +91,5 @@ export const Twitter = React.forwardRef<SVGSVGElement, LucideProps>(({ color = "
 );
 Twitter.displayName = "Twitter";
 
+export * from "./solid-icons";
+

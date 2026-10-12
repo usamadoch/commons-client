@@ -1,21 +1,21 @@
 import { Permission } from "@/types";
 import { LucideIcon } from "lucide-react";
 import { 
-    LayoutDashboard, 
-    Home, 
-    FileText, 
-    Users, 
-    CreditCard, 
-    Search, 
-    Bell, 
-    MessageCircle, 
-    BarChart2, 
-    Settings 
+    SolidDashboard, 
+    SolidHome, 
+    SolidPosts, 
+    SolidMembers, 
+    SolidEarnings, 
+    SolidExplore, 
+    SolidBell, 
+    SolidMessages, 
+    SolidAnalytics, 
+    SolidSettings 
 } from "@/lib/icons";
 
 export type NavigationItem = {
     title: string;
-    icon: LucideIcon | string;
+    icon: LucideIcon;
     url: string;
     category?: string;
     roles?: string[]; // Keep for backward compatibility if needed, or deprecate
@@ -23,7 +23,7 @@ export type NavigationItem = {
     target?: string;
     counter?: number;
     counterColor?: string;
-    suffixIcon?: LucideIcon | string;
+    suffixIcon?: LucideIcon;
     suffixIconViewBox?: string;
     suffixIconBg?: boolean;
     suffixText?: string;
@@ -36,14 +36,14 @@ export const navigation: NavigationItem[] = [
     // Creator Pages
     {
         title: "Dashboard",
-        icon: LayoutDashboard,
+        icon: SolidDashboard,
         url: "/dashboard",
         category: "Creator",
         permissions: ["dashboard:view"],
     },
     {
         title: "Home",
-        icon: Home,
+        icon: SolidHome,
         url: "/",
         category: "Discover",
         isPublicRoute: true,
@@ -51,21 +51,21 @@ export const navigation: NavigationItem[] = [
     },
     {
         title: "Posts",
-        icon: FileText,
+        icon: SolidPosts,
         url: "/posts",
         category: "Creator",
         permissions: ["post:create"], // Only creators see "Posts" management
     },
     {
         title: "Members",
-        icon: Users,
+        icon: SolidMembers,
         url: "/members",
         category: "Creator",
         permissions: ["members:view"],
     },
     {
         title: "Earnings",
-        icon: CreditCard,
+        icon: SolidEarnings,
         url: "/earnings",
         category: "Creator",
         permissions: ["payouts:view"],
@@ -73,7 +73,7 @@ export const navigation: NavigationItem[] = [
     // Member Pages
     {
         title: "Explore",
-        icon: Search,
+        icon: SolidExplore,
         url: "/explore",
         category: "Discover",
         isPublicRoute: true,
@@ -83,28 +83,28 @@ export const navigation: NavigationItem[] = [
     // Shared Pages
     {
         title: "Notifications",
-        icon: Bell,
+        icon: SolidBell,
         url: "/notifications",
         category: "General",
         counterColor: "#AE7AFF",
     },
     {
         title: "Messages",
-        icon: MessageCircle,
+        icon: SolidMessages,
         category: "General",
         counterColor: "#98E9AB",
         url: "/messages",
     },
     {
         title: "Analytics",
-        icon: BarChart2,
+        icon: SolidAnalytics,
         url: "/analytics",
         category: "Creator",
         permissions: ["analytics:view"],
     },
     {
         title: "Settings",
-        icon: Settings,
+        icon: SolidSettings,
         category: "General",
         url: "/settings",
     },

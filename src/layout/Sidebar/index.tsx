@@ -8,7 +8,7 @@ import ActionMenu from "@/components/ActionMenu";
 import Logo from "@/components/Logo";
 import Image from "@/components/Image";
 import { Icon } from "@/components/ui/icon";
-import { Menu as MenuIcon, X, Plus, FileText, Radio, LogOut } from "@/lib/icons";
+import { Menu as MenuIcon, X, SolidPlus, SolidPosts, SolidRadio, SolidLogOut } from "@/lib/icons";
 import { useAuth } from "@/store/auth";
 
 import Menu from "./Menu";
@@ -28,12 +28,12 @@ const Sidebar = ({ isMinimize = false }: SidebarProps) => {
     const createMenuItems = [
         {
             label: "Post",
-            icon: FileText,
+            icon: SolidPosts,
             onClick: () => router.push("/posts/new"),
         },
         {
             label: "Live",
-            icon: Radio,
+            icon: SolidRadio,
             onClick: () => router.push("/live-room/new"),
         },
     ];
@@ -77,7 +77,7 @@ const Sidebar = ({ isMinimize = false }: SidebarProps) => {
                             menuItemsClass="z-[9999] w-[14.69rem] py-2 bg-white dark:bg-n-1 border border-n-6 focus:outline-none [--anchor-gap:10px] transition duration-200 ease-out data-closed:scale-95 data-closed:opacity-0"
                             items={createMenuItems}
                         >
-                            <Icon className={`text-n-1 icon-18 shrink-0 ${isMinimize && !visible ? "mr-0!" : ""}`} icon={Plus} strokeWidth={2} />
+                            <Icon className={`text-n-1 icon-18 shrink-0 ${isMinimize && !visible ? "mr-0!" : ""}`} icon={SolidPlus} />
                             <span className={`transition-all ${visible ? "inline" : isMinimize ? "hidden" : "xl:hidden"}`}>Create</span>
                         </ActionMenu>
                     )}
@@ -97,7 +97,7 @@ const Sidebar = ({ isMinimize = false }: SidebarProps) => {
                                 items={[
                                     {
                                         label: "Logout",
-                                        icon: LogOut,
+                                        icon: SolidLogOut,
                                         onClick: logout,
                                     }
                                 ]}
@@ -126,7 +126,7 @@ const Sidebar = ({ isMinimize = false }: SidebarProps) => {
                             items={[
                                 {
                                     label: "Logout",
-                                    icon: LogOut,
+                                    icon: SolidLogOut,
                                     onClick: logout,
                                 }
                             ]}

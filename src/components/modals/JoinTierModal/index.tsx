@@ -16,7 +16,7 @@ import SafepayCardForm from "../SafepayCardForm";
 import PlansSelection from "./PlansSelection";
 import SubscriptionSuccess from "./SubscriptionSuccess";
 import { Icon } from "@/components/ui/icon";
-import { X } from "@/lib/icons";
+import { X, ChevronLeft } from "@/lib/icons";
 
 type JoinTierModalProps = {
     visible: boolean;
@@ -167,25 +167,33 @@ const JoinTierModal = ({
                         leaveFrom="translate-y-0"
                         leaveTo="translate-y-full"
                     >
-                        <DialogPanel className="relative z-10 w-full max-w-full mx-8 mt-8 h-screen overflow-y-auto bg-background border border-n-1 dark:bg-n-4 tablet:mt-4 tablet:mx-2">
+                        <DialogPanel className="relative z-10 w-full max-w-full mx-8 mt-8 h-screen overflow-y-auto bg-background border border-n-1 dark:bg-n-4 tablet:mt-4 tablet:mx-2 mobile:mx-0 mobile:mt-0 mobile:border-0">
+                            {currentStep === 'checkout' && (
+                                <button
+                                    className="absolute z-2 btn-medium btn-stroke btn-square flex items-center justify-center rounded-full top-4 left-4 outline-none bg-white dark:bg-n-1 hover:bg-n-2 dark:hover:bg-n-3"
+                                    onClick={() => {
+                                        setSafepayData(null);
+                                        setPageTierId(null);
+                                        subscribeMutation.reset();
+                                        sessionStorage.removeItem(storageKey);
+                                    }}
+                                    title="Back"
+                                >
+                                    <Icon icon={ChevronLeft} strokeWidth={2.5} className="text-n-1 dark:text-n-9" />
+                                </button>
+                            )}
+
                             <button
-                                className="absolute z-2 btn btn-medium btn-stroke btn-square flex items-center justify-center rounded-full top-4 right-4 outline-none"
+                                className="absolute z-2 btn-medium btn-stroke btn-square flex items-center justify-center rounded-full top-4 right-4 outline-none bg-white dark:bg-n-1 hover:bg-n-2 dark:hover:bg-n-3"
                                 onClick={handleManualClose}
+                                title="Close"
                             >
-                                <Icon icon={X} strokeWidth={2.5} />
+                                <Icon icon={X} strokeWidth={2.5} className="text-n-1 dark:text-n-9" />
                             </button>
 
-                            {/* <Link
-                                                href={backHref}
-                                                className="btn-medium btn-stroke btn-square rounded-full bg-white dark:bg-n-1"
-                                                title={backTitle}
-                                            >
-                                                <Icon icon={X} strokeWidth={2.5} className="text-n-1 dark:text-n-9" />
-                                            </Link> */}
-
-                            <div className="pt-18 overflow-hidden relative">
-                                {!showSuccess && <h4 className="text-h4 text-center dark:text-n-9 py-10">
-                                    Choose your membership
+                            <div className="pt-18 overflow-hidden relative mobile:pt-14">
+                                {!showSuccess && <h4 className="text-h4 text-center dark:text-n-9 py-10 mobile:py-6 mobile:text-h5 font-extrabold">
+                                    {currentStep === 'checkout' ? 'Complete your subscription' : 'Choose your membership'}
                                 </h4>}
 
                                 <AnimatePresence mode="popLayout" initial={false}>

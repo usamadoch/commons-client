@@ -18,7 +18,7 @@ export function Icon({
       size={size}
       strokeWidth={strokeWidth}
       color={color}
-      className={twMerge("fill-none", className)}
+      className={className}
       {...props}
     />
   );

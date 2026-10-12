@@ -121,7 +121,7 @@ const SafepayCardForm = ({
         // 2. Ask the iframe if all fields are actually valid
         const isValid = await cardRef.current?.fetchValidity();
         if (!isValid) {
-            setErrorMessage("Please check your card details and try again.");
+            setErrorMessage("Card details are required. Please enter your card information.");
             return; // stop here, don't submit
         }
 
@@ -142,19 +142,7 @@ const SafepayCardForm = ({
     return (
         <>
             <div>
-
-                {onBack && (
-                    <button
-                        className="btn-medium btn-stroke btn-square rounded-full bg-white dark:bg-n-1 ml-8 tablet:ml-4 mobile:ml-0"
-                        onClick={onBack}
-                        title="Back"
-                    >
-                        <Icon icon={ChevronLeft} strokeWidth={2.5} className="text-n-1 dark:text-n-9" />
-                    </button>
-                )}
-
-
-                <div className='flex gap-8 items-start w-full mt-8 mobile:flex-col'>
+                <div className='flex gap-8 items-start w-full mt-4 mobile:flex-col'>
 
                     {/* Left side: Selected tier details and interval switch */}
                     <OrderSummaryPanel
@@ -166,35 +154,31 @@ const SafepayCardForm = ({
                     />
 
                     {/* Right side: Payment form */}
-                    <div className='flex-1 w-full mx-8 tablet:mx-4 mobile:mx-0'>
+                    <div className='flex-1 w-full mx-8 tablet:mx-4 mobile:mx-0 mobile:pb-24'>
 
-                        <div className="text-n-1 dark:text-n-9 capitalize mb-1 font-semibold">
+                        <div className="text-n-1 dark:text-n-9 capitalize mb-1 font-semibold text-sm">
                             Add Card details
                         </div>
                         <div
-                            className="flex flex-col"
+                            className="safepay-card-wrapper flex flex-col"
                             style={{
                                 height: '48px',
                                 border: '1.5px solid #ffffff26',
                                 borderRadius: '10px',
                                 display: 'flex',
                                 alignItems: 'center',
-                                // padding: '0 14px',
                                 boxSizing: 'border-box',
                                 transition: 'border-color 0.2s',
-
-                                // marginBottom: '30px',
-
+                                overflow: 'hidden',
+                                backgroundColor: '#f5f6f9',
                             }}
                         >
-
-
                             {/* Step 1: Card input — user types their card details */}
-                            <div className="relative w-full h-full">
+                            <div className="relative w-full h-full flex items-center">
                                 {isPending ? (
-                                    <div className="absolute inset-0 z-10 w-full h-full bg-n-3/20 dark:bg-n-6/50 animate-pulse rounded-[10px]"></div>
+                                    <div className="absolute inset-0 z-10 w-full h-full bg-n-3/20 dark:bg-n-6/50 animate-pulse rounded-[10px]" />
                                 ) : (
-                                    <Suspense fallback={<div>Loading card form...</div>}>
+                                    <Suspense fallback={<div className="p-3 text-xs">Loading card form...</div>}>
                                         <CardCapture
                                             environment={Environment.Sandbox}
                                             authToken={currentAuthToken}
@@ -212,8 +196,6 @@ const SafepayCardForm = ({
                                                 setShowAuth(true); // now we have everything, mount PayerAuthentication
                                             }}
 
-
-
                                             // Styles rendered INSIDE the iframe
                                             inputStyle={{
                                                 width: '100%',
@@ -223,14 +205,14 @@ const SafepayCardForm = ({
                                                 backgroundColor: '#f5f6f9',
                                                 letterSpacing: '0.02em',
                                             }}
-
                                         />
                                     </Suspense>
                                 )}
                             </div>
                         </div>
 
-                        <div className="flex items-center justify-between mb-8 mt-2">
+                        {/* Merchant Logos & Secured Badge */}
+                        <div className="flex items-center justify-between mt-2 mb-3">
                             <div className="flex gap-2 items-center">
                                 <img src="/merchant_logos/visa.svg" alt="Visa" className="h-8 w-auto" />
                                 <img src="/merchant_logos/mastercard.svg" alt="Mastercard" className="h-8 w-auto" />
@@ -241,7 +223,12 @@ const SafepayCardForm = ({
                             </div>
                         </div>
 
-                        <div className=" mb-4 gap-3 text-n-3 flex flex-col dark:text-n-9">
+                        {/* Error message placed with proper block spacing below merchant badges, preventing visual overlap */}
+                        {errorMessage && (
+                            <p className="text-red-400 text-sm font-medium mb-3">{errorMessage}</p>
+                        )}
+
+                        <div className="mb-4 gap-3 text-n-3 flex flex-col dark:text-n-9">
                             <div className='text-sm font-medium'>
                                 {isPending ? (
                                     <div className="h-5 w-70 max-w-full bg-n-3/20 dark:bg-n-6/50 animate-pulse rounded" />
@@ -259,12 +246,11 @@ const SafepayCardForm = ({
                                     Privacy Policy
                                 </Link>.
                                 This subscription automatically renews, you can cancel anytime.
-
                             </p>
                         </div>
 
                         <button
-                            className='btn-purple rounded-sm w-full mt-4 font-bold cursor-pointer uppercase tracking-widest flex items-center justify-center'
+                            className='btn-purple rounded-xs w-full mt-4 font-bold cursor-pointer uppercase tracking-widest flex items-center justify-center shadow-primary-4'
                             onClick={handlePayNow}
                             disabled={isProcessing || isPending}
                         >
@@ -281,10 +267,22 @@ const SafepayCardForm = ({
                             Renews PKR {plan ? (interval === 'YEARLY' ? plan.price * 12 : plan.price).toLocaleString() : 0} on {getRenewalDate(interval)} · Cancel anytime
                         </p>
 
-                        {/* Show error below the button */}
-                        {errorMessage && (
-                            <p className="text-red-400 mt-2">{errorMessage}</p>
-                        )}
+                        {/* Mobile Sticky Bottom CTA Bar to ensure conversion button is always above fold */}
+                        <div className="hidden mobile:flex fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-n-2 border-t-2 border-n-1 dark:border-n-6 p-4 items-center justify-between shadow-[0_-4px_16px_rgba(0,0,0,0.15)]">
+                            <div className="flex flex-col">
+                                <span className="text-xs text-n-3 dark:text-n-8 font-medium">Due Today</span>
+                                <span className="text-base font-extrabold text-purple-1 dark:text-purple-1">
+                                    PKR {plan ? (interval === 'YEARLY' ? plan.price * 12 : plan.price).toLocaleString() : 0}
+                                </span>
+                            </div>
+                            <button
+                                className="btn-purple rounded-xs px-6 py-3 font-bold uppercase tracking-wider text-sm shadow-primary-4"
+                                onClick={handlePayNow}
+                                disabled={isProcessing || isPending}
+                            >
+                                {isProcessing ? <Loader /> : `Subscribe now`}
+                            </button>
+                        </div>
 
                         <div className='w-full'>
 

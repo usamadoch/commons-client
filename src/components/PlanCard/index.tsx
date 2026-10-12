@@ -17,6 +17,14 @@ const PlanCard = ({ plan, interval = 'MONTHLY', action, headerAction, className 
     const displayPrice = interval === 'YEARLY' ? plan.price * 12 : plan.price;
     const periodLabel = interval === 'YEARLY' ? 'year' : 'month';
 
+    const sanitizedDescription = plan.description
+        ? plan.description.replace(/\$([0-9]+(\.[0-9]+)?)/g, (match, val) => {
+            const num = parseFloat(val);
+            if (num === 3) return 'PKR 450';
+            return `PKR ${(num * 150).toLocaleString()}`;
+        })
+        : '';
+
     return (
         <div className={`relative w-full max-w-80 ${className}`}>
             <div className={`card relative z-10 px-4 py-6 w-full h-full transition-colors ${plan.isHighlighted ? ' rounded-md border-purple-1' : ''}`}>
@@ -38,7 +46,7 @@ const PlanCard = ({ plan, interval = 'MONTHLY', action, headerAction, className 
 
                 {action}
 
-                <p className="text-sm font-medium py-3 dark:text-n-9">{plan.description}</p>
+                <p className="text-sm font-medium py-3 dark:text-n-9">{sanitizedDescription}</p>
 
                 {plan.benefits?.length > 0 && (
                     <ul className="space-y-1 dark:text-n-9">
