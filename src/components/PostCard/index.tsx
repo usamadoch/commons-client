@@ -112,9 +112,9 @@ const PostCard = ({ post, page, isOwner = false, imageBig, onCommentClick }: Pos
     };
 
     return (
-        <div className="flex flex-col py-5 mobile:py-3.5 card bg-white border border-n-4 rounded-sm last:mb-0 mobile:px-3.5">
+        <div className="flex flex-col py-5 mobile:py-3.5 card bg-white border border-n-4 rounded-sm last:mb-0">
             {/* Header Row */}
-            <div className="flex items-center px-5 mobile:px-0 mb-3 mobile:mb-2">
+            <div className="flex items-center px-5 mobile:px-3.5 mb-3 mobile:mb-2">
                 <div className="relative shrink-0 w-8.5 h-8.5 mr-3.5">
                     <Image
                         className="object-cover rounded-full"

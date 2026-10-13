@@ -13,6 +13,7 @@ export {
   ChevronRight,
   ChevronLeft,
   ChevronDown,
+  ChevronUp,
   Plus,
   Pencil,
   Trash2,
