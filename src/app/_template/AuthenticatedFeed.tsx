@@ -1,25 +1,20 @@
-
-
-
-
-
-
-
+"use client";
 
 import Loader from "@/components/Loader";
 import { useMyMemberships } from "@/hooks/queries";
 import { useAuth } from "@/store/auth";
-// import WelcomeSection from "./_components/WelcomeSection";
 import EmptySubscriptions from "./_components/EmptySubscriptions";
 import HomeFeedList from "./_components/HomeFeedList";
-
-
 
 const AuthenticatedFeed = () => {
     const { user } = useAuth();
     const { data: membershipsData, isLoading: membershipsLoading } = useMyMemberships();
 
-    if (!user || membershipsLoading) {
+    if (!user) {
+        return <EmptySubscriptions />;
+    }
+
+    if (membershipsLoading) {
         return (
             <div className="flex justify-center items-center pt-10">
                 <Loader />
@@ -35,7 +30,6 @@ const AuthenticatedFeed = () => {
 
     return (
         <>
-            {/* <WelcomeSection user={user} /> */}
             {!hasSubscriptions ? (
                 <EmptySubscriptions />
             ) : (

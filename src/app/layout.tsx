@@ -66,10 +66,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark" data-theme="dark" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Figtree:wght@400;500;700&family=Noto+Nastaliq+Urdu:wght@700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className={`${roboto.variable} font-sans antialiased`} suppressHydrationWarning>
-
-
-
         <Providers>
           {children}
         </Providers>

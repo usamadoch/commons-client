@@ -1,11 +1,11 @@
 
 import { fetchApi, API_BASE_URL, ApiClientError } from "./api.client";
-import { 
-    Member, 
-    Pagination, 
-    JoinMembershipPayload, 
-    Tier, 
-    Subscription 
+import {
+    Member,
+    Pagination,
+    JoinMembershipPayload,
+    Tier,
+    Subscription
 } from "@/types";
 
 export const membershipService = {
