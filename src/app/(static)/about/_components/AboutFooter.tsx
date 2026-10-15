@@ -18,6 +18,10 @@ const navigations = [
         title: "Cancellation & Refund Policy",
         url: "/cancellation-refund",
     },
+    {
+        title: "Ownership Statement",
+        url: "/ownership-statement",
+    },
 ];
 
 const AboutFooter = () => {

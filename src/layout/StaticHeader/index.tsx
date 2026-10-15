@@ -22,6 +22,7 @@ const StaticHeader = () => {
         if (pathname.includes("/privacy")) return "Privacy Policy";
         if (pathname.includes("/cancellation-refund"))
             return "Cancellation & Refund Policy";
+        if (pathname.includes("/ownership-statement")) return "Ownership Statement";
         if (pathname.includes("/help")) return "Help Center";
         return "";
     };

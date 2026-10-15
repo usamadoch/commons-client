@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import BusinessContactDetails from "../_components/BusinessContactDetails";
+import ComplaintsProcess from "../_components/ComplaintsProcess";
 
 export const metadata: Metadata = {
     title: "Cancellation & Refund Policy | Commons",
@@ -14,7 +17,7 @@ const CancellationRefundPage = () => {
                     Cancellation &amp; Refund Policy
                 </h1>
                 <div className="flex flex-col gap-2 text-base font-normal text-n-3 dark:text-n-8">
-                    <p>Last Updated: October 12, 2026</p>
+                    <p>Last Updated: October 15, 2026</p>
                 </div>
             </div>
 
@@ -24,7 +27,11 @@ const CancellationRefundPage = () => {
                     Commons is a digital platform that allows users to support creators through paid memberships and one-time payments during live streams. All payments on Commons are processed in Pakistani Rupees (PKR), unless otherwise indicated at checkout.
                 </p>
                 <p className="text-base font-normal text-n-3 dark:text-n-8 leading-relaxed">
-                    This policy explains how subscription cancellations, refund requests, and payment disputes are handled on Commons.
+                    This policy explains how subscription cancellations, refund requests, complaints, and payment disputes are handled on Commons. It forms part of our{" "}
+                    <Link href="/terms" className="text-purple-1 hover:underline">
+                        Terms and Conditions
+                    </Link>
+                    .
                 </p>
             </section>
 
@@ -75,7 +82,22 @@ const CancellationRefundPage = () => {
             </section>
 
             <section className="flex flex-col gap-2">
-                <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">5. How to Request a Refund</h2>
+                <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">5. If You Are Not Satisfied With a Paid Service</h2>
+                <p className="text-base font-normal text-n-3 dark:text-n-8 leading-relaxed">
+                    Memberships and Super Messages are digital services delivered through Commons, and membership content is created by independent creators. If you are dissatisfied with a paid membership or purchase—for example, because benefits described on the membership were not provided, content you paid for was not made available, or a Super Message was not delivered—please tell us using the complaints process in Section 9.
+                </p>
+                <div className="flex flex-col gap-2 text-base font-normal text-n-3 dark:text-n-8 leading-relaxed pl-6 border-l-2 border-purple-1">
+                    <p><strong className="font-bold text-n-1 dark:text-n-9">What to include:</strong> The creator and membership or purchase concerned, what you expected to receive, what was actually provided, and any supporting screenshots or details.</p>
+                    <p><strong className="font-bold text-n-1 dark:text-n-9">How we review it:</strong> We check the membership or purchase description shown at the time of payment, your access and transaction records, and whether the purchased benefits were delivered. We may contact the creator for information.</p>
+                    <p><strong className="font-bold text-n-1 dark:text-n-9">Possible outcomes:</strong> Depending on our findings, we may restore or fix your access, ask the creator to address the issue, or approve a refund where the case falls within the eligible circumstances in Section 3 (for example, purchased benefits that could not be accessed or delivered and the issue could not be resolved). We will explain our decision by email.</p>
+                </div>
+                <p className="text-base font-normal text-n-3 dark:text-n-8 leading-relaxed">
+                    Changing your mind after access has been granted, or dissatisfaction with content that was delivered as described, is generally not eligible for a refund. You can cancel a recurring membership at any time to stop future payments, as described in Section 2.
+                </p>
+            </section>
+
+            <section className="flex flex-col gap-2">
+                <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">6. How to Request a Refund</h2>
                 <p className="text-base font-normal text-n-3 dark:text-n-8 leading-relaxed">
                     To request a refund or report a billing issue, contact us at <a href="mailto:support@commons.pk" className="text-purple-1 hover:underline">support@commons.pk</a>.
                 </p>
@@ -95,7 +117,7 @@ const CancellationRefundPage = () => {
             </section>
 
             <section className="flex flex-col gap-2">
-                <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">6. Refund Processing Time</h2>
+                <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">7. Refund Processing Time</h2>
                 <p className="text-base font-normal text-n-3 dark:text-n-8 leading-relaxed">
                     If a refund is approved, Commons will initiate the refund through the applicable payment method or payment provider.
                 </p>
@@ -108,7 +130,7 @@ const CancellationRefundPage = () => {
             </section>
 
             <section className="flex flex-col gap-2">
-                <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">7. Billing Disputes</h2>
+                <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">8. Billing Disputes</h2>
                 <p className="text-base font-normal text-n-3 dark:text-n-8 leading-relaxed">
                     If you believe a payment was processed incorrectly, please contact us at <a href="mailto:support@commons.pk" className="text-purple-1 hover:underline">support@commons.pk</a> so we can investigate and attempt to resolve the issue.
                 </p>
@@ -118,15 +140,23 @@ const CancellationRefundPage = () => {
             </section>
 
             <section className="flex flex-col gap-2">
-                <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">8. Contact Us</h2>
+                <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">9. Complaints Process</h2>
+                <p className="text-base font-normal text-n-3 dark:text-n-8 leading-relaxed">
+                    Refund requests, billing disputes, and complaints about a paid service are handled through the same process, which is also described in our{" "}
+                    <Link href="/terms" className="text-purple-1 hover:underline">
+                        Terms and Conditions
+                    </Link>
+                    :
+                </p>
+                <ComplaintsProcess />
+            </section>
+
+            <section className="flex flex-col gap-2">
+                <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">10. Contact Us</h2>
                 <p className="text-base font-normal text-n-3 dark:text-n-8 leading-relaxed">
                     For cancellation assistance, refund requests, or billing complaints, contact:
                 </p>
-                <div className="flex flex-col gap-1 text-base font-normal text-n-3 dark:text-n-8 leading-relaxed pl-6 border-l-2 border-purple-1">
-                    <p className="font-bold text-n-1 dark:text-n-9">Commons Technologies (SMC-Private) Limited</p>
-                    <p>Email: <a href="mailto:support@commons.pk" className="text-purple-1 hover:underline">support@commons.pk</a></p>
-                    <p>Website: <a href="https://www.commons.pk" target="_blank" rel="noopener noreferrer" className="text-purple-1 hover:underline">https://www.commons.pk</a></p>
-                </div>
+                <BusinessContactDetails />
                 <p className="text-base font-normal text-n-3 dark:text-n-8 leading-relaxed">
                     We aim to respond to customer inquiries within 48 hours.
                 </p>
