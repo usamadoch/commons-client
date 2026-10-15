@@ -22,11 +22,11 @@ export const BUSINESS = {
     generalEmail: "hello@commons.pk",
 
     /** Registered office address as per SECP records, e.g. "Office 1, Street 2, City, Pakistan". */
-    registeredAddress: null as string | null,
+    registeredAddress: "H NO 131/5 ST 16 Awan Chowk Baba Farid Colony, Chungi, Lahore",
     /** Operating office address — only set if different from the registered address. */
     officeAddress: null as string | null,
     /** Customer-support phone number in international format, e.g. "+92 300 0000000". */
-    supportPhone: null as string | null,
+    supportPhone: "+92 324 9785408",
 
     /** Target time (hours) for a first response to support inquiries. Already published. */
     supportResponseHours: 48,
