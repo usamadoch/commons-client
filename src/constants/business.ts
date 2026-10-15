@@ -30,8 +30,8 @@ export const BUSINESS = {
 
     /** Target time (hours) for a first response to support inquiries. Already published. */
     supportResponseHours: 48,
-    /** Maximum business days to resolve a complaint / dispute after receipt. */
-    complaintResolutionBusinessDays: null as number | null,
+    /** Maximum business days to resolve a complaint / dispute after receipt of necessary information. */
+    complaintResolutionBusinessDays: 10 as number | null,
     /** Expected processing window for approved refunds. Already published. */
     refundProcessingBusinessDays: "5–10",
 } as const;

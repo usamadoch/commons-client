@@ -81,7 +81,7 @@ const TermsPage = () => {
             <section className="flex flex-col gap-2">
                 <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">7. Customer Support, Complaints, and Contact</h2>
                 <p className="text-base font-normal text-n-3 dark:text-n-8 leading-relaxed">
-                    If you have a billing dispute, a technical issue, or need to report an account, our support team is ready to help. You can reach us at: <a href="mailto:support@commons.pk" className="text-purple-1 hover:underline">support@commons.pk</a>. We aim to respond to all inquiries within 48 hours.
+                    If you have a billing dispute, a technical issue, or need to report an account, our support team is ready to help. You can reach us at: <a href="mailto:support@commons.pk" className="text-purple-1 hover:underline">support@commons.pk</a>. We aim to respond to all inquiries within 48 hours and resolve complaints within 10 business days after receiving all information necessary to investigate.
                 </p>
                 <p className="text-base font-bold text-n-1 dark:text-n-9 mt-2">Complaints Process</p>
                 <ComplaintsProcess linkToRefundPolicy />

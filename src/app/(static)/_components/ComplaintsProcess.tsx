@@ -42,10 +42,7 @@ const ComplaintsProcess = ({ linkToRefundPolicy = false }: ComplaintsProcessProp
                 </p>
                 <p>
                     <strong className={strongClass}>4. Resolution:</strong>{" "}
-                    {resolutionDays
-                        ? `We aim to resolve complaints and disputes within ${resolutionDays} business days of receiving all required information. `
-                        : ""}
-                    We will inform you of the outcome by email. If a refund is approved, it is generally processed within {BUSINESS.refundProcessingBusinessDays} business days, although the time for funds to appear may vary depending on your bank or payment provider.
+                    We aim to resolve complaints within {resolutionDays ?? 10} business days after receiving all information necessary to investigate. If additional time is needed, we will notify you of the delay and provide an updated timeframe. We will inform you of the outcome by email. If a refund is approved, it is generally processed within {BUSINESS.refundProcessingBusinessDays} business days, although the time for funds to appear may vary depending on your bank or payment provider.
                 </p>
                 <p>
                     <strong className={strongClass}>5. Further review:</strong> If you are not satisfied with the outcome, reply to the same email thread to request a further review of your complaint.

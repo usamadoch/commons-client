@@ -112,7 +112,7 @@ const CancellationRefundPage = () => {
                     <p>• A brief explanation of the issue</p>
                 </div>
                 <p className="text-base font-normal text-n-3 dark:text-n-8 leading-relaxed">
-                    Our support team aims to respond to inquiries within 48 hours. We may request additional information to investigate a claim.
+                    Our support team aims to respond to inquiries within 48 hours. We aim to resolve complaints within 10 business days after receiving all information necessary to investigate. If additional time is needed, we will notify you of the delay and provide an updated timeframe.
                 </p>
             </section>
 
