@@ -26,16 +26,28 @@ const Layout = ({
     const showRightAuthSidebar = !requireAuth && !isLoading && !isAuthenticated;
 
     const content = (
-        <div className={`relative flex pl-75 xl:pl-16 md:pl-0 md:pb-16 bg-n-1 ${showRightAuthSidebar ? 'pr-16 xl:pr-0' : ''}`}>
+        <div className="relative flex pl-75 xl:pl-16 md:pl-0 md:pb-16 bg-n-1 min-h-screen">
             <Sidebar />
             <div className="flex flex-col grow w-full min-h-screen md:pt-0 md:min-h-[calc(100vh-4rem)]">
-                <div className="flex grow">
-                    <div className="flex flex-col grow max-w-360 mx-auto pt-6 px-16 pb-2 2xl:px-8 lg:px-6 md:px-5 mobile:px-3 4xl:max-w-full">
-                        {children}
+                <div className="flex grow justify-center">
+                    <div className="w-full max-w-360 mx-auto pt-6 px-8 2xl:px-6 lg:px-6 md:px-4 mobile:px-3">
+                        {showRightAuthSidebar ? (
+                            <div className="grid grid-cols-12 gap-8 2xl:gap-6 items-start w-full">
+                                <main className="col-span-8 xl:col-span-12 w-full min-w-0 flex justify-center">
+                                    {children}
+                                </main>
+                                <aside className="col-span-4 xl:hidden sticky top-6 flex flex-col min-w-0 w-full z-30">
+                                    <RightAuthSidebar />
+                                </aside>
+                            </div>
+                        ) : (
+                            <div className="w-full min-w-0">
+                                {children}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
-            {showRightAuthSidebar && <RightAuthSidebar />}
             <Menu />
         </div>
     );

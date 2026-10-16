@@ -29,21 +29,19 @@ export const RootHomePage = () => {
     }
 
     return (
-        <div className="pb-20 px-4 mobile:px-0 lg:px-8 w-full max-w-350 mx-auto flex items-start justify-center gap-8">
-            <div className="flex-1 w-full max-w-2xl">
-                {/* Rotating Banner Carousel with Banner C as default */}
-                <BannerCarousel />
+        <div className="w-full max-w-2xl pb-20">
+            {/* Rotating Banner Carousel with Banner C as default */}
+            <BannerCarousel />
 
-                {/* For you and following dropdown select */}
-                <FeedSelector value={feedType} onChange={setFeedType} />
+            {/* For you and following dropdown select */}
+            <FeedSelector value={feedType} onChange={setFeedType} />
 
-                {/* Feed content */}
-                {feedType === "for-you" ? (
-                    <PublicFeed />
-                ) : (
-                    <AuthenticatedFeed />
-                )}
-            </div>
+            {/* Feed content */}
+            {feedType === "for-you" ? (
+                <PublicFeed />
+            ) : (
+                <AuthenticatedFeed />
+            )}
         </div>
     );
 };

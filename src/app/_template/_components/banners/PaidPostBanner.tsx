@@ -14,7 +14,7 @@ export default function PaidPostBanner() {
                     {/* Left Content */}
                     <div className="flex-1 flex flex-col items-start justify-center gap-2 z-10 pr-3 mobile:pr-2">
                         <h2
-                            className="anim-title font-extrabold text-[25px] md:text-[28px] mobile:text-[20px] leading-[1.15] text-[#17161C] tracking-[-0.01em]"
+                            className="anim-title font-extrabold text-[25px] mobile:text-[20px] leading-[1.15] text-[#17161C] tracking-[-0.01em]"
                             style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800 }}
                         >
                             Post once. Get paid every month.
@@ -49,7 +49,7 @@ export default function PaidPostBanner() {
                     <div
                         ref={artRef}
                         aria-hidden="true"
-                        className="anim-art shrink-0 w-[165px] mobile:w-[115px] flex items-center justify-center will-change-transform"
+                        className="anim-art shrink-0 w-[160px] mobile:w-[115px] flex items-center justify-center will-change-transform"
                     >
                         <svg width="210" height="210" viewBox="0 0 210 210" className="w-full h-auto block">
                             <g transform="rotate(3 100 110)">

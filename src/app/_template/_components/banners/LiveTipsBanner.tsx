@@ -14,7 +14,7 @@ export default function LiveTipsBanner() {
                     {/* Left Content */}
                     <div className="flex-1 flex flex-col items-start justify-center gap-2 z-10 pr-3 mobile:pr-2">
                         <h2
-                            className="anim-title font-extrabold text-[25px] md:text-[28px] mobile:text-[20px] leading-[1.15] text-[#17161C] tracking-[-0.01em]"
+                            className="anim-title font-extrabold text-[25px] mobile:text-[20px] leading-[1.15] text-[#17161C] tracking-[-0.01em]"
                             style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800 }}
                         >
                             Every tip lands in rupees.

@@ -5,7 +5,10 @@ import BannerBase, { BannerActions } from "./BannerBase";
 
 export default function UrduFirstBanner() {
     return (
-        <BannerBase bgColor="#FF5C8A" className="flex items-center">
+        <BannerBase
+            bgColor="#FF5C8A"
+            className="flex items-center justify-between px-7 mobile:px-4"
+        >
             {({ artRef }) => (
                 <>
                     {/* Top Right Decorative Corner Stamp */}
@@ -23,9 +26,9 @@ export default function UrduFirstBanner() {
                     <div
                         ref={artRef}
                         aria-hidden="true"
-                        className="anim-art w-[210px] mobile:w-[130px] h-full flex-none will-change-transform flex items-center justify-center pl-2"
+                        className="anim-art shrink-0 w-[160px] mobile:w-[115px] flex items-center justify-center will-change-transform"
                     >
-                        <svg viewBox="0 0 210 240" className="w-full h-full block">
+                        <svg viewBox="0 0 210 240" className="w-full h-auto block">
                             <circle cx="105" cy="128" r="86" fill="#0D5C63" stroke="#17161C" strokeWidth="2.5" />
                             <path d="M30 52l4-9 4 9 9 4-9 4-4 9-4-9-9-4z" fill="#fff" stroke="#17161C" strokeWidth="2" />
                             <path d="M178 70l3-7 3 7 7 3-7 3-3 7-3-7-7-3z" fill="#FFD234" stroke="#17161C" strokeWidth="2" />
@@ -68,7 +71,7 @@ export default function UrduFirstBanner() {
                     </div>
 
                     {/* Right Copy Content */}
-                    <div className="flex-1 pr-9 pl-4 mobile:pr-5 mobile:pl-2 text-right flex flex-col items-end justify-center gap-2 z-10">
+                    <div className="flex-1 flex flex-col items-end justify-center gap-2 z-10 pl-3 mobile:pl-2 text-right">
                         <h2
                             lang="ur"
                             dir="rtl"
@@ -78,16 +81,16 @@ export default function UrduFirstBanner() {
                             اپنے فینز سے کمائیں
                         </h2>
                         <p
-                            className="anim-desc font-normal text-[15px] mobile:text-xs text-[#17161C] -mt-1"
-                            style={{ fontFamily: "'Figtree', system-ui, sans-serif" }}
+                            className="anim-desc font-normal text-[13.5px] mobile:text-xs text-[#17161C] max-w-xs leading-snug"
+                            style={{ fontFamily: "'Figtree', sans-serif" }}
                         >
                             Memberships, paid posts, and live tips, in rupees.
                         </p>
-                        <BannerActions className="justify-end gap-3">
+                        <BannerActions className="justify-end">
                             <Link
                                 href="/about"
                                 onClick={(e) => e.stopPropagation()}
-                                className="font-bold text-[15px] mobile:text-xs text-[#17161C] underline underline-offset-4 hover:opacity-80 py-2 px-1 cursor-pointer"
+                                className="font-bold text-[13.5px] mobile:text-xs text-[#17161C] underline underline-offset-4 hover:opacity-80 py-1 px-1 whitespace-nowrap cursor-pointer"
                                 style={{ fontFamily: "'Figtree', sans-serif" }}
                             >
                                 Learn more
@@ -95,7 +98,7 @@ export default function UrduFirstBanner() {
                             <Link
                                 href="/register"
                                 onClick={(e) => e.stopPropagation()}
-                                className="v2-btn inline-flex items-center justify-center min-h-[44px] px-5 bg-[#0D5C63] text-white border-[2.5px] border-[#17161C] rounded-lg font-bold text-[15px] mobile:text-xs hover:bg-[#0b4e54] cursor-pointer"
+                                className="v2-btn inline-flex items-center justify-center min-h-[38px] px-4 bg-[#0D5C63] text-white border-[2.5px] border-[#17161C] rounded-[10px] font-bold text-[13.5px] mobile:text-xs hover:bg-[#0b4e54] whitespace-nowrap cursor-pointer"
                                 style={{ fontFamily: "'Figtree', sans-serif" }}
                             >
                                 Start your page

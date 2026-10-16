@@ -12,7 +12,7 @@ const RightAuthSidebar = () => {
     if (isAuthenticated) return null;
 
     return (
-        <div className="flex xl:hidden sticky shrink-0 top-6 mt-6 flex-col w-96 h-fit overflow-auto z-30">
+        <div className="flex flex-col w-full h-fit">
 
             {/* Persuasive Text */}
             <div className=" bg-white dark:bg-n-4 border border-n-6 p-6 rounded-md">
