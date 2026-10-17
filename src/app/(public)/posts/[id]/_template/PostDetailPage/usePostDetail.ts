@@ -1,5 +1,6 @@
-"use client";
-
+import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { postService } from "@/services/post.service";
 import { usePost, usePostComments } from "@/hooks/queries";
 import { isValidObjectId } from "@/lib/validation";
 import {
@@ -55,13 +56,18 @@ interface UsePostDetailReturn {
  * Encapsulates all data-fetching, derived state, and mutation logic
  * for the post detail page.
  */
-export const usePostDetail = (postId: string): UsePostDetailReturn => {
+export const usePostDetail = (
+    postId: string,
+    initialPost?: (Post & { isLiked?: boolean }) | null
+): UsePostDetailReturn => {
     // ── Validate ID format (skip all requests if invalid) ───
     const isValidId = isValidObjectId(postId);
     const queryId = isValidId ? postId : '';
 
+    const queryClient = useQueryClient();
+
     // ── Queries (disabled when ID is invalid) ───────────────
-    const { data: post, isLoading: isPostLoading } = usePost(queryId);
+    const { data: post, isLoading: isPostLoading } = usePost(queryId, initialPost);
     const { data: comments, isLoading: isCommentsLoading } = usePostComments(queryId);
 
     // ── Sub Hooks ────────────────────────────────────────────
@@ -80,6 +86,29 @@ export const usePostDetail = (postId: string): UsePostDetailReturn => {
         isJoinTierModalOpen,
         setIsJoinTierModalOpen,
     } = usePostJoin(post);
+
+    // ── Dwell-based view counting (3s duration) ─────────────
+    useEffect(() => {
+        if (!isValidId || !postId) return;
+
+        const timer = setTimeout(() => {
+            postService.recordView(postId).then((res) => {
+                if (res?.recorded && typeof res.viewCount === 'number') {
+                    queryClient.setQueryData(
+                        ['post', queryId, user?._id],
+                        (old: (Post & { isLiked?: boolean }) | undefined | null) => {
+                            if (!old) return old;
+                            return { ...old, viewCount: res.viewCount };
+                        }
+                    );
+                }
+            }).catch((err) => {
+                console.error('[PostDetail] Failed to record view:', err);
+            });
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }, [postId, queryId, isValidId, queryClient, user?._id]);
 
     // ── Derived values ───────────────────────────────────────
     const locked = post?.isLocked ?? false;

@@ -23,12 +23,18 @@ const PostDetail = async ({ params }: Props) => {
     const resolvedParams = await params;
     const { id } = resolvedParams;
     let initialPageData = null;
+    let initialPost = null;
     let pageSlug = "";
 
     try {
-        const { post } = await postService.getById(id);
-        pageSlug = (post?.pageId as any)?.pageSlug || "";
-        initialPageData = await getInitialPageData(pageSlug);
+        const data = await postService.getById(id, {
+            next: { revalidate: 60, tags: [`post-${id}`] }
+        });
+        if (data?.post) {
+            initialPost = { ...data.post, isLiked: data.isLiked };
+            pageSlug = (data.post.pageId as any)?.pageSlug || "";
+            initialPageData = await getInitialPageData(pageSlug);
+        }
     } catch (e) {
         console.error("Error fetching data for post detail:", e);
     }
@@ -36,7 +42,7 @@ const PostDetail = async ({ params }: Props) => {
     return (
         <>
             <CreatorHeader pageSlug={pageSlug || undefined} initialPageData={initialPageData} />
-            <PostDetailPage />
+            <PostDetailPage initialPost={initialPost} />
         </>
     );
 };

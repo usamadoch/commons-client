@@ -38,12 +38,11 @@ export default function CreatorLayoutWrapper({ children, initialPageData }: { ch
     const queryClient = useQueryClient();
 
     // Pass initialPageData directly to the query hook as initialData
-    // We removed setQueryData so it correctly fetches real auth state on mount
-    const { data, isLoading: isPageLoading } = useCreatorPage(slug, initialPageData);
+    const { data, isLoading: isPageLoading, isPendingAuthCheck: isRelLoading } = useCreatorPage(slug, initialPageData);
     const pageData = data || initialPageData;
     const { page, isOwner, isMember } = pageData || {};
 
-    const isPendingAuthCheck = isAuthLoading || isPageLoading;
+    const isPendingAuthCheck = isAuthLoading || (isAuthenticated ? isRelLoading : false);
 
     const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);

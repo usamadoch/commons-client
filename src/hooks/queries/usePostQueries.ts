@@ -2,11 +2,13 @@ import { useQuery, useMutation, useQueryClient, keepPreviousData, useInfiniteQue
 import { postService } from "@/services/post.service";
 import { ApiClientError } from "@/services/api.client";
 import { useAuth } from "@/store/auth";
-import { PostType } from "@/types";
+import { Post, PostType } from "@/types";
 
 // Hook to fetch Creator Posts
-export const useCreatorPosts = (slug: string, filters?: { type?: PostType | PostType[] }) => {
+export const useCreatorPosts = (slug: string, filters?: { type?: PostType | PostType[] }, initialData?: Post[]) => {
     const { user } = useAuth();
+    const isAuth = Boolean(user?._id);
+
     return useQuery({
         queryKey: ['creator-posts', slug, filters, user?._id],
         queryFn: async () => {
@@ -15,7 +17,10 @@ export const useCreatorPosts = (slug: string, filters?: { type?: PostType | Post
             return posts;
         },
         enabled: !!slug,
-        staleTime: 1000 * 60 * 2,
+        initialData: initialData ? initialData : undefined,
+        initialDataUpdatedAt: initialData ? Date.now() : undefined,
+        staleTime: isAuth ? 0 : 1000 * 60 * 2,
+        refetchOnMount: isAuth ? true : false,
         placeholderData: keepPreviousData,
         retry: (failureCount, error) => {
             if (error instanceof ApiClientError && error.code === 'NOT_PUBLISHED') {
@@ -59,16 +64,22 @@ export const usePosts = (params: { page: number; limit: number }) => {
 };
 
 // Hook to fetch a single Post
-export const usePost = (id: string) => {
+export const usePost = (id: string, initialData?: (Post & { isLiked?: boolean }) | null) => {
+    const { user } = useAuth();
+    const isAuth = Boolean(user?._id);
+
     return useQuery({
-        queryKey: ['post', id],
+        queryKey: ['post', id, user?._id],
         queryFn: async () => {
             if (!id) return null;
             const data = await postService.getById(id);
             return { ...data.post, isLiked: data.isLiked };
         },
         enabled: !!id,
-        staleTime: 1000 * 60 * 5,
+        initialData: initialData ? initialData : undefined,
+        initialDataUpdatedAt: initialData ? Date.now() : undefined,
+        staleTime: isAuth ? 0 : 1000 * 60 * 5,
+        refetchOnMount: isAuth ? true : false,
     });
 };
 

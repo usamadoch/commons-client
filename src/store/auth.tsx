@@ -6,6 +6,7 @@ import { create } from 'zustand';
 import { AuthState, LoginPayload, SignupPayload, ONBOARDING_STEPS } from '@/types';
 import { ApiClientError } from '@/services/api.client';
 import { authService as authApi } from '@/services/auth.service';
+import { useQueryClient } from '@tanstack/react-query';
 
 // ====================
 // AUTH STORE TYPES
@@ -129,9 +130,11 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 export function useAuth() {
     const store = useAuthStore();
     const router = useRouter();
+    const queryClient = useQueryClient();
 
     const loginWithRedirect = async (payload: LoginPayload, options?: { redirect?: boolean }) => {
         await store.login(payload);
+        queryClient.clear();
         if (options?.redirect === false) return;
 
         const user = useAuthStore.getState().user; // Get fresh state
@@ -156,6 +159,7 @@ export function useAuth() {
 
     const signupWithRedirect = async (payload: SignupPayload, options?: { redirect?: boolean }) => {
         await store.signup(payload);
+        queryClient.clear();
         if (options?.redirect === false) return;
 
         const user = useAuthStore.getState().user;
@@ -180,6 +184,7 @@ export function useAuth() {
 
     const logoutWithRedirect = async () => {
         await store.logout();
+        queryClient.clear();
         router.push('/');
     };
 

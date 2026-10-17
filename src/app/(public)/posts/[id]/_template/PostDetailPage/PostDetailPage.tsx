@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 // CreatorHeader moved to layout
 import Loader from "@/components/Loader";
 
+import { Post } from "@/types";
 import { usePostDetail } from "./usePostDetail";
 import PostContentArea from "./PostContentArea";
 import PostLoadingSkeleton from "./PostLoadingSkeleton";
@@ -14,7 +15,11 @@ import JoinTierModal from "@/components/modals/JoinTierModal";
 
 // ─── Component ──────────────────────────────────────────────
 
-const PostDetailPage = () => {
+interface PostDetailPageProps {
+    initialPost?: (Post & { isLiked?: boolean }) | null;
+}
+
+const PostDetailPage = ({ initialPost }: PostDetailPageProps) => {
     const params = useParams<{ id: string }>();
     const postId = params.id as string;
 
@@ -39,7 +44,7 @@ const PostDetailPage = () => {
         isJoinTierModalOpen,
         setIsJoinTierModalOpen,
         user,
-    } = usePostDetail(postId);
+    } = usePostDetail(postId, initialPost);
 
     const creatorPageForModal = post ? {
         _id: typeof post.pageId === "object" ? post.pageId._id : post.pageId,

@@ -6,34 +6,35 @@ export const useCreatorPageCache = (slug: string, userId?: string) => {
     const queryClient = useQueryClient();
 
     const handleImageSuccess = useCallback((type: 'banner' | 'avatar', url: string) => {
-        type PageData = { page: CreatorPageType; isOwner: boolean; isMember: boolean };
-        queryClient.setQueryData(['creator-page', slug, userId], (old: PageData | undefined) => {
-            if (!old || !old.page) return old;
-            return {
-                ...old,
-                page: {
-                    ...old.page,
-                    [type === 'banner' ? 'bannerUrl' : 'avatarUrl']: url
-                }
-            };
-        });
-    }, [queryClient, slug, userId]);
-
-    const handleJoinSuccess = useCallback(() => {
-        type PageData = { page: CreatorPageType; isOwner: boolean; isMember: boolean };
-        queryClient.setQueryData(['creator-page', slug, userId], (old: PageData | undefined) => {
+        // Update public creator profile
+        queryClient.setQueryData(['creator-profile', slug], (old: CreatorPageType | undefined | null) => {
             if (!old) return old;
             return {
                 ...old,
-                isMember: true,
-                page: {
-                    ...old.page,
-                    memberCount: (old.page.memberCount || 0) + 1
-                }
+                [type === 'banner' ? 'bannerUrl' : 'avatarUrl']: url
+            };
+        });
+    }, [queryClient, slug]);
+
+    const handleJoinSuccess = useCallback(() => {
+        // Increment member count in public profile
+        queryClient.setQueryData(['creator-profile', slug], (old: CreatorPageType | undefined | null) => {
+            if (!old) return old;
+            return {
+                ...old,
+                memberCount: (old.memberCount || 0) + 1
             };
         });
 
-        // Also invalidate posts to unlock content
+        // Update relationship query for current user
+        if (userId) {
+            queryClient.setQueryData(['creator-relationship', slug, userId], {
+                isOwner: false,
+                isMember: true,
+            });
+        }
+
+        // Invalidate posts to unlock member content
         queryClient.invalidateQueries({ queryKey: ['creator-posts', slug] });
         queryClient.invalidateQueries({ queryKey: ['recent-videos', slug] });
     }, [queryClient, slug, userId]);
