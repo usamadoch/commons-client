@@ -39,7 +39,7 @@ export const ExplorePage = () => {
             ) : error ? (
                 <div className="text-center text-red-500 py-10">{error}</div>
             ) : (
-                <div className="grid grid-cols-4 2xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 gap-8 md:gap-6">
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,260px),1fr))] gap-6 md:gap-4 w-full">
                     {filteredCreators.length > 0 ? (
                         filteredCreators.map((creator) => (
                             <Item item={creator} key={creator._id} />

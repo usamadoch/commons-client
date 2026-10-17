@@ -96,43 +96,45 @@ const CreatorToolkit = () => {
             className="relative w-full py-32 md:py-16 scroll-mt-20"
         >
             {/* Mobile/Tablet Sticky Horizontal Navigation */}
-            <div className="hidden lg:block sticky top-0 z-20 w-full bg-n-1/95 border-b border-n-6 backdrop-blur-sm px-5 py-3 overflow-x-auto scrollbar-none">
-                <nav aria-label="Feature navigation" className="flex items-center gap-2 min-w-max">
-                    {featuresData.map((feature) => {
-                        const isActive = activeId === feature.id;
-                        return (
-                            <button
-                                key={feature.id}
-                                onClick={() => scrollToId(feature.id, reduced)}
-                                className={`px-4 py-2 rounded-xs border text-xs font-bold uppercase tracking-wider transition-colors duration-150 cursor-pointer ${
-                                    isActive
-                                        ? "bg-purple-1 border-n-1 text-n-1 shadow-[2px_2px_0_#000]"
-                                        : "bg-n-3 border-n-6 text-n-8 hover:text-n-9"
-                                }`}
-                            >
-                                {feature.stepTitle}
-                            </button>
-                        );
-                    })}
-                </nav>
+            <div className="hidden lg:block sticky top-0 z-20 w-full bg-n-1/95 border-b border-n-6 backdrop-blur-sm">
+                <div className="mx-auto w-full max-w-[90rem] px-16 2xl:px-10 lg:px-8 md:px-5 mobile:px-3 py-3 overflow-x-auto scrollbar-none">
+                    <nav aria-label="Feature navigation" className="flex items-center gap-2 min-w-max">
+                        {featuresData.map((feature) => {
+                            const isActive = activeId === feature.id;
+                            return (
+                                <button
+                                    key={feature.id}
+                                    onClick={() => scrollToId(feature.id, reduced)}
+                                    className={`px-4 py-2 rounded-xs border text-xs font-bold uppercase tracking-wider transition-colors duration-150 cursor-pointer ${
+                                        isActive
+                                            ? "bg-purple-1 border-n-1 text-n-1 shadow-[2px_2px_0_#000]"
+                                            : "bg-n-3 border-n-6 text-n-8 hover:text-n-9"
+                                    }`}
+                                >
+                                    {feature.stepTitle}
+                                </button>
+                            );
+                        })}
+                    </nav>
+                </div>
             </div>
 
-            <div className="mx-auto w-full max-w-[90rem] px-16 2xl:px-10 lg:px-8 md:px-5">
-                <div className="grid grid-cols-[1fr_1.6fr] lg:grid-cols-1 gap-20 lg:gap-12 items-start">
+            <div className="mx-auto w-full max-w-[90rem] px-16 2xl:px-10 lg:px-8 md:px-5 mobile:px-3">
+                <div className="grid grid-cols-[1fr_1.6fr] lg:grid-cols-1 gap-20 lg:gap-10 md:gap-8 items-start">
                     {/* Left: Sticky Sidebar (Desktop >=lg) */}
-                    <div className="sticky top-28 lg:static self-start space-y-8">
+                    <div className="sticky top-28 lg:static self-start space-y-8 lg:space-y-4 lg:pb-6 lg:border-b lg:border-n-6/40">
                         <div>
-                            <span className="text-[13px] font-semibold uppercase tracking-[0.12em] text-purple-1 mb-4 block">
+                            <span className="text-[13px] font-semibold uppercase tracking-[0.12em] text-purple-1 mb-3 block">
                                 Centerpiece
                             </span>
                             <h2
                                 id="toolkit-heading"
-                                className="font-extrabold text-[clamp(2rem,3.8vw,3.25rem)] leading-[1.05] tracking-[-0.02em] text-balance text-n-9 mb-4"
+                                className="font-extrabold text-[clamp(2rem,3.8vw,3.25rem)] md:text-3xl leading-[1.05] tracking-[-0.02em] text-balance text-n-9 mb-3"
                             >
                                 The Creator
                                 <br className="lg:hidden" /> Toolkit.
                             </h2>
-                            <p className="text-xl md:text-lg text-n-8 leading-[1.6] max-w-md">
+                            <p className="text-xl md:text-base text-n-8 leading-[1.6] max-w-md">
                                 Everything you need to monetize a local audience, without the friction of foreign platforms.
                             </p>
                         </div>
@@ -179,20 +181,20 @@ const CreatorToolkit = () => {
                     </div>
 
                     {/* Right: 4 Feature Blocks */}
-                    <div className="space-y-36 lg:space-y-20">
+                    <div className="space-y-36 lg:space-y-16 md:space-y-12">
                         {featuresData.map((feature) => (
                             <div
                                 key={feature.id}
                                 id={feature.id}
-                                className="min-h-[75vh] lg:min-h-fit flex flex-col justify-center scroll-mt-28"
+                                className="min-h-[75vh] lg:min-h-fit flex flex-col justify-center scroll-mt-28 lg:scroll-mt-20"
                             >
-                                <span className="text-xs font-mono font-bold tracking-widest uppercase text-purple-1 mb-3 block">
+                                <span className="text-xs font-mono font-bold tracking-widest uppercase text-purple-1 mb-2 block">
                                     {feature.stepTitle}
                                 </span>
-                                <h3 className="font-extrabold text-[clamp(1.5rem,2.4vw,2.15rem)] leading-[1.15] tracking-[-0.01em] text-balance text-n-9 mb-4">
+                                <h3 className="font-extrabold text-[clamp(1.5rem,2.4vw,2.15rem)] md:text-2xl leading-[1.15] tracking-[-0.01em] text-balance text-n-9 mb-3">
                                     {feature.title}
                                 </h3>
-                                <p className="text-xl md:text-lg text-n-8 leading-[1.6] max-w-[62ch] text-pretty mb-8">
+                                <p className="text-xl md:text-base text-n-8 leading-[1.6] max-w-[62ch] text-pretty mb-6 md:mb-5">
                                     {feature.description}
                                 </p>
 

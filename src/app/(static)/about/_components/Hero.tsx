@@ -41,7 +41,7 @@ const Hero = () => {
 
     return (
         <section id="hero-section" className="relative w-full overflow-hidden pt-12 md:pt-8">
-            <div className="mx-auto w-full max-w-[90rem] px-16 2xl:px-10 lg:px-8 md:px-5 pb-24 md:pb-16">
+            <div className="mx-auto w-full max-w-[90rem] px-16 2xl:px-10 lg:px-8 md:px-5 mobile:px-3 pb-24 md:pb-16">
                 <div className="grid grid-cols-[1.1fr_1fr] lg:grid-cols-1 gap-12 lg:gap-14 items-center">
                     {/* Left Column: Text */}
                     <div className="flex flex-col items-start text-left">
@@ -125,7 +125,7 @@ const Hero = () => {
                         {/* Product device mockup: clean uncropped frame with Commons border and hard shadow */}
                         <motion.div
                             style={finePointer && !reduced ? { x: tiltX, y: tiltY } : undefined}
-                            className="relative w-full max-w-[620px] rounded-xl border-2 border-n-6 bg-n-2 shadow-primary-8 transform -rotate-2 md:rotate-0 transition-transform duration-300 overflow-hidden"
+                            className="relative w-full max-w-[620px] rounded-xl border-2 border-n-6 bg-n-2 shadow-primary-8 transform -rotate-2 lg:rotate-0 transition-transform duration-300 overflow-hidden"
                         >
                             <Image
                                 src={checkoutImage}
@@ -143,7 +143,7 @@ const Hero = () => {
                         <div ref={chipsRef} aria-hidden="true" className="pointer-events-none">
                             {/* JazzCash chip */}
                             <div
-                                className={`absolute -bottom-4 -left-4 md:bottom-2 md:left-2 z-10 flex items-center gap-2.5 px-3.5 py-2.5 rounded-sm bg-n-2/95 border-2 border-n-6 shadow-primary-4 backdrop-blur-sm ${styles.float}`}
+                                className={`absolute -bottom-4 -left-4 lg:bottom-2 lg:left-2 mobile:bottom-1 mobile:left-1 z-10 flex items-center gap-2.5 px-3.5 py-2.5 rounded-sm bg-n-2/95 border-2 border-n-6 shadow-primary-4 backdrop-blur-sm ${styles.float}`}
                                 data-paused={!chipsActive}
                             >
                                 <Image
@@ -161,7 +161,7 @@ const Hero = () => {
 
                             {/* Super Chat highlight style pill (dark theme with purple accent) */}
                             <div
-                                className={`absolute -top-4 -right-4 md:top-2 md:right-2 z-10 flex items-center gap-2.5 px-4 py-2.5 rounded-sm bg-n-2/95 border-2 border-n-6 shadow-primary-4 backdrop-blur-sm ${styles.floatAlt}`}
+                                className={`absolute -top-4 -right-4 lg:top-2 lg:right-2 mobile:top-1 mobile:right-1 z-10 flex items-center gap-2.5 px-4 py-2.5 rounded-sm bg-n-2/95 border-2 border-n-6 shadow-primary-4 backdrop-blur-sm ${styles.floatAlt}`}
                                 data-paused={!chipsActive}
                             >
                                 <span className="text-xs font-bold uppercase tracking-wider bg-purple-1 text-n-1 px-2 py-0.5 rounded-xs">

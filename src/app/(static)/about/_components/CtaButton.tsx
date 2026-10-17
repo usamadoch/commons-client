@@ -54,7 +54,7 @@ const CtaButton = ({
 };
 
 export const CtaRow = ({ children, className = "" }: { children: ReactNode; className?: string }) => (
-    <div className={`flex items-center gap-4 sm:flex-col sm:items-stretch ${className}`}>
+    <div className={`flex items-center gap-4 md:flex-col md:items-stretch ${className}`}>
         {children}
     </div>
 );

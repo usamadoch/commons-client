@@ -12,7 +12,7 @@ const PlatformFreedom = () => {
             aria-labelledby="moderation-heading"
             className="relative w-full py-36 md:py-24 bg-black border-y-2 border-n-6 text-white overflow-hidden"
         >
-            <div className="mx-auto w-full max-w-[90rem] px-16 2xl:px-10 lg:px-8 md:px-5">
+            <div className="mx-auto w-full max-w-[90rem] px-16 2xl:px-10 lg:px-8 md:px-5 mobile:px-3">
                 <div className="max-w-5xl">
                     {/* Eyebrow */}
                     <span className="text-[13px] font-semibold uppercase tracking-[0.12em] text-purple-1 mb-6 block">

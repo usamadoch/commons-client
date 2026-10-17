@@ -27,7 +27,7 @@ const navigations = [
 const AboutFooter = () => {
     return (
         <footer className="w-full border-t-2 border-n-6 bg-n-1 text-n-9">
-            <div className="mx-auto w-full max-w-[90rem] px-16 2xl:px-10 lg:px-8 md:px-5 py-12 md:py-8">
+            <div className="mx-auto w-full max-w-[90rem] px-16 2xl:px-10 lg:px-8 md:px-5 mobile:px-3 py-12 md:py-8">
                 <div className="flex items-center justify-between gap-6 md:flex-col md:items-center md:gap-6">
                     {/* Language selector & links */}
                     <div className="flex items-center gap-8 md:flex-col md:gap-4">
@@ -39,7 +39,7 @@ const AboutFooter = () => {
                             English
                         </button>
 
-                        <nav aria-label="Legal and information" className="flex items-center gap-8 md:gap-5">
+                        <nav aria-label="Legal and information" className="flex flex-wrap items-center justify-center gap-6 md:gap-4 text-center">
                             {navigations.map((link, index) => (
                                 <Link
                                     key={index}

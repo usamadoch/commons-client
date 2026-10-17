@@ -32,7 +32,7 @@ const StickyHeader = ({ heroId }: { heroId: string }) => {
                 className={`absolute inset-x-0 top-0 border-b-2 border-n-6 bg-n-1 transition-[transform,visibility] duration-[250ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${visible ? "translate-y-0 visible" : "-translate-y-full invisible"
                     }`}
             >
-                <div className="mx-auto flex h-18 md:h-16 w-full max-w-[90rem] items-center justify-between gap-4 px-16 2xl:px-10 lg:px-8 md:px-5">
+                <div className="mx-auto flex h-18 md:h-16 w-full max-w-[90rem] items-center justify-between gap-4 px-16 2xl:px-10 lg:px-8 md:px-5 mobile:px-3">
                     <Link
                         href="/"
                         aria-label="Commons home"

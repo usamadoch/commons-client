@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const PrivacyPage = () => {
     return (
-        <main className="w-full max-w-4xl mx-auto px-6 py-24 flex flex-col gap-12">
+        <main className="w-full max-w-4xl mx-auto px-6 mobile:px-3 py-24 md:py-10 flex flex-col gap-12 md:gap-8">
             <div className="flex flex-col gap-2 border-b border-n-4 dark:border-n-6 pb-12">
                 <h1 className="text-[48px] font-normal tracking-tighter leading-[0.85] text-n-1 dark:text-n-9">
                     Commons Privacy Policy

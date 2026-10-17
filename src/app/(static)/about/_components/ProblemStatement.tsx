@@ -9,7 +9,7 @@ const ProblemStatement = () => {
 
     return (
         <section className="relative w-full border-b border-n-6 bg-n-2/40 py-32 md:py-20">
-            <div className="mx-auto w-full max-w-[90rem] px-16 2xl:px-10 lg:px-8 md:px-5">
+            <div className="mx-auto w-full max-w-[90rem] px-16 2xl:px-10 lg:px-8 md:px-5 mobile:px-3">
                 <div className="grid grid-cols-12 lg:grid-cols-1 gap-16 lg:gap-10 items-start">
                     {/* Left: 5 cols sticky heading */}
                     <div className="col-span-5 lg:col-span-1 sticky top-32 lg:static self-start">

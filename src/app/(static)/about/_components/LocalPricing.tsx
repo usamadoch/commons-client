@@ -23,7 +23,7 @@ const LocalPricing = () => {
 
     return (
         <section aria-labelledby="pricing-heading" className="w-full py-32 md:py-20 border-b border-n-6 bg-n-2/30">
-            <div className="mx-auto w-full max-w-[90rem] px-16 2xl:px-10 lg:px-8 md:px-5">
+            <div className="mx-auto w-full max-w-[90rem] px-16 2xl:px-10 lg:px-8 md:px-5 mobile:px-3">
                 {/* Section Header */}
                 <div className="max-w-3xl mb-12">
                     <span className="text-[13px] font-semibold uppercase tracking-[0.12em] text-purple-1 mb-4 block">
