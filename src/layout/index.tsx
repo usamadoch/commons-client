@@ -9,7 +9,8 @@
 import Menu from "./Menu";
 import Sidebar from "./Sidebar";
 import RightAuthSidebar from "./RightAuthSidebar";
-import { RequireAuth, useAuth } from "@/store/auth";
+import { RequireAuth, useAuth, hasClientSession } from "@/store/auth";
+import { useHydrated } from "@/hooks/useHydrated";
 
 type LayoutProps = {
     children: React.ReactNode;
@@ -20,10 +21,17 @@ const Layout = ({
     children,
     requireAuth = true,
 }: LayoutProps) => {
+    const { mounted } = useHydrated();
     const { isAuthenticated, isLoading } = useAuth();
+    const hasSession = hasClientSession();
 
-    // determine if right auth sidebar should be shown
-    const showRightAuthSidebar = !requireAuth && !isLoading && !isAuthenticated;
+    // User is considered authenticated if confirmed or loading with an active session hint
+    const isAuth = isAuthenticated || (isLoading && hasSession);
+
+    // Right auth sidebar is only shown on public pages for unauthenticated visitors.
+    // During SSR and initial hydration pass (!mounted), match the public SSR layout.
+    // Once mounted, switch based on actual client auth session state without hydration mismatch.
+    const showRightAuthSidebar = !requireAuth && (!mounted ? true : !isAuth);
 
     const content = (
         <div className="relative flex pl-75 xl:pl-16 md:pl-0 md:pb-16 bg-n-1 min-h-screen">
@@ -41,9 +49,9 @@ const Layout = ({
                                 </aside>
                             </div>
                         ) : (
-                            <div className="w-full min-w-0">
+                            <main className="w-full min-w-0 flex justify-center">
                                 {children}
-                            </div>
+                            </main>
                         )}
                     </div>
                 </div>

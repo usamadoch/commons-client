@@ -22,6 +22,34 @@ interface AuthStore extends AuthState {
 }
 
 // ====================
+// SESSION HINT HELPER (FOR ZERO-CLS AUTH/GUEST LAYOUT)
+// ====================
+
+const SESSION_STORAGE_KEY = 'commons_has_session';
+
+export const hasClientSession = (): boolean => {
+    if (typeof window === 'undefined') return false;
+    try {
+        return localStorage.getItem(SESSION_STORAGE_KEY) === 'true';
+    } catch {
+        return false;
+    }
+};
+
+export const setClientSession = (hasSession: boolean): void => {
+    if (typeof window === 'undefined') return;
+    try {
+        if (hasSession) {
+            localStorage.setItem(SESSION_STORAGE_KEY, 'true');
+        } else {
+            localStorage.removeItem(SESSION_STORAGE_KEY);
+        }
+    } catch {
+        // Ignore storage errors
+    }
+};
+
+// ====================
 // ZUSTAND STORE
 // ====================
 
@@ -36,6 +64,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
             console.log('[Auth] Checking session...');
             const { user } = await authApi.getMe();
             console.log('[Auth] Session found:', user.email);
+            setClientSession(true);
             set({
                 user,
                 isLoading: false,
@@ -44,6 +73,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
             });
         } catch (err) {
             console.log('[Auth] No session found (this is normal for guests)');
+            setClientSession(false);
             set({
                 user: null,
                 isLoading: false,
@@ -57,6 +87,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
         set({ isLoading: true, error: null });
         try {
             const { user } = await authApi.login(payload);
+            setClientSession(true);
             set({
                 user,
                 isLoading: false,
@@ -77,6 +108,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
         set({ isLoading: true, error: null });
         try {
             const { user } = await authApi.signup(payload);
+            setClientSession(true);
             set({
                 user,
                 isLoading: false,
@@ -100,6 +132,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
         } catch {
             // Ignore logout errors
         }
+        setClientSession(false);
         set({
             user: null,
             isLoading: false,
@@ -122,6 +155,15 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
         }
     },
 }));
+
+// Sync session hint with auth store state changes
+if (typeof window !== 'undefined') {
+    useAuthStore.subscribe((state) => {
+        if (!state.isLoading) {
+            setClientSession(state.isAuthenticated);
+        }
+    });
+}
 
 // ====================
 // HELPER HOOK
@@ -292,7 +334,7 @@ export function RedirectIfAuthenticated({ children, fallback }: RouteGuardProps)
 
         if (!hasCheckedInitialAuth.current) {
             hasCheckedInitialAuth.current = true;
-            
+
             if (isAuthenticated) {
                 if (isOnboarding && isOnRegisterPage) return;
 

@@ -28,7 +28,7 @@ export const RootHomePage = ({ initialPage, initialPosts }: RootHomePageProps = 
     // This eliminates the blank-screen null flash and initial loader sequence for visitors.
     if (!mounted || (isLoading && !isAuthenticated)) {
         return (
-            <div className="w-full max-w-2xl pb-20">
+            <div className="w-full max-w-2xl mx-auto pb-20">
                 <BannerCarousel />
                 <FeedSelector value="for-you" onChange={setFeedType} />
                 <PublicFeed initialPage={initialPage} initialPosts={initialPosts} />
@@ -37,7 +37,7 @@ export const RootHomePage = ({ initialPage, initialPosts }: RootHomePageProps = 
     }
 
     return (
-        <div className="w-full max-w-2xl pb-20">
+        <div className="w-full max-w-2xl mx-auto pb-20">
             {/* Rotating Banner Carousel with Banner C as default */}
             <BannerCarousel />
 

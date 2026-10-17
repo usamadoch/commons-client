@@ -1,15 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useAuth } from "@/store/auth";
+import { useAuth, hasClientSession } from "@/store/auth";
+import { useHydrated } from "@/hooks/useHydrated";
 import { usePathname } from "next/navigation";
 import SuggestedCreators from "./SuggestedCreators";
 
 const RightAuthSidebar = () => {
-    const { isAuthenticated } = useAuth();
+    const { mounted } = useHydrated();
+    const { isAuthenticated, isLoading } = useAuth();
+    const hasSession = hasClientSession();
     const pathname = usePathname();
 
-    if (isAuthenticated) return null;
+    const isAuth = isAuthenticated || (isLoading && hasSession);
+    if (mounted && isAuth) return null;
 
     return (
         <div className="flex flex-col w-full h-fit">
