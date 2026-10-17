@@ -23,8 +23,8 @@ const MediaBlock = ({ media, className = '' }: MediaBlockProps) => {
     const muxStatus = media.type === 'video' ? media.status : undefined;
     const thumbnailUrl = media.type === 'video' ? media.thumbnailUrl : undefined;
 
-    // Use slot logic for Cloudinary fallback
-    const fallbackSrc = isVideo ? constructSlotImageUrl(media.url || thumbnailUrl, 'post', 'modal') : undefined;
+    // Use slot logic for Cloudinary fallback, or direct URL if external
+    const fallbackSrc = isVideo ? (media.url?.startsWith('http') ? media.url : constructSlotImageUrl(media.url || thumbnailUrl, 'post', 'modal')) : undefined;
 
     return (
         <div

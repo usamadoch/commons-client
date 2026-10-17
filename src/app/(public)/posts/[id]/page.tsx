@@ -26,17 +26,23 @@ const PostDetail = async ({ params }: Props) => {
     let initialPost = null;
     let pageSlug = "";
 
-    try {
-        const data = await postService.getById(id, {
-            next: { revalidate: 60, tags: [`post-${id}`] }
-        });
-        if (data?.post) {
-            initialPost = { ...data.post, isLiked: data.isLiked };
-            pageSlug = (data.post.pageId as any)?.pageSlug || "";
-            initialPageData = await getInitialPageData(pageSlug);
+    const devRoutes = ["preview", "dev", "playground", "text", "single_image", "multi_image", "video", "poll", "link", "locked"];
+    const isDevPreviewId = devRoutes.includes(id);
+    const isDevEnabled = process.env.NEXT_PUBLIC_DEV_PLAYGROUND === "true";
+
+    if (!isDevPreviewId || !isDevEnabled) {
+        try {
+            const data = await postService.getById(id, {
+                next: { revalidate: 60, tags: [`post-${id}`] }
+            });
+            if (data?.post) {
+                initialPost = { ...data.post, isLiked: data.isLiked };
+                pageSlug = (data.post.pageId as any)?.pageSlug || "";
+                initialPageData = await getInitialPageData(pageSlug);
+            }
+        } catch (e) {
+            console.error("Error fetching data for post detail:", e);
         }
-    } catch (e) {
-        console.error("Error fetching data for post detail:", e);
     }
 
     return (

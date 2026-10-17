@@ -55,7 +55,14 @@ export {
   Power,
   Info,
   OctagonX,
-  Image as ImageIcon
+  Image as ImageIcon,
+  ArrowLeft,
+  Globe,
+  Maximize2,
+  Sparkles,
+  MessageSquare,
+  MessageCircleOff,
+  RotateCcw
 } from "lucide-react";
 import React from "react";
 import { LucideProps } from "lucide-react";

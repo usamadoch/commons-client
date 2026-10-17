@@ -32,9 +32,13 @@ const PostContentArea = ({
     onLockedClick,
 }: PostContentAreaProps) => {
     const creator = getCreatorInfo(post);
+    const hasMedia = mediaItems && mediaItems.length > 0;
+    const hasLink = Boolean(post.linkUrl || (post as any).linkPreview);
+    const hasPoll = Boolean(post.poll);
+    const isTextOnly = !hasMedia && !hasLink && !hasPoll;
 
     return (
-        <div className="w-full">
+        <div className={`w-full ${isTextOnly ? "pt-6 mobile:pt-4" : !hasMedia ? "pt-6 mobile:pt-4" : ""}`}>
             {/* ── Media Gallery ─────────────────────────────── */}
             <div className="w-full max-w-4xl mx-auto">
                 <PostMediaGallery
@@ -44,7 +48,7 @@ const PostContentArea = ({
                 />
             </div>
 
-            {(post.linkUrl || (post as any).linkPreview) && (
+            {hasLink && (
                 <div className="w-full max-w-4xl mx-auto">
                     <PostCardLinkPreview
                         linkUrl={post.linkUrl as string}
@@ -56,11 +60,11 @@ const PostContentArea = ({
                 </div>
             )}
 
-            {post.poll && (
+            {hasPoll && (
                 <div className="w-full max-w-4xl mx-auto">
                     <PostCardPoll
                         postId={post._id}
-                        initialPoll={post.poll}
+                        initialPoll={post.poll!}
                         initialVotedOptions={post.userVotedOptions || []}
                         isLocked={locked}
                         shareUrl={`/posts/${post._id}`}
@@ -73,6 +77,7 @@ const PostContentArea = ({
                 creator={creator}
                 date={post.publishedAt || post.createdAt}
                 locked={locked}
+                className={isTextOnly ? "pt-6 mobile:pt-4" : ""}
                 titleOrCaption={<ReadMore words={20} className="dark:text-n-9">{displayCaption}</ReadMore>}
                 actions={
                     <Actions
