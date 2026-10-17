@@ -87,15 +87,26 @@ export const usePostDetail = (
         setIsJoinTierModalOpen,
     } = usePostJoin(post);
 
-    // ── Dwell-based view counting (3s duration) ─────────────
+    // ── Dwell-based view counting (3s visible duration) ─────
     useEffect(() => {
         if (!isValidId || !postId) return;
 
-        const timer = setTimeout(() => {
+        let accumulatedMs = 0;
+        let lastVisibleStart: number | null = null;
+        let timerId: ReturnType<typeof setTimeout> | null = null;
+        let isDispatched = false;
+
+        const REQUIRED_DWELL_MS = 3000;
+
+        const record = () => {
+            if (isDispatched) return;
+            isDispatched = true;
+
             postService.recordView(postId).then((res) => {
                 if (res?.recorded && typeof res.viewCount === 'number') {
-                    queryClient.setQueryData(
-                        ['post', queryId, user?._id],
+                    // Update cache for any queries matching ['post', queryId]
+                    queryClient.setQueriesData(
+                        { queryKey: ['post', queryId] },
                         (old: (Post & { isLiked?: boolean }) | undefined | null) => {
                             if (!old) return old;
                             return { ...old, viewCount: res.viewCount };
@@ -105,10 +116,61 @@ export const usePostDetail = (
             }).catch((err) => {
                 console.error('[PostDetail] Failed to record view:', err);
             });
-        }, 3000);
+        };
 
-        return () => clearTimeout(timer);
-    }, [postId, queryId, isValidId, queryClient, user?._id]);
+        const startTimer = () => {
+            if (isDispatched) return;
+            if (typeof document !== 'undefined' && document.visibilityState !== 'visible') {
+                return;
+            }
+
+            lastVisibleStart = Date.now();
+            const remainingMs = Math.max(0, REQUIRED_DWELL_MS - accumulatedMs);
+
+            if (remainingMs <= 0) {
+                record();
+                return;
+            }
+
+            timerId = setTimeout(() => {
+                record();
+            }, remainingMs);
+        };
+
+        const pauseTimer = () => {
+            if (timerId) {
+                clearTimeout(timerId);
+                timerId = null;
+            }
+            if (lastVisibleStart !== null) {
+                accumulatedMs += Date.now() - lastVisibleStart;
+                lastVisibleStart = null;
+            }
+        };
+
+        const handleVisibilityChange = () => {
+            if (typeof document === 'undefined') return;
+            if (document.visibilityState === 'visible') {
+                startTimer();
+            } else {
+                pauseTimer();
+            }
+        };
+
+        if (typeof document !== 'undefined') {
+            document.addEventListener('visibilitychange', handleVisibilityChange);
+            if (document.visibilityState === 'visible') {
+                startTimer();
+            }
+        }
+
+        return () => {
+            pauseTimer();
+            if (typeof document !== 'undefined') {
+                document.removeEventListener('visibilitychange', handleVisibilityChange);
+            }
+        };
+    }, [postId, queryId, isValidId, queryClient]);
 
     // ── Derived values ───────────────────────────────────────
     const locked = post?.isLocked ?? false;
