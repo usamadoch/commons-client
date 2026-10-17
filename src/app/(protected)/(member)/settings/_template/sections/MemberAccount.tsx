@@ -121,8 +121,8 @@ const MemberAccount = () => {
                             onClose={() => setMessage(null)}
                         />
                     )}
-                    <div className="flex items-center w-[calc(50%-1.5rem)] -mt-2 mx-3 md:w-full md:mb-6 md:mt-0 md:mx-0 md:last:mb-0">
-                        <div className="mt-8 relative shrink-0 w-27.5 h-27.5 mr-3 cursor-pointer rounded-full group" onClick={handleAvatarClick}>
+                    <div className="flex items-center mb-6">
+                        <div className="relative shrink-0 w-24 h-24 sm:w-27.5 sm:h-27.5 mr-3 cursor-pointer rounded-full group" onClick={handleAvatarClick}>
                             <Image
                                 className="object-cover rounded-full"
                                 src={(previewAvatar || user?.avatarUrl || "/images/avatars/avatar-1.jpg") as string}
@@ -146,10 +146,10 @@ const MemberAccount = () => {
                         </div>
                     </div>
 
-                    <form onSubmit={handleSubmit(onSubmit)} className="mt-10">
+                    <form onSubmit={handleSubmit(onSubmit)} className="mt-8 sm:mt-10">
                         <div className="flex flex-wrap -mt-4 -mx-2.5">
                             <Field
-                                className="w-[calc(50%-1.25rem)] mx-2.5 mt-4"
+                                className="w-[calc(50%-1.25rem)] md:w-[calc(100%-1.25rem)] mx-2.5 mt-4"
                                 label="Display Name"
                                 classInput="h-12 border-n-4"
                                 placeholder="Enter display name"
@@ -157,7 +157,7 @@ const MemberAccount = () => {
                                 {...register("displayName", { required: "Display name is required" })}
                             />
                             <Field
-                                className="w-[calc(50%-1.25rem)] mx-2.5 mt-4"
+                                className="w-[calc(50%-1.25rem)] md:w-[calc(100%-1.25rem)] mx-2.5 mt-4"
                                 label="Username"
                                 placeholder="Enter username"
                                 classInput="h-12 border-n-4"
@@ -175,7 +175,7 @@ const MemberAccount = () => {
                             />
                         </div>
 
-                        <div className="flex justify-between mt-16 md:block md:mt-8">
+                        <div className="flex justify-between mt-12 sm:mt-16 md:block md:mt-8">
                             <button
                                 type="submit"
                                 className="btn-medium btn-purple min-w-[11.7rem] md:w-full"

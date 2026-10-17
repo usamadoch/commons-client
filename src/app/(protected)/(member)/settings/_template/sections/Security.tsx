@@ -103,7 +103,7 @@ const Security = ({ }: SecurityProps) => {
                             {...register("currentPassword", { required: "Current password is required" })}
                         />
                         <Field
-                            className="w-[calc(50%-1.25rem)] mt-4 mx-2.5 md:w-[calc(100%-1.25rem)]"
+                            className="w-[calc(50%-1.25rem)] md:w-[calc(100%-1.25rem)] mt-4 mx-2.5"
                             label="New Password"
                             type="password"
                             classInput="h-12 border-n-4"
@@ -118,7 +118,7 @@ const Security = ({ }: SecurityProps) => {
                             })}
                         />
                         <Field
-                            className="w-[calc(50%-1.25rem)] mt-4 mx-2.5 md:w-[calc(100%-1.25rem)]"
+                            className="w-[calc(50%-1.25rem)] md:w-[calc(100%-1.25rem)] mt-4 mx-2.5"
                             label="Confirm New Password"
                             classInput="h-12 border-n-4"
                             type="password"
@@ -132,7 +132,7 @@ const Security = ({ }: SecurityProps) => {
                         />
                     </div>
 
-                    <div className="flex justify-between mt-16 md:block md:mt-8">
+                    <div className="flex justify-between mt-12 sm:mt-16 md:block md:mt-8">
                         <button
                             type="submit"
                             className="btn-medium btn-purple min-w-[11.7rem] md:w-full"

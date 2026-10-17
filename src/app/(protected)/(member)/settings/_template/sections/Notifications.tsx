@@ -166,7 +166,7 @@ const Notifications = () => {
                                     className="flex items-center justify-between mb-4 pb-4 border-b border-n-4 dark:border-n-6 last:mb-0 last:pb-0 last:border-0"
                                     key={`${setting.type}-${setting.id}`}
                                 >
-                                    <div className="mr-8">
+                                    <div className="mr-4 sm:mr-8">
                                         <div className="text-sm font-bold mb-1 dark:text-n-9">
                                             {setting.label}
                                         </div>
@@ -186,7 +186,7 @@ const Notifications = () => {
                     </div>
                 ))}
 
-                <div className="flex justify-between mt-16 md:block md:mt-8 items-center">
+                <div className="flex justify-between mt-12 sm:mt-16 md:block md:mt-8 items-center">
                     {successMessage && (
                         <div className="text-sm text-green-500 font-bold mr-4">
                             {successMessage}

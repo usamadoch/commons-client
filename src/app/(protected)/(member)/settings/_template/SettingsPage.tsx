@@ -51,32 +51,21 @@ const SettingsPage = () => {
     });
 
     return (
-        <>
-            <div className="flex pt-4 lg:block">
-                {/* <div className="shrink-0 w-[20rem] 4xl:w-[14.7rem] lg:w-full lg:mb-8">
-                    <Profile />
-                </div> */}
-                <div className="w-[calc(100%-20rem)] pl-26.5 4xl:w-[calc(100%-14.7rem)] 2xl:pl-10 lg:w-full lg:pl-0">
-                    <div className="flex justify-between mb-6 md:overflow-auto md:-mx-5 md:scrollbar-none md:before:w-5 md:before:shrink-0 md:after:w-5 md:after:shrink-0">
-                        <Tabs
-                            className="2xl:ml-0 md:flex-nowrap"
-                            classButton="2xl:ml-0 md:whitespace-nowrap"
-                            items={types}
-                            value={type}
-                            setValue={setType as (val: string) => void}
-                        />
-                        {/* <button className="btn-stroke btn-small shrink-0 min-w-[6rem] ml-4 md:hidden">
-                            <Icon name="dots" />
-                            <span>Actions</span>
-                        </button> */}
-                    </div>
-                    {type === "account" && (canManagePage ? <CreatorAccount /> : <MemberAccount />)}
-                    {type === "security" && canManageSecurity && <Security />}
-                    {type === "social-networks" && canManagePage && <SocialNetworks />}
-                    {type === "notifications" && <Notifications />}
-                </div>
+        <div className="pt-4 max-w-4xl w-full mx-auto">
+            <div className="flex justify-between mb-6 overflow-x-auto scrollbar-none -mx-2 px-2 sm:mx-0 sm:px-0">
+                <Tabs
+                    className="flex-nowrap"
+                    classButton="whitespace-nowrap"
+                    items={types}
+                    value={type}
+                    setValue={setType as (val: string) => void}
+                />
             </div>
-        </>
+            {type === "account" && (canManagePage ? <CreatorAccount /> : <MemberAccount />)}
+            {type === "security" && canManageSecurity && <Security />}
+            {type === "social-networks" && canManagePage && <SocialNetworks />}
+            {type === "notifications" && <Notifications />}
+        </div>
     );
 };
 

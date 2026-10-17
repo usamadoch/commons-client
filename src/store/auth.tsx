@@ -174,7 +174,7 @@ export function useAuth() {
                 router.push('/dashboard');
             }
         } else {
-            router.push('/explore');
+            router.push('/');
         }
     };
 
@@ -241,7 +241,7 @@ export function RequireCreator({ children, fallback }: RouteGuardProps) {
             if (!isAuthenticated) {
                 router.push('/login');
             } else if (user?.role !== 'creator') {
-                router.push('/explore');
+                router.push('/');
             }
         }
     }, [isLoading, isAuthenticated, user, router]);

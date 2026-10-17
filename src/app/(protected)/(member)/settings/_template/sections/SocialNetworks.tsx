@@ -119,14 +119,14 @@ const SocialNetworks = ({ }: SocialNetworksProps) => {
                             <Loader />
                         </div>
                     ) : (
-                        <div className="flex items-center mb-4 md:pl-0 dark:border-n-6">
-                            <Icon className="shrink-0 icon-20 mr-8 md:mr-4 dark:fill-n-1 text-[#ff0033]" name="youtube" />
-                            <div className="mr-auto">
+                        <div className="flex items-center mb-4 dark:border-n-6">
+                            <Icon className="shrink-0 icon-20 mr-4 sm:mr-8 dark:fill-n-1 text-[#ff0033]" name="youtube" />
+                            <div className="mr-auto min-w-0 pr-2">
                                 <div className="mb-1.5 text-xs font-medium text-n-3 dark:text-n-8">
                                     YouTube
                                 </div>
                                 <div className="break-all text-sm font-bold dark:text-n-9">
-                                    {youtubeStatus === "connected" ? (channelName || "Connected") : "Not conneted"}
+                                    {youtubeStatus === "connected" ? (channelName || "Connected") : "Not connected"}
                                 </div>
                             </div>
                             {youtubeStatus !== "connected" && youtubeStatus !== "selecting" ? (
@@ -134,7 +134,7 @@ const SocialNetworks = ({ }: SocialNetworksProps) => {
                                     type="button"
                                     onClick={() => handleYoutubeConnectAuth()}
                                     disabled={youtubeStatus === "connecting" || youtubeStatus === "authorizing"}
-                                    className="group inline-flex items-center self-end pb-0.5 text-xs font-bold cursor-pointer disabled:opacity-50"
+                                    className="group inline-flex items-center shrink-0 ml-2 pb-0.5 text-xs font-bold cursor-pointer disabled:opacity-50"
                                 >
                                     <Icon className="mr-1.5 dark:fill-n-9" name="external-link" />
                                     {youtubeStatus.includes("ing") ? "Connecting..." : "Connect"}
@@ -143,7 +143,7 @@ const SocialNetworks = ({ }: SocialNetworksProps) => {
                                 <button
                                     type="button"
                                     onClick={() => handleYoutubeDisconnect()}
-                                    className="group inline-flex items-center self-end pb-0.5 text-xs font-bold cursor-pointer disabled:opacity-50"
+                                    className="group inline-flex items-center shrink-0 ml-2 pb-0.5 text-xs font-bold cursor-pointer disabled:opacity-50"
                                 >
                                     Disconnect
                                 </button>

@@ -24,7 +24,7 @@ const LoginPage = () => {
         onSubmit
     } = useAuthForm({
         redirect: true,
-        onSignupSuccess: () => router.push('/dashboard'),
+        onSignupSuccess: () => router.push('/'),
     });
 
     const { register, handleSubmit, watch, clearErrors, formState: { errors, isSubmitted } } = form;
@@ -72,7 +72,7 @@ const LoginPage = () => {
                                     router.push('/dashboard');
                                 }
                             } else {
-                                router.push('/explore');
+                                router.push('/');
                             }
                         }}
                         onError={(err) => clearErrors("root")}

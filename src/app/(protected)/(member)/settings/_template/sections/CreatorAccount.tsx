@@ -275,7 +275,7 @@ const CreatorAccount = () => {
                     /> */}
 
                     <div className="p-5">
-                        <div className="flex items-center w-[calc(50%-1.5rem)] mx-3 md:w-full md:mb-6 md:mt-0 md:mx-0 md:last:mb-0">
+                        <div className="flex items-center mb-6">
                             {/* Avatar Image */}
                             <div className="relative shrink-0 w-24 h-24 mr-3">
                                 <PageImageUploader
@@ -299,10 +299,10 @@ const CreatorAccount = () => {
                             </div>
                         </div>
 
-                        <form onSubmit={handleSubmit(onSubmit)} className="mt-10">
+                        <form onSubmit={handleSubmit(onSubmit)} className="mt-8 sm:mt-10">
                             <div className="flex flex-wrap -mt-4 -mx-2.5">
                                 <Field
-                                    className="w-[calc(50%-1.25rem)] mx-2.5 mt-4"
+                                    className="w-[calc(50%-1.25rem)] md:w-[calc(100%-1.25rem)] mx-2.5 mt-4"
                                     classInput="h-12 border-n-4"
                                     label="Creator Name"
                                     error={errors.creatorName}
@@ -310,7 +310,7 @@ const CreatorAccount = () => {
                                 />
 
                                 <Field
-                                    className="w-[calc(50%-1.25rem)] mx-2.5 mt-4 "
+                                    className="w-[calc(50%-1.25rem)] md:w-[calc(100%-1.25rem)] mx-2.5 mt-4"
                                     label="Profile URL"
 
                                     prefix={`${APP_DOMAIN}/`}
@@ -321,7 +321,7 @@ const CreatorAccount = () => {
                                 />
 
                                 <Field
-                                    className="w-[calc(100%-1.25rem)]  mt-4 mx-2.5"
+                                    className="w-[calc(100%-1.25rem)] mt-4 mx-2.5"
                                     label={`About your page (${about?.length || 0}/500)`}
                                     textarea
                                     classInput="border-n-4"
@@ -329,7 +329,7 @@ const CreatorAccount = () => {
                                     {...register("about", { maxLength: 500 })}
                                 />
 
-                                <div className="w-full mt-4 mx-2.5">
+                                <div className="w-[calc(100%-1.25rem)] mt-4 mx-2.5">
                                     <Categories
                                         label="Categories"
                                         items={category || []}
@@ -342,7 +342,7 @@ const CreatorAccount = () => {
 
                             </div>
 
-                            <div className="flex justify-between mt-16 md:block md:mt-8">
+                            <div className="flex justify-between mt-12 sm:mt-16 md:block md:mt-8">
                                 <button
                                     type="submit"
                                     className="cursor-pointer btn-medium btn-purple min-w-[11.7rem] md:w-full"
