@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "@/components/Image";
 import Images from "./Images";
@@ -83,6 +82,7 @@ const PostCard = ({ post, page, isOwner = false, imageBig, onCommentClick }: Pos
         id: post._id,
         author: creator.displayName,
         avatar: creator.avatarUrl,
+        pageSlug: creator.pageSlug,
         time: formatAppDate(post.createdAt, { suffix: true }),
         content: content,
         images: images,
@@ -115,20 +115,44 @@ const PostCard = ({ post, page, isOwner = false, imageBig, onCommentClick }: Pos
         <div className="flex flex-col py-5 mobile:py-3.5 card bg-white border border-n-4 rounded-sm last:mb-0">
             {/* Header Row */}
             <div className="flex items-center px-5 mobile:px-3.5 mb-3 mobile:mb-2">
-                <div className="relative shrink-0 w-8.5 h-8.5 mr-3.5">
-                    <Image
-                        className="object-cover rounded-full"
-                        family="avatar"
-                        slot="dropdown"
-                        src={item.avatar}
-                        fill
-                        alt="Avatar"
-                    />
-                </div>
-                <div className="flex items-center gap-2 min-w-0">
-                    <div className="capitalize whitespace-nowrap text-base font-bold dark:text-n-9 truncate">
-                        {item.author}
+                {item.pageSlug ? (
+                    <Link
+                        href={`/${item.pageSlug}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex items-center min-w-0 cursor-pointer"
+                    >
+                        <div className="relative shrink-0 w-8.5 h-8.5 mr-3.5 rounded-full overflow-hidden">
+                            <Image
+                                className="object-cover rounded-full"
+                                family="avatar"
+                                slot="dropdown"
+                                src={item.avatar}
+                                fill
+                                alt="Avatar"
+                            />
+                        </div>
+                        <div className="capitalize whitespace-nowrap text-base font-bold dark:text-n-9 truncate">
+                            {item.author}
+                        </div>
+                    </Link>
+                ) : (
+                    <div className="flex items-center min-w-0">
+                        <div className="relative shrink-0 w-8.5 h-8.5 mr-3.5 rounded-full overflow-hidden">
+                            <Image
+                                className="object-cover rounded-full"
+                                family="avatar"
+                                slot="dropdown"
+                                src={item.avatar}
+                                fill
+                                alt="Avatar"
+                            />
+                        </div>
+                        <div className="capitalize whitespace-nowrap text-base font-bold dark:text-n-9 truncate">
+                            {item.author}
+                        </div>
                     </div>
+                )}
+                <div className="flex items-center gap-2 min-w-0 ml-2">
                     <div className="text-sm text-n-3 dark:text-n-8">•</div>
                     <div className="truncate text-sm font-medium text-n-3 dark:text-n-8">
                         {item.time}

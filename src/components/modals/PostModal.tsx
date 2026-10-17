@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Link from "next/link";
 import { formatAppDate } from "@/lib/date";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
@@ -182,18 +183,44 @@ const PostModal = ({ visible, onClose, post, page }: PostModalProps) => {
             <div className={`${showMediaSection ? "w-md xl:w-88" : "w-full"} shrink-0 bg-white dark:bg-n-1 flex flex-col dark:border-n-6 md:w-full md:contents`}>
                 {/* 1. Author Header */}
                 <div className="p-4 flex items-center shrink-0 md:order-1">
-                    <div className="relative w-10 h-10 mr-3">
-                        <Image
-                            className="object-cover rounded-full"
-                            family="avatar"
-                            slot="dropdown"
-                            src={creator.avatarUrl}
-                            fill
-                            alt={creator.displayName}
-                        />
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="capitalize font-bold text-base text-n-1 dark:text-n-9">{creator.displayName}</div>
+                    {creator.pageSlug ? (
+                        <Link
+                            href={`/${creator.pageSlug}`}
+                            onClick={onClose}
+                            className="flex items-center min-w-0 cursor-pointer"
+                        >
+                            <div className="relative w-10 h-10 mr-3 rounded-full overflow-hidden shrink-0">
+                                <Image
+                                    className="object-cover rounded-full"
+                                    family="avatar"
+                                    slot="dropdown"
+                                    src={creator.avatarUrl}
+                                    fill
+                                    alt={creator.displayName}
+                                />
+                            </div>
+                            <div className="capitalize font-bold text-base text-n-1 dark:text-n-9 truncate">
+                                {creator.displayName}
+                            </div>
+                        </Link>
+                    ) : (
+                        <div className="flex items-center min-w-0">
+                            <div className="relative w-10 h-10 mr-3 rounded-full overflow-hidden shrink-0">
+                                <Image
+                                    className="object-cover rounded-full"
+                                    family="avatar"
+                                    slot="dropdown"
+                                    src={creator.avatarUrl}
+                                    fill
+                                    alt={creator.displayName}
+                                />
+                            </div>
+                            <div className="capitalize font-bold text-base text-n-1 dark:text-n-9 truncate">
+                                {creator.displayName}
+                            </div>
+                        </div>
+                    )}
+                    <div className="flex items-center gap-2 ml-2 min-w-0">
                         <div className="text-sm text-n-3 dark:text-n-8">•</div>
                         <div className="text-sm text-n-3 dark:text-n-8">{formatAppDate(post.createdAt, { suffix: true })}</div>
                     </div>

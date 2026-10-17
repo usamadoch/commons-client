@@ -8,6 +8,7 @@ export interface ContentHeaderProps {
     creator: {
         displayName: string;
         avatarUrl?: string | null;
+        pageSlug?: string | null;
     };
     date?: string | Date | null;
     locked?: boolean;
@@ -48,6 +49,17 @@ const ContentHeader = ({
                                     alt={creator.displayName}
                                 />
                             </Link>
+                        ) : creator.pageSlug ? (
+                            <Link href={`/${creator.pageSlug}`} className="block w-full h-full relative rounded-full overflow-hidden cursor-pointer hover:opacity-85 transition-opacity">
+                                <Image
+                                    className="object-cover"
+                                    slot="profile"
+                                    family="avatar"
+                                    src={creator.avatarUrl}
+                                    fill
+                                    alt={creator.displayName}
+                                />
+                            </Link>
                         ) : (
                             <div className="relative w-full h-full rounded-full overflow-hidden">
                                 <Image
@@ -65,7 +77,13 @@ const ContentHeader = ({
                     <div className="flex flex-col w-full pl-4 gap-2">
                         <div className="flex justify-between w-full">
                             <div className="flex items-center gap-3">
-                                <h5 className="capitalize text-h5 md:text-h4 dark:text-n-9">{creator.displayName}</h5>
+                                {creator.pageSlug ? (
+                                    <Link href={`/${creator.pageSlug}`} className="cursor-pointer">
+                                        <h5 className="capitalize text-h5 md:text-h4 dark:text-n-9">{creator.displayName}</h5>
+                                    </Link>
+                                ) : (
+                                    <h5 className="capitalize text-h5 md:text-h4 dark:text-n-9">{creator.displayName}</h5>
+                                )}
                                 {date && (
                                     <div className="flex items-center gap-3 ">
                                         <span className="dark:text-n-8">•</span>

@@ -184,18 +184,44 @@ const PostModal = ({ visible, onClose, post, page }: PostModalProps) => {
                 <div className={`${showMediaSection ? "w-2/5" : "w-full"} shrink-0 bg-white dark:bg-n-1 flex flex-col dark:border-white/10 md:w-full md:flex-1 md:h-full`}>
                 {/* 1. Author Header */}
                 <div className="p-4 border-b border-n-4 dark:border-white flex items-center shrink-0">
-                    <div className="relative w-10 h-10 mr-3">
-                        <Image
-                            className="object-cover rounded-full"
-                            family="avatar"
-                            slot="dropdown"
-                            src={creator.avatarUrl}
-                            fill
-                            alt={creator.displayName}
-                        />
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="capitalize font-bold text-base text-n-1 dark:text-white">{creator.displayName}</div>
+                    {creator.pageSlug ? (
+                        <Link
+                            href={`/${creator.pageSlug}`}
+                            onClick={onClose}
+                            className="flex items-center min-w-0 cursor-pointer"
+                        >
+                            <div className="relative w-10 h-10 mr-3 rounded-full overflow-hidden shrink-0">
+                                <Image
+                                    className="object-cover rounded-full"
+                                    family="avatar"
+                                    slot="dropdown"
+                                    src={creator.avatarUrl}
+                                    fill
+                                    alt={creator.displayName}
+                                />
+                            </div>
+                            <div className="capitalize font-bold text-base text-n-1 dark:text-white truncate">
+                                {creator.displayName}
+                            </div>
+                        </Link>
+                    ) : (
+                        <div className="flex items-center min-w-0">
+                            <div className="relative w-10 h-10 mr-3 rounded-full overflow-hidden shrink-0">
+                                <Image
+                                    className="object-cover rounded-full"
+                                    family="avatar"
+                                    slot="dropdown"
+                                    src={creator.avatarUrl}
+                                    fill
+                                    alt={creator.displayName}
+                                />
+                            </div>
+                            <div className="capitalize font-bold text-base text-n-1 dark:text-white truncate">
+                                {creator.displayName}
+                            </div>
+                        </div>
+                    )}
+                    <div className="flex items-center gap-2 ml-2 min-w-0">
                         <div className="text-sm text-n-3">•</div>
                         <div className="text-sm text-n-3">{formatAppDate(post.createdAt, { suffix: true })}</div>
                     </div>
