@@ -4,13 +4,31 @@
 
 
 
-import type { NextPage } from "next";
 import CreatorPage from "./_template";
+import { postService } from "@/services/post.service";
 
-const Creator: NextPage = () => {
-    return <CreatorPage />;
+type Props = {
+    params: Promise<{
+        "page-slug": string;
+    }>;
 };
 
-export default Creator;
+export default async function Creator({ params }: Props) {
+    const resolvedParams = await params;
+    const slug = resolvedParams["page-slug"];
+
+    let initialPosts: any[] = [];
+    try {
+        const data = await postService.getCreatorPosts(
+            { pageSlug: slug, limit: 20, type: ['text', 'image', 'video'] },
+            { next: { revalidate: 60, tags: [`creator-posts-${slug.toLowerCase()}`] } }
+        );
+        initialPosts = data?.posts || [];
+    } catch (e) {
+        console.error(`[CreatorPage] Error prefetching posts for ${slug}:`, e);
+    }
+
+    return <CreatorPage initialPosts={initialPosts} />;
+}
 
 

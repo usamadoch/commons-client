@@ -3,8 +3,8 @@ import { fetchApi } from "./api.client";
 import { ExploreCreator, CreatorPage, UpdatePagePayload } from "@/types";
 
 export const pageService = {
-    async getAll(): Promise<{ pages: ExploreCreator[] }> {
-        return fetchApi('/pages');
+    async getAll(options?: RequestInit): Promise<{ pages: ExploreCreator[] }> {
+        return fetchApi('/pages', options);
     },
 
     async getBySlug(slug: string, options?: RequestInit): Promise<{

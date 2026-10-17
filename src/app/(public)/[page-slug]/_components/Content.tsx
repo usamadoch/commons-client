@@ -14,15 +14,20 @@ import Empty from "@/components/Empty";
 
 type CreatorContentProps = {
     pageSlug: string;
+    initialPosts?: Post[];
     onOpenJoinModal?: () => void;
     onOpenLoginModal?: () => void;
 };
 
-const Content = ({ pageSlug, onOpenJoinModal, onOpenLoginModal }: CreatorContentProps) => {
+const Content = ({ pageSlug, initialPosts, onOpenJoinModal, onOpenLoginModal }: CreatorContentProps) => {
     const router = useRouter();
     // Using cached queries
     const { data: pageData } = useCreatorPage(pageSlug);
-    const { data: postsData, isLoading } = useCreatorPosts(pageSlug, { type: ['text', 'image', 'video'] });
+    const { data: postsData, isLoading } = useCreatorPosts(
+        pageSlug,
+        { type: ['text', 'image', 'video'] },
+        initialPosts
+    );
     const { isAuthenticated, user } = useAuth();
     const queryClient = useQueryClient();
 

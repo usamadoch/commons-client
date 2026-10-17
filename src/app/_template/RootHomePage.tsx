@@ -9,21 +9,29 @@ import PublicFeed from "./PublicFeed";
 import BannerCarousel from "./_components/BannerCarousel";
 import FeedSelector, { FeedType } from "./_components/FeedSelector";
 
+import { CreatorPage, Post } from "@/types";
+
+interface RootHomePageProps {
+    initialPage?: CreatorPage | null;
+    initialPosts?: Post[];
+}
+
 // ======================
 // ROOT HOMEPAGE (PUBLIC + AUTHENTICATED)
 // ======================
-export const RootHomePage = () => {
+export const RootHomePage = ({ initialPage, initialPosts }: RootHomePageProps = {}) => {
     const { mounted } = useHydrated();
     const { isAuthenticated, isLoading } = useAuth();
     const [feedType, setFeedType] = useState<FeedType>("for-you");
 
-    if (!mounted) return null;
-
-    // While auth is loading, show a loader briefly
-    if (isLoading) {
+    // During SSR or while checking auth on client, render the public feed immediately.
+    // This eliminates the blank-screen null flash and initial loader sequence for visitors.
+    if (!mounted || (isLoading && !isAuthenticated)) {
         return (
-            <div className="flex justify-center items-center pt-10">
-                <Loader />
+            <div className="w-full max-w-2xl pb-20">
+                <BannerCarousel />
+                <FeedSelector value="for-you" onChange={setFeedType} />
+                <PublicFeed initialPage={initialPage} initialPosts={initialPosts} />
             </div>
         );
     }
@@ -37,8 +45,8 @@ export const RootHomePage = () => {
             <FeedSelector value={feedType} onChange={setFeedType} />
 
             {/* Feed content */}
-            {feedType === "for-you" ? (
-                <PublicFeed />
+            {feedType === "for-you" || !isAuthenticated ? (
+                <PublicFeed initialPage={initialPage} initialPosts={initialPosts} />
             ) : (
                 <AuthenticatedFeed />
             )}

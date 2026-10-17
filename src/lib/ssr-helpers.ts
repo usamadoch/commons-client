@@ -8,7 +8,9 @@ import { pageService } from "@/services/page.service";
 export async function getInitialPageData(slug?: string | null) {
     if (!slug) return null;
     try {
-        return await pageService.getBySlug(slug, { cache: 'no-store' });
+        return await pageService.getBySlug(slug, {
+            next: { revalidate: 60, tags: [`creator-${slug.toLowerCase()}`] },
+        });
     } catch (error) {
         console.error(`[getInitialPageData] Error fetching data for slug ${slug}:`, error);
         return null;

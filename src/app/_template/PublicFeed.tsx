@@ -11,15 +11,24 @@ import Loader from "@/components/Loader";
 import LoginModal from "@/components/modals/LoginModal";
 import JoinTierModal from "@/components/modals/JoinTierModal";
 
-const PublicFeed = () => {
+import { CreatorPage } from "@/types";
+
+interface PublicFeedProps {
+    initialPage?: CreatorPage | null;
+    initialPosts?: Post[];
+}
+
+const PublicFeed = ({ initialPage, initialPosts }: PublicFeedProps = {}) => {
     const router = useRouter();
     const pageSlug = "commons";
     const { isAuthenticated } = useAuth();
 
-    const { data: pageData, isLoading: pageLoading } = useCreatorPage(pageSlug);
-    const { data: postsData, isLoading: postsLoading } = useCreatorPosts(pageSlug, {
-        type: ['text', 'image', 'video']
-    });
+    const { data: pageData, isLoading: pageLoading } = useCreatorPage(pageSlug, initialPage ? { page: initialPage } : undefined);
+    const { data: postsData, isLoading: postsLoading } = useCreatorPosts(
+        pageSlug,
+        { type: ['text', 'image', 'video'] },
+        initialPosts
+    );
 
     const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
     const [showLoginModal, setShowLoginModal] = useState(false);

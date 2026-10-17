@@ -31,7 +31,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     let name = slug.charAt(0).toUpperCase() + slug.slice(1);
     try {
-        const data = await pageService.getBySlug(slug);
+        const data = await pageService.getBySlug(slug, {
+            next: { revalidate: 60, tags: [`creator-${slug.toLowerCase()}`] }
+        });
         if (data?.page?.displayName) {
             name = data.page.displayName;
         }
@@ -56,7 +58,9 @@ export default async function CreatorLayout({ params, children }: Props) {
     try {
         // Fetch the public initial page data on the server without cookies
         // Auth-specific state will be verified client-side
-        initialData = await pageService.getBySlug(slug);
+        initialData = await pageService.getBySlug(slug, {
+            next: { revalidate: 60, tags: [`creator-${slug.toLowerCase()}`] }
+        });
     } catch {
         notFound();
     }

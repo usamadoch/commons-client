@@ -24,17 +24,23 @@ export const postService = {
         return { ...data.data, pagination: data.meta?.pagination };
     },
 
-    async getCreatorPosts(params: { pageSlug: string; limit?: number; type?: string | string[] }): Promise<{ posts: Post[] }> {
+    async getCreatorPosts(params: { pageSlug: string; limit?: number; type?: string | string[] }, options?: RequestInit): Promise<{ posts: Post[] }> {
         const searchParams = new URLSearchParams();
         searchParams.set('pageSlug', params.pageSlug);
         if (params.limit) searchParams.set('limit', String(params.limit));
         if (params.type) searchParams.set('type', String(params.type));
         const query = searchParams.toString();
-        return fetchApi(`/posts/creator?${query}`);
+        return fetchApi(`/posts/creator?${query}`, options);
     },
 
-    async getById(id: string): Promise<{ post: Post; isLiked: boolean }> {
-        return fetchApi(`/posts/${id}`);
+    async getById(id: string, options?: RequestInit): Promise<{ post: Post; isLiked: boolean }> {
+        return fetchApi(`/posts/${id}`, options);
+    },
+
+    async recordView(id: string): Promise<{ recorded: boolean; viewCount: number }> {
+        return fetchApi(`/posts/${id}/view`, {
+            method: 'POST',
+        });
     },
 
     async create(payload: CreatePostPayload): Promise<{ post: Post }> {
@@ -103,8 +109,8 @@ export const postService = {
         });
     },
 
-    async getRecentVideos(pageSlug: string): Promise<{ posts: Post[] }> {
-        return fetchApi(`/posts/recent-videos?pageSlug=${encodeURIComponent(pageSlug)}`);
+    async getRecentVideos(pageSlug: string, options?: RequestInit): Promise<{ posts: Post[] }> {
+        return fetchApi(`/posts/recent-videos?pageSlug=${encodeURIComponent(pageSlug)}`, options);
     },
 
     async getHomeFeed(params: { cursor?: string; limit?: number } = {}): Promise<{

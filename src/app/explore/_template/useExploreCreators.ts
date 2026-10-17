@@ -1,8 +1,9 @@
 
 import { useExploreCreators as useQueryExplore } from "@/hooks/queries";
+import { ExploreCreator } from "@/types";
 
-export const useExploreCreators = () => {
-    const { data, isLoading, isError, error, refetch } = useQueryExplore();
+export const useExploreCreators = (initialCreators?: ExploreCreator[]) => {
+    const { data, isLoading, isError, error, refetch } = useQueryExplore(initialCreators);
 
     return {
         creators: data || [],

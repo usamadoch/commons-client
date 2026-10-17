@@ -4,11 +4,12 @@ import { useState, useMemo } from "react";
 
 import Search from "@/components/Search";
 import Loader from "@/components/Loader";
+import { ExploreCreator } from "@/types";
 import Item from "./Item";
 import { useExploreCreators } from "./useExploreCreators";
 
-export const ExplorePage = () => {
-    const { creators, isLoading, error } = useExploreCreators();
+export const ExplorePage = ({ initialCreators }: { initialCreators?: ExploreCreator[] }) => {
+    const { creators, isLoading, error } = useExploreCreators(initialCreators);
 
     const [search, setSearch] = useState("");
 
