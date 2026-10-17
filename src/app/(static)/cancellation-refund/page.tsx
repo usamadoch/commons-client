@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import BusinessContactDetails from "../_components/BusinessContactDetails";
 import ComplaintsProcess from "../_components/ComplaintsProcess";
+import StaticPageWrapper from "../_components/StaticPageWrapper";
 
 export const metadata: Metadata = {
     title: "Cancellation & Refund Policy | Commons",
@@ -11,15 +12,7 @@ export const metadata: Metadata = {
 
 const CancellationRefundPage = () => {
     return (
-        <main className="w-full max-w-4xl mx-auto px-6 mobile:px-3 py-24 md:py-10 flex flex-col gap-12 md:gap-8">
-            <div className="flex flex-col gap-2 border-b border-n-4 dark:border-n-6 pb-12">
-                <h1 className="text-[48px] font-normal tracking-tighter leading-[0.85] text-n-1 dark:text-n-9">
-                    Cancellation &amp; Refund Policy
-                </h1>
-                <div className="flex flex-col gap-2 text-base font-normal text-n-3 dark:text-n-8">
-                    <p>Last Updated: October 15, 2026</p>
-                </div>
-            </div>
+        <StaticPageWrapper title="Cancellation & Refund Policy" lastUpdated="October 15, 2026">
 
             <section className="flex flex-col gap-2">
                 <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">1. Overview</h2>
@@ -161,7 +154,7 @@ const CancellationRefundPage = () => {
                     We aim to respond to customer inquiries within 48 hours.
                 </p>
             </section>
-        </main>
+        </StaticPageWrapper>
     );
 };
 

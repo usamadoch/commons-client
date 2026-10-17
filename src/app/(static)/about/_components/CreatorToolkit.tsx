@@ -93,7 +93,7 @@ const CreatorToolkit = () => {
             ref={sectionRef}
             id="toolkit"
             aria-labelledby="toolkit-heading"
-            className="relative w-full py-32 lg:pt-0 lg:pb-24 md:pb-16 scroll-mt-20"
+            className="relative w-full pt-24 pb-16 lg:pt-0 lg:pb-16 md:pb-12 scroll-mt-20"
         >
             {/* Mobile/Tablet Sticky Horizontal Navigation */}
             <div className="hidden lg:block sticky top-0 z-20 w-full bg-n-1/95 border-b border-n-6 backdrop-blur-sm">
@@ -183,7 +183,7 @@ const CreatorToolkit = () => {
                             <div
                                 key={feature.id}
                                 id={feature.id}
-                                className="min-h-[75vh] lg:min-h-fit flex flex-col justify-center scroll-mt-28 lg:scroll-mt-20"
+                                className="min-h-[75vh] last:min-h-fit lg:min-h-fit flex flex-col justify-center scroll-mt-28 lg:scroll-mt-20"
                             >
                                 <span className="text-xs font-mono font-bold tracking-widest uppercase text-purple-1 mb-2 block">
                                     {feature.stepTitle}

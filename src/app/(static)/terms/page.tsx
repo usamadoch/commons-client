@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BUSINESS } from "@/constants/business";
 import BusinessContactDetails from "../_components/BusinessContactDetails";
 import ComplaintsProcess from "../_components/ComplaintsProcess";
+import StaticPageWrapper from "../_components/StaticPageWrapper";
 
 export const metadata: Metadata = {
     title: "Terms and Conditions | Commons",
@@ -12,16 +13,7 @@ export const metadata: Metadata = {
 
 const TermsPage = () => {
     return (
-        <main className="w-full max-w-4xl mx-auto px-6 mobile:px-3 py-24 md:py-10 flex flex-col gap-12 md:gap-8">
-            <div className="flex flex-col gap-2 border-b border-n-4 dark:border-n-6 pb-12">
-                <h1 className="text-[48px] font-normal tracking-tighter leading-[0.85] text-n-1 dark:text-n-9">
-                    Terms and Conditions
-                </h1>
-                <div className="flex flex-col gap-2 text-base font-normal text-n-3 dark:text-n-8">
-
-                    <p>Last Updated: October 15, 2026</p>
-                </div>
-            </div>
+        <StaticPageWrapper title="Terms and Conditions" lastUpdated="October 15, 2026">
 
             <section className="flex flex-col gap-2">
                 <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">1. Welcome to Commons</h2>
@@ -142,7 +134,7 @@ const TermsPage = () => {
                     If you pay with a card issued outside Pakistan, your bank will convert the charge to your local currency at their exchange rate, and may apply an additional international transaction fee.
                 </p>
             </section>
-        </main>
+        </StaticPageWrapper>
     );
 };
 

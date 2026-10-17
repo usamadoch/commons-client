@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { BUSINESS } from "@/constants/business";
+import StaticPageWrapper from "../_components/StaticPageWrapper";
 
 export const metadata: Metadata = {
     title: "Ownership Statement | Commons",
@@ -11,15 +12,7 @@ const linkClass = "text-purple-1 hover:underline";
 
 const OwnershipStatementPage = () => {
     return (
-        <main className="w-full max-w-4xl mx-auto px-6 mobile:px-3 py-24 md:py-10 flex flex-col gap-12 md:gap-8">
-            <div className="flex flex-col gap-2 border-b border-n-4 dark:border-n-6 pb-12">
-                <h1 className="text-[48px] font-normal tracking-tighter leading-[0.85] text-n-1 dark:text-n-9">
-                    Ownership Statement
-                </h1>
-                <div className="flex flex-col gap-2 text-base font-normal text-n-3 dark:text-n-8">
-                    <p>Last Updated: October 15, 2026</p>
-                </div>
-            </div>
+        <StaticPageWrapper title="Ownership Statement" lastUpdated="October 15, 2026">
 
             <section className="flex flex-col gap-2">
                 <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">Website Ownership</h2>
@@ -75,7 +68,7 @@ const OwnershipStatementPage = () => {
                     </p>
                 </div>
             </section>
-        </main>
+        </StaticPageWrapper>
     );
 };
 

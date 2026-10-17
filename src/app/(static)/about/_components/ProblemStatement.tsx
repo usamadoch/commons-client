@@ -40,43 +40,70 @@ const ProblemStatement = () => {
                             </span>
                         </Reveal>
 
-                        {/* Interactive collapse visual: manual steps -> One link */}
+                        {/* Before vs. After: Manual WhatsApp Workflow vs. Automated Commons Link */}
                         <Reveal className="py-2">
-                            <div className="relative p-5 rounded-md border border-n-6 bg-n-1 overflow-hidden min-h-[76px] flex items-center">
-                                {/* Collapsing 3 chips */}
-                                <motion.div
-                                    className="flex flex-wrap items-center gap-2 text-xs font-semibold text-n-8"
-                                    initial={reduced ? { opacity: 0, display: "none" } : { opacity: 1, scale: 1 }}
-                                    whileInView={reduced ? undefined : { opacity: 0, scale: 0.95 }}
-                                    viewport={{ once: true, amount: 0.7 }}
-                                    transition={{ delay: 0.9, duration: 0.45, ease: EASE_OUT }}
-                                >
-                                    <span className="px-3 py-1.5 rounded-sm bg-n-3 border border-n-5 text-n-9">
-                                        Screenshot
-                                    </span>
-                                    <span className="text-n-6 font-mono">→</span>
-                                    <span className="px-3 py-1.5 rounded-sm bg-n-3 border border-n-5 text-n-9">
-                                        Manual check
-                                    </span>
-                                    <span className="text-n-6 font-mono">→</span>
-                                    <span className="px-3 py-1.5 rounded-sm bg-n-3 border border-n-5 text-n-9">
-                                        Add to group
-                                    </span>
-                                </motion.div>
+                            <div className="rounded-xl border border-n-6 bg-n-2/60 p-5 md:p-4 space-y-4">
+                                {/* The Old Way */}
+                                <div className="space-y-2">
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="text-xs font-mono font-bold tracking-wider uppercase text-n-4">
+                                            The manual way
+                                        </span>
+                                        <span className="text-[11px] font-semibold text-pink-1 bg-pink-1/10 px-2 py-0.5 rounded-xs border border-pink-1/20">
+                                            Doesn't scale
+                                        </span>
+                                    </div>
+                                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-n-8">
+                                        <span className="px-3 py-1.5 rounded-sm bg-n-3 border border-n-5 text-n-9 line-through decoration-n-5 opacity-70">
+                                            1. Send screenshot
+                                        </span>
+                                        <span className="text-n-6 font-mono">→</span>
+                                        <span className="px-3 py-1.5 rounded-sm bg-n-3 border border-n-5 text-n-9 line-through decoration-n-5 opacity-70">
+                                            2. Verify bank account
+                                        </span>
+                                        <span className="text-n-6 font-mono">→</span>
+                                        <span className="px-3 py-1.5 rounded-sm bg-n-3 border border-n-5 text-n-9 line-through decoration-n-5 opacity-70">
+                                            3. Add to group by hand
+                                        </span>
+                                    </div>
+                                </div>
 
-                                {/* Target single chip */}
-                                <motion.div
-                                    className="absolute inset-x-5 flex items-center"
-                                    initial={reduced ? { opacity: 1 } : { opacity: 0, scale: 0.9 }}
-                                    whileInView={reduced ? undefined : { opacity: 1, scale: 1 }}
-                                    viewport={{ once: true, amount: 0.7 }}
-                                    transition={{ delay: 1.15, duration: 0.45, ease: EASE_OUT }}
-                                >
-                                    <span className="inline-flex items-center gap-2 px-4 py-2 rounded-sm bg-purple-1 border-2 border-n-1 text-n-1 font-bold text-sm shadow-[3px_3px_0_#000] dark:shadow-[3px_3px_0_rgba(255,255,255,0.25)]">
-                                        <span className="flex h-2 w-2 rounded-full bg-n-1" />
-                                        One link
+                                {/* Divider */}
+                                <div className="relative flex items-center justify-center">
+                                    <div className="w-full border-t border-n-6" />
+                                    <span className="absolute bg-n-2 px-3 text-[11px] font-bold uppercase tracking-wider text-purple-1">
+                                        Replaced by Commons
                                     </span>
-                                </motion.div>
+                                </div>
+
+                                {/* The Commons Way */}
+                                <div className="space-y-2.5">
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="text-xs font-mono font-bold tracking-wider uppercase text-purple-1">
+                                            With Commons
+                                        </span>
+                                        <span className="text-[11px] font-semibold text-green-1 bg-green-1/10 px-2 py-0.5 rounded-xs border border-green-1/20">
+                                            100% Automated
+                                        </span>
+                                    </div>
+                                    <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-lg bg-n-1 border border-n-6">
+                                        <div className="flex items-center gap-2.5">
+                                            <span className="flex h-2 w-2 rounded-full bg-purple-1 animate-pulse" />
+                                            <span className="font-mono text-sm md:text-xs font-bold text-n-9">
+                                                commons.so/<span className="text-purple-1">yourname</span>
+                                            </span>
+                                            <span className="text-xs font-bold text-n-4 hidden sm:inline">
+                                                (One link)
+                                            </span>
+                                        </div>
+                                        <span className="text-xs font-medium text-n-8 md:text-[11px]">
+                                            JazzCash · Easypaisa · Cards
+                                        </span>
+                                    </div>
+                                    <p className="text-xs text-n-4 leading-relaxed">
+                                        Subscribers pay in rupees, and instant access to your locked posts and private community is granted automatically.
+                                    </p>
+                                </div>
                             </div>
                         </Reveal>
 
