@@ -31,8 +31,9 @@ const ContentHeader = ({
     activeLiveSessionId,
     className = "",
 }: ContentHeaderProps) => {
+    const hasCustomPt = className.includes("pt-");
     return (
-        <div className={`max-w-4xl mx-auto p-5 pt-0 mobile:px-3 mobile:pb-3 ${className}`}>
+        <div className={`max-w-4xl mx-auto p-5 ${hasCustomPt ? "" : "pt-0"} mobile:px-3 mobile:pb-3 ${className}`}>
             <div className="flex flex-col items-start justify-between w-full">
                 <div className="flex items-start w-full">
                     {/* Avatar Section */}

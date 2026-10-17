@@ -13,31 +13,40 @@ const RightAuthSidebar = () => {
     const pathname = usePathname();
 
     const isAuth = isAuthenticated || (isLoading && hasSession);
-    if (mounted && isAuth) return null;
+    const showJoinBox = !mounted || !isAuth;
+    const showSuggested = pathname === "/";
+
+    if (!showJoinBox && !showSuggested) return null;
 
     return (
         <div className="flex flex-col w-full h-fit">
 
-            {/* Persuasive Text */}
-            <div className=" bg-white dark:bg-n-4 border border-n-6 p-6 rounded-md">
-                <h6 className="text-h6 font-bold mb-3 dark:text-n-9">Ready to join?</h6>
-                <p className=" dark:text-n-8 text-sm mb-8">
-                    Connect with your favorite creators, discover exclusive content, and become part of a community today.
-                </p>
+            {/* Persuasive Text - only shown when not authenticated */}
+            {showJoinBox && (
+                <div className=" bg-white dark:bg-n-4 border border-n-6 p-6 rounded-md">
+                    <h6 className="text-h6 font-bold mb-3 dark:text-n-9">Ready to join?</h6>
+                    <p className=" dark:text-n-8 text-sm mb-8">
+                        Connect with your favorite creators, discover exclusive content, and become part of a community today.
+                    </p>
 
-                {/* Action Buttons */}
-                <div className="flex flex-col gap-4">
-                    <Link
-                        href="/login"
-                        className="btn-primary btn-shadow btn-purple w-full"
-                    >
-                        Log In or Sign Up
-                    </Link>
+                    {/* Action Buttons */}
+                    <div className="flex flex-col gap-4">
+                        <Link
+                            href="/login"
+                            className="btn-primary btn-shadow btn-purple w-full"
+                        >
+                            Log In or Sign Up
+                        </Link>
+                    </div>
                 </div>
-            </div>
+            )}
 
-            {/* Suggested Creators */}
-            {pathname === "/" && <SuggestedCreators />}
+            {/* Suggested Creators - always shown on home page even if authenticated */}
+            {showSuggested && (
+                <div className={!showJoinBox ? "[&>div]:!mt-0" : ""}>
+                    <SuggestedCreators />
+                </div>
+            )}
         </div>
     );
 };

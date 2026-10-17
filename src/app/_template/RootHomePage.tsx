@@ -39,7 +39,7 @@ export const RootHomePage = ({ initialPage, initialPosts }: RootHomePageProps = 
     return (
         <div className="w-full max-w-2xl mx-auto pb-20">
             {/* Rotating Banner Carousel with Banner C as default */}
-            <BannerCarousel />
+            {!isAuthenticated && <BannerCarousel />}
 
             {/* For you and following dropdown select */}
             <FeedSelector value={feedType} onChange={setFeedType} />
