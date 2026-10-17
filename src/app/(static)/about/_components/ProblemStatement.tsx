@@ -42,57 +42,57 @@ const ProblemStatement = () => {
 
                         {/* Before vs. After: Manual WhatsApp Workflow vs. Automated Commons Link */}
                         <Reveal className="py-2">
-                            <div className="rounded-xl border border-n-6 bg-n-2/60 p-5 md:p-4 space-y-4">
+                            <div className="rounded-xl border border-n-6 bg-n-2/80 p-6 md:p-5 flex flex-col gap-6 md:gap-5 shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_rgba(255,255,255,0.1)]">
                                 {/* The Old Way */}
-                                <div className="space-y-2">
-                                    <div className="flex items-center justify-between gap-2">
-                                        <span className="text-xs font-mono font-bold tracking-wider uppercase text-n-4">
+                                <div className="space-y-3">
+                                    <div className="flex items-center justify-between gap-3">
+                                        <span className="text-xs font-mono font-bold tracking-wider uppercase text-n-8">
                                             The manual way
                                         </span>
-                                        <span className="text-[11px] font-semibold text-pink-1 bg-pink-1/10 px-2 py-0.5 rounded-xs border border-pink-1/20">
+                                        <span className="text-[11px] font-mono uppercase tracking-wider font-semibold px-2 py-0.5 rounded-xs bg-n-3 border border-n-5 text-n-8">
                                             Doesn't scale
                                         </span>
                                     </div>
-                                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-n-8">
-                                        <span className="px-3 py-1.5 rounded-sm bg-n-3 border border-n-5 text-n-9 line-through decoration-n-5 opacity-70">
+                                    <div className="flex flex-wrap items-center gap-2.5 text-xs font-semibold text-n-8">
+                                        <span className="px-3 py-1.5 rounded-sm bg-n-3 border border-n-5 text-n-8 line-through decoration-n-5/90">
                                             1. Send screenshot
                                         </span>
-                                        <span className="text-n-6 font-mono">→</span>
-                                        <span className="px-3 py-1.5 rounded-sm bg-n-3 border border-n-5 text-n-9 line-through decoration-n-5 opacity-70">
+                                        <span className="text-n-8/50 font-mono">→</span>
+                                        <span className="px-3 py-1.5 rounded-sm bg-n-3 border border-n-5 text-n-8 line-through decoration-n-5/90">
                                             2. Verify bank account
                                         </span>
-                                        <span className="text-n-6 font-mono">→</span>
-                                        <span className="px-3 py-1.5 rounded-sm bg-n-3 border border-n-5 text-n-9 line-through decoration-n-5 opacity-70">
+                                        <span className="text-n-8/50 font-mono">→</span>
+                                        <span className="px-3 py-1.5 rounded-sm bg-n-3 border border-n-5 text-n-8 line-through decoration-n-5/90">
                                             3. Add to group by hand
                                         </span>
                                     </div>
                                 </div>
 
                                 {/* Divider */}
-                                <div className="relative flex items-center justify-center">
+                                <div className="relative flex items-center justify-center my-0.5">
                                     <div className="w-full border-t border-n-6" />
-                                    <span className="absolute bg-n-2 px-3 text-[11px] font-bold uppercase tracking-wider text-purple-1">
+                                    <span className="absolute bg-n-2 px-3 text-[11px] font-mono font-bold uppercase tracking-wider text-purple-1">
                                         Replaced by Commons
                                     </span>
                                 </div>
 
                                 {/* The Commons Way */}
-                                <div className="space-y-2.5">
-                                    <div className="flex items-center justify-between gap-2">
+                                <div className="space-y-3">
+                                    <div className="flex items-center justify-between gap-3">
                                         <span className="text-xs font-mono font-bold tracking-wider uppercase text-purple-1">
                                             With Commons
                                         </span>
-                                        <span className="text-[11px] font-semibold text-green-1 bg-green-1/10 px-2 py-0.5 rounded-xs border border-green-1/20">
+                                        <span className="text-[11px] font-mono uppercase tracking-wider font-bold px-2.5 py-0.5 rounded-xs bg-purple-1 text-n-1 shadow-[2px_2px_0_#000]">
                                             100% Automated
                                         </span>
                                     </div>
-                                    <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-lg bg-n-1 border border-n-6">
+                                    <div className="flex flex-wrap items-center justify-between gap-3 p-4 md:p-3.5 rounded-lg bg-n-1 border border-n-6 shadow-[2px_2px_0_#000]">
                                         <div className="flex items-center gap-2.5">
                                             <span className="flex h-2 w-2 rounded-full bg-purple-1 animate-pulse" />
                                             <span className="font-mono text-sm md:text-xs font-bold text-n-9">
                                                 commons.so/<span className="text-purple-1">yourname</span>
                                             </span>
-                                            <span className="text-xs font-bold text-n-4 hidden sm:inline">
+                                            <span className="text-xs font-mono font-semibold text-n-8/80 hidden sm:inline">
                                                 (One link)
                                             </span>
                                         </div>
@@ -100,7 +100,7 @@ const ProblemStatement = () => {
                                             JazzCash · Easypaisa · Cards
                                         </span>
                                     </div>
-                                    <p className="text-xs text-n-4 leading-relaxed">
+                                    <p className="text-sm md:text-xs text-n-8 leading-relaxed">
                                         Subscribers pay in rupees, and instant access to your locked posts and private community is granted automatically.
                                     </p>
                                 </div>
