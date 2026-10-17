@@ -93,7 +93,7 @@ const CreatorToolkit = () => {
             ref={sectionRef}
             id="toolkit"
             aria-labelledby="toolkit-heading"
-            className="relative w-full py-32 md:py-16 scroll-mt-20"
+            className="relative w-full py-32 lg:pt-0 lg:pb-24 md:pb-16 scroll-mt-20"
         >
             {/* Mobile/Tablet Sticky Horizontal Navigation */}
             <div className="hidden lg:block sticky top-0 z-20 w-full bg-n-1/95 border-b border-n-6 backdrop-blur-sm">
@@ -105,11 +105,10 @@ const CreatorToolkit = () => {
                                 <button
                                     key={feature.id}
                                     onClick={() => scrollToId(feature.id, reduced)}
-                                    className={`px-4 py-2 rounded-xs border text-xs font-bold uppercase tracking-wider transition-colors duration-150 cursor-pointer ${
-                                        isActive
+                                    className={`px-4 py-2 rounded-xs border text-xs font-bold uppercase tracking-wider transition-colors duration-150 cursor-pointer ${isActive
                                             ? "bg-purple-1 border-n-1 text-n-1 shadow-[2px_2px_0_#000]"
                                             : "bg-n-3 border-n-6 text-n-8 hover:text-n-9"
-                                    }`}
+                                        }`}
                                 >
                                     {feature.stepTitle}
                                 </button>
@@ -119,7 +118,7 @@ const CreatorToolkit = () => {
                 </div>
             </div>
 
-            <div className="mx-auto w-full max-w-[90rem] px-16 2xl:px-10 lg:px-8 md:px-5 mobile:px-3">
+            <div className="mx-auto w-full max-w-[90rem] px-16 2xl:px-10 lg:px-8 md:px-5 mobile:px-3 lg:pt-10 md:pt-8">
                 <div className="grid grid-cols-[1fr_1.6fr] lg:grid-cols-1 gap-20 lg:gap-10 md:gap-8 items-start">
                     {/* Left: Sticky Sidebar (Desktop >=lg) */}
                     <div className="sticky top-28 lg:static self-start space-y-8 lg:space-y-4 lg:pb-6 lg:border-b lg:border-n-6/40">
@@ -129,7 +128,7 @@ const CreatorToolkit = () => {
                             </span>
                             <h2
                                 id="toolkit-heading"
-                                className="font-extrabold text-[clamp(2rem,3.8vw,3.25rem)] md:text-3xl leading-[1.05] tracking-[-0.02em] text-balance text-n-9 mb-3"
+                                className="font-extrabold text-[clamp(2rem,3.8vw,3.25rem)] md:text-3xl leading-[1.05] tracking-[-0.02em] text-balance text-n-9 mb-4 md:mb-3"
                             >
                                 The Creator
                                 <br className="lg:hidden" /> Toolkit.
@@ -159,14 +158,12 @@ const CreatorToolkit = () => {
                                         <button
                                             key={feature.id}
                                             onClick={() => scrollToId(feature.id, reduced)}
-                                            className={`text-left transition-all duration-200 cursor-pointer group flex items-start gap-3 outline-none focus-visible:outline-2 focus-visible:outline-purple-1 ${
-                                                isActive ? "opacity-100" : "opacity-40 hover:opacity-75"
-                                            }`}
+                                            className={`text-left transition-all duration-200 cursor-pointer group flex items-start gap-3 outline-none focus-visible:outline-2 focus-visible:outline-purple-1 ${isActive ? "opacity-100" : "opacity-40 hover:opacity-75"
+                                                }`}
                                         >
                                             <span
-                                                className={`text-sm font-mono font-bold transition-colors ${
-                                                    isActive ? "text-purple-1" : "text-n-8"
-                                                }`}
+                                                className={`text-sm font-mono font-bold transition-colors ${isActive ? "text-purple-1" : "text-n-8"
+                                                    }`}
                                             >
                                                 {feature.num}
                                             </span>

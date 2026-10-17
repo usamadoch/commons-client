@@ -120,7 +120,7 @@ const Hero = () => {
                         ref={frameRef}
                         onMouseMove={handleMouseMove}
                         onMouseLeave={handleMouseLeave}
-                        className="relative w-full flex items-center justify-center lg:mt-4"
+                        className="relative w-full flex flex-col items-center justify-center lg:mt-4"
                     >
                         {/* Product device mockup: clean uncropped frame with Commons border and hard shadow */}
                         <motion.div
@@ -139,11 +139,38 @@ const Hero = () => {
                             />
                         </motion.div>
 
-                        {/* Decorative floating chips in project dark theme */}
-                        <div ref={chipsRef} aria-hidden="true" className="pointer-events-none">
+                        {/* Mobile proof chips sitting below the mockup so the screenshot is completely unblocked */}
+                        <div aria-hidden="true" className="hidden md:flex flex-wrap items-center justify-center gap-2.5 mt-4 w-full">
+                            <div
+                                className={`flex items-center gap-2 px-3 py-2 rounded-sm bg-n-2/95 border-2 border-n-6 shadow-primary-4 backdrop-blur-sm ${styles.float}`}
+                                data-paused={!chipsActive}
+                            >
+                                <Image
+                                    src="/merchant_logos/jazzcash.svg"
+                                    alt="JazzCash"
+                                    width={24}
+                                    height={16}
+                                    className="h-4 w-auto rounded-xs shadow-[1px_1px_0_#000]"
+                                />
+                                <span className="text-xs font-bold text-n-9 tracking-tight">JazzCash · Paid</span>
+                            </div>
+
+                            <div
+                                className={`flex items-center gap-2 px-3 py-2 rounded-sm bg-n-2/95 border-2 border-n-6 shadow-primary-4 backdrop-blur-sm ${styles.floatAlt}`}
+                                data-paused={!chipsActive}
+                            >
+                                <span className="text-[11px] font-bold uppercase tracking-wider bg-purple-1 text-n-1 px-1.5 py-0.5 rounded-xs">
+                                    Rs 1,500
+                                </span>
+                                <span className="text-xs font-bold text-n-9 tracking-tight">Super Message in live</span>
+                            </div>
+                        </div>
+
+                        {/* Big viewpoint: Decorative floating chips around mockup (preserved untouched) */}
+                        <div ref={chipsRef} aria-hidden="true" className="pointer-events-none md:hidden">
                             {/* JazzCash chip */}
                             <div
-                                className={`absolute -bottom-4 -left-4 lg:bottom-2 lg:left-2 mobile:bottom-1 mobile:left-1 z-10 flex items-center gap-2.5 px-3.5 py-2.5 rounded-sm bg-n-2/95 border-2 border-n-6 shadow-primary-4 backdrop-blur-sm ${styles.float}`}
+                                className={`absolute -bottom-4 -left-4 z-10 flex items-center gap-2.5 px-3.5 py-2.5 rounded-sm bg-n-2/95 border-2 border-n-6 shadow-primary-4 backdrop-blur-sm ${styles.float}`}
                                 data-paused={!chipsActive}
                             >
                                 <Image
@@ -153,15 +180,12 @@ const Hero = () => {
                                     height={19}
                                     className="h-5 w-auto rounded-xs shadow-[1px_1px_0_#000]"
                                 />
-                                {/* <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-1 text-n-1 font-bold">
-                                    <Icon icon={Check} size={12} strokeWidth={3} />
-                                </span> */}
                                 <span className="text-sm font-bold text-n-9 tracking-tight">JazzCash · Paid</span>
                             </div>
 
                             {/* Super Chat highlight style pill (dark theme with purple accent) */}
                             <div
-                                className={`absolute -top-4 -right-4 lg:top-2 lg:right-2 mobile:top-1 mobile:right-1 z-10 flex items-center gap-2.5 px-4 py-2.5 rounded-sm bg-n-2/95 border-2 border-n-6 shadow-primary-4 backdrop-blur-sm ${styles.floatAlt}`}
+                                className={`absolute -top-4 -right-4 z-10 flex items-center gap-2.5 px-4 py-2.5 rounded-sm bg-n-2/95 border-2 border-n-6 shadow-primary-4 backdrop-blur-sm ${styles.floatAlt}`}
                                 data-paused={!chipsActive}
                             >
                                 <span className="text-xs font-bold uppercase tracking-wider bg-purple-1 text-n-1 px-2 py-0.5 rounded-xs">

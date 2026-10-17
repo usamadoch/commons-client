@@ -3,13 +3,9 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import CtaButton from "./CtaButton";
 
-/**
- * Appears (slides down, 250ms) once the hero has scrolled out of view.
- * Rendered inside a zero-height sticky wrapper so it respects the
- * authenticated sidebar offset instead of spanning the full window.
- */
+
+
 const StickyHeader = ({ heroId }: { heroId: string }) => {
     const [visible, setVisible] = useState(false);
 
