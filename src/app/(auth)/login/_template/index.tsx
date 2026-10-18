@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import Alert from "@/components/Alert";
 import GoogleButton from "@/components/GoogleButton";
 import AuthFields from "../../_components/AuthFields";
+import DevAuthHelper from "../../_components/DevAuthHelper";
 import Loader from "@/components/Loader";
 
 import { ONBOARDING_STEPS } from "@/types";
@@ -20,7 +21,7 @@ const LoginPage = () => {
 
     const {
         form,
-        step, setStep, flow, authLoading, isCheckingEmail,
+        step, setStep, flow, setFlow, authLoading, isCheckingEmail,
         onSubmit
     } = useAuthForm({
         redirect: true,
@@ -33,6 +34,28 @@ const LoginPage = () => {
     // Clear stale root errors when the page mounts (e.g., user navigated away and came back)
     useEffect(() => {
         clearErrors("root");
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // Listen to query parameters for automated dev filling across routes
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+        const searchParams = new URLSearchParams(window.location.search);
+        const devFill = searchParams.get("devFill");
+        const devEmail = searchParams.get("devEmail");
+
+        if (devFill && devFill.startsWith("member_")) {
+            const memberName = devFill.replace("_", " ").replace("member", "Member");
+            form.setValue("email", `${devFill}@test.com`, { shouldValidate: true, shouldDirty: true });
+            form.setValue("displayName", memberName, { shouldValidate: true, shouldDirty: true });
+            form.setValue("password", "Password123!", { shouldValidate: true, shouldDirty: true });
+            setFlow("signup");
+            setStep(2);
+        } else if (devEmail) {
+            form.setValue("email", devEmail, { shouldValidate: true, shouldDirty: true });
+            form.setValue("password", "password123", { shouldValidate: true, shouldDirty: true });
+            setFlow("login");
+            setStep(2);
+        }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     // Two-phase back: first trigger exit animations, then change step
@@ -50,9 +73,47 @@ const LoginPage = () => {
         }
     };
 
+    const handleFillRandomMember = (user: { email: string; displayName: string; password: string }) => {
+        clearErrors();
+        form.setValue("email", user.email, { shouldValidate: true, shouldDirty: true });
+        form.setValue("displayName", user.displayName, { shouldValidate: true, shouldDirty: true });
+        form.setValue("password", user.password, { shouldValidate: true, shouldDirty: true });
+        setFlow("signup");
+        setStep(2);
+    };
+
+    const handleFillRandomCreator = (user: {
+        email: string;
+        displayName: string;
+        password: string;
+        creatorName: string;
+        pageSlug: string;
+        category: string[];
+    }) => {
+        try {
+            sessionStorage.setItem("commons_register_draft", JSON.stringify(user));
+        } catch {
+            // Ignore storage errors
+        }
+        router.push(`/register?devFill=${encodeURIComponent(user.email.split("@")[0])}`);
+    };
+
+    const handleFillExistingUser = (user: { email: string; password: string; role: "creator" | "member"; label: string }) => {
+        clearErrors();
+        form.setValue("email", user.email, { shouldValidate: true, shouldDirty: true });
+        form.setValue("password", user.password, { shouldValidate: true, shouldDirty: true });
+        setFlow("login");
+        setStep(2);
+    };
+
     return (
         <>
-
+            <DevAuthHelper
+                page="login"
+                onFillRandomMember={handleFillRandomMember}
+                onFillRandomCreator={handleFillRandomCreator}
+                onFillExistingUser={handleFillExistingUser}
+            />
 
             {step === 1 && (
                 <>

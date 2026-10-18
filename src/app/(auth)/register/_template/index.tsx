@@ -1,7 +1,7 @@
+"use client";
 
-
-"use client"
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -9,6 +9,7 @@ import Step1Account from "./steps/Step1Account";
 import Step2CreatorDetails from "./steps/Step2CreatorDetails";
 import Step3Category from "./steps/Step3Category";
 import Step4Socials from "./steps/Step4Socials";
+import DevAuthHelper from "../../_components/DevAuthHelper";
 import Loader from "@/components/Loader";
 
 import { SignUpFormValues, SignUpSchema } from "../../_validations";
@@ -35,6 +36,7 @@ function getInitialStep(onboardingStep?: number): number {
 }
 
 const RegistrationPage = () => {
+    const router = useRouter();
     const user = useAuthStore((s) => s.user);
     const isAuthLoading = useAuthStore((s) => s.isLoading);
     const [step, setStep] = useState<number>(STEPS.ACCOUNT);
@@ -98,6 +100,58 @@ const RegistrationPage = () => {
         return () => subscription.unsubscribe();
     }, [methods]);
 
+    // Handle dev auto-fill from query param
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+        const searchParams = new URLSearchParams(window.location.search);
+        const devFill = searchParams.get("devFill");
+        if (devFill && devFill.startsWith("creator_")) {
+            const num = devFill.replace("creator_", "");
+            methods.setValue("email", `${devFill}@test.com`, { shouldValidate: true, shouldDirty: true });
+            methods.setValue("displayName", `Creator ${num}`, { shouldValidate: true, shouldDirty: true });
+            methods.setValue("password", "Password123!", { shouldValidate: true, shouldDirty: true });
+            methods.setValue("creatorName", `Studio ${num}`, { shouldValidate: true, shouldDirty: true });
+            methods.setValue("pageSlug", `studio-${num}`, { shouldValidate: true, shouldDirty: true });
+            methods.setValue("category", ["Technology", "Design"], { shouldValidate: true, shouldDirty: true });
+            try {
+                sessionStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(methods.getValues()));
+            } catch {
+                // Ignore storage errors
+            }
+        }
+    }, [methods]);
+
+    const handleFillRandomCreator = (creator: {
+        email: string;
+        displayName: string;
+        password: string;
+        creatorName: string;
+        pageSlug: string;
+        category: string[];
+    }) => {
+        methods.setValue("email", creator.email, { shouldValidate: true, shouldDirty: true });
+        methods.setValue("displayName", creator.displayName, { shouldValidate: true, shouldDirty: true });
+        methods.setValue("password", creator.password, { shouldValidate: true, shouldDirty: true });
+        methods.setValue("creatorName", creator.creatorName, { shouldValidate: true, shouldDirty: true });
+        methods.setValue("pageSlug", creator.pageSlug, { shouldValidate: true, shouldDirty: true });
+        methods.setValue("category", creator.category, { shouldValidate: true, shouldDirty: true });
+        try {
+            sessionStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(methods.getValues()));
+        } catch {
+            // Ignore storage errors
+        }
+        methods.clearErrors();
+    };
+
+    const handleFillRandomMember = () => {
+        const randId = Math.floor(1000 + Math.random() * 9000);
+        router.push(`/login?devFill=member_${randId}`);
+    };
+
+    const handleFillExistingUser = (user: { email: string }) => {
+        router.push(`/login?devEmail=${encodeURIComponent(user.email)}`);
+    };
+
     const onNext = () => setStep((prev) => Math.min(prev + 1, STEPS.SOCIALS));
     const onBack = () => setStep((prev) => Math.max(prev - 1, STEPS.ACCOUNT));
 
@@ -112,6 +166,12 @@ const RegistrationPage = () => {
 
     return (
         <div className="w-full max-w-120 mx-auto">
+            <DevAuthHelper
+                page="register"
+                onFillRandomCreator={handleFillRandomCreator}
+                onFillRandomMember={handleFillRandomMember}
+                onFillExistingUser={handleFillExistingUser}
+            />
             <FormProvider {...methods}>
                 <form onSubmit={(e) => e.preventDefault()}>
                     <div className={step === STEPS.ACCOUNT ? "block" : "hidden"}>
