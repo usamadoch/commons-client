@@ -8,6 +8,7 @@ import Icon from "@/components/Icon";
 
 import { usePermission } from "@/hooks/usePermission";
 import { useMyMemberships } from "@/hooks/queries";
+import { usePrefetch } from "@/hooks/usePrefetch";
 import { Member, CreatorPage } from "@/types";
 
 type TeamMembersProps = {
@@ -16,6 +17,7 @@ type TeamMembersProps = {
 };
 
 const TeamMembers = ({ visible, isMinimize }: TeamMembersProps) => {
+    const { prefetch } = usePrefetch();
     const canViewSubscriptions = usePermission('subscriptions:view');
     const { data: rawMemberships, isLoading } = useMyMemberships(canViewSubscriptions);
 
@@ -56,6 +58,8 @@ const TeamMembers = ({ visible, isMinimize }: TeamMembersProps) => {
                                 }`}
                             href={`/${page.pageSlug}`}
                             key={item._id}
+                            onPointerEnter={() => prefetch(`/${page.pageSlug}`)}
+                            onFocus={() => prefetch(`/${page.pageSlug}`)}
                         >
                             <div
                                 className={`relative shrink-0 w-5.5 h-5.5 rounded-full overflow-hidden ${visible ? "mr-2.5 ml-0" : isMinimize ? "mr-0" : "mr-2.5 xl:mr-0"

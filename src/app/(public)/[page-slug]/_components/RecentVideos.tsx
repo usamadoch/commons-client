@@ -6,6 +6,7 @@ import { formatAppDate, formatDuration } from "@/lib/date";
 import Icon from "@/components/Icon";
 import Loader from "@/components/Loader";
 import Image from "@/components/Image";
+import { usePrefetch } from "@/hooks/usePrefetch";
 
 interface RecentVideosProps {
     pageSlug: string;
@@ -13,6 +14,7 @@ interface RecentVideosProps {
 
 const RecentVideos = ({ pageSlug }: RecentVideosProps) => {
     const { data: posts, isLoading } = useRecentVideos(pageSlug);
+    const { prefetch } = usePrefetch();
 
     if (isLoading) {
         return (
@@ -46,6 +48,8 @@ const RecentVideos = ({ pageSlug }: RecentVideosProps) => {
                         <Link
                             key={post._id}
                             href={`/posts/${post._id}`}
+                            onPointerEnter={() => prefetch(`/posts/${post._id}`)}
+                            onFocus={() => prefetch(`/posts/${post._id}`)}
                             className="group cursor-pointer flex items-center gap-3"
                         >
                             <div className="relative w-32 aspect-video shrink-0 overflow-hidden bg-n-6 rounded-md">

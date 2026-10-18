@@ -5,12 +5,14 @@ import { LockKeyhole, Video } from "@/lib/icons";
 import ReadMore from "@/components/ReadMore";
 import { formatAppDate, formatDuration } from "@/lib/date";
 import { VideoPost } from "@/types";
+import { usePrefetch } from "@/hooks/usePrefetch";
 
 interface VideoPostCardProps {
     post: VideoPost;
 }
 
 const VideoPostCard = ({ post }: VideoPostCardProps) => {
+    const { prefetch } = usePrefetch();
     const isLocked = post.isLocked;
     const video = post.mediaAttachments?.[0];
 
@@ -27,6 +29,8 @@ const VideoPostCard = ({ post }: VideoPostCardProps) => {
     return (
         <Link
             href={`/posts/${post._id}`}
+            onPointerEnter={() => prefetch(`/posts/${post._id}`)}
+            onFocus={() => prefetch(`/posts/${post._id}`)}
             className="card group dark:bg-n-1 border-none"
         >
             <div className="relative aspect-video bg-n-2 overflow-hidden rounded-lg">

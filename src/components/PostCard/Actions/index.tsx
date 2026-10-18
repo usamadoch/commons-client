@@ -7,6 +7,7 @@ import { MessageCircle, Send } from "@/lib/icons";
 import Comment from "@/components/Comment";
 import LikeButton from "@/components/LikeButton";
 import { getSocialShareItems } from "@/utils/share";
+import { usePrefetch } from "@/hooks/usePrefetch";
 
 type ActionsProps = {
     postId: string;
@@ -23,6 +24,7 @@ type ActionsProps = {
 
 const Actions = ({ postId, comments, likes: initialLikes, isLiked: initialIsLiked, className, showComment = true, shareUrl, type = 'post', isLocked, onCommentClick }: ActionsProps) => {
     const router = useRouter();
+    const { prefetch } = usePrefetch();
 
     // Comment state
     const [isCommentOpen, setIsCommentOpen] = useState(false);
@@ -45,6 +47,8 @@ const Actions = ({ postId, comments, likes: initialLikes, isLiked: initialIsLike
                 {showComment && (
                     <button
                         className="flex items-center gap-1 ml-4 px-0 cursor-pointer dark:text-n-8"
+                        onPointerEnter={() => prefetch(`/posts/${postId}`)}
+                        onTouchStart={() => prefetch(`/posts/${postId}`)}
                         onClick={(e) => {
                             e.stopPropagation();
                             if (typeof window !== "undefined" && window.innerWidth <= 767) {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { usePrefetch } from "@/hooks/usePrefetch";
 
 import Icon from "@/components/Icon";
 import Image from "@/components/Image";
@@ -17,6 +18,7 @@ type HeaderProps = {
 const Header = ({ back, title, createBtn = true, onBack }: HeaderProps) => {
     const [headerStyle, setHeaderStyle] = useState<boolean>(false);
     const router = useRouter();
+    const { prefetch } = usePrefetch();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -53,6 +55,8 @@ const Header = ({ back, title, createBtn = true, onBack }: HeaderProps) => {
                         <Can permission="post:create">
                             <Link
                                 href="/posts/new"
+                                onPointerEnter={() => prefetch("/posts/new")}
+                                onFocus={() => prefetch("/posts/new")}
                                 className="btn-purple btn-medium px-5 md:bg-transparent! md:border-none md:w-6 md:h-6 md:p-0 md:text-0"
                             >
                                 <Icon className="md:m-0!" name="add-circle" />

@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { AuthProvider } from "../store/auth";
 import { SocketProvider } from "../store/socket";
+import NavigationProgressBar from "@/components/NavigationProgressBar";
 
 export function Providers({ children }: { children: React.ReactNode }) {
     const [queryClient] = useState(() => new QueryClient({
@@ -26,6 +27,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                 <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
                     <AuthProvider>
                         <SocketProvider>
+                            <NavigationProgressBar />
                             <Toaster />
                             {children}
                         </SocketProvider>

@@ -2,14 +2,11 @@ import { useExploreCreators } from "@/app/explore/_template/useExploreCreators";
 import Image from "@/components/Image";
 import Loader from "@/components/Loader";
 import Link from "next/link";
-
-
-
-
-
+import { usePrefetch } from "@/hooks/usePrefetch";
 
 const SuggestedCreators = () => {
     const { creators, isLoading } = useExploreCreators();
+    const { prefetch } = usePrefetch();
 
     const suggestedCreators = creators.slice(0, 4);
 
@@ -29,7 +26,7 @@ const SuggestedCreators = () => {
 
             <div className="flex flex-col gap-6">
                 {suggestedCreators.map(item => (
-                    <div key={item._id} className="flex">
+                    <div key={item._id} className="flex" onPointerEnter={() => prefetch(`/${item.pageSlug}`)}>
                         <div className="flex items-center w-full">
                             <div className="relative w-16 h-16 shrink-0">
                                 <Image
@@ -47,7 +44,14 @@ const SuggestedCreators = () => {
                                 <div className="text-xs font-medium text-n-3 dark:text-n-8 line-clamp-2">
                                     {item.tagline}
                                 </div>
-                                <Link href={`/${item.pageSlug}`} className="btn-stroke btn-small h-6 mt-2">View</Link>
+                                <Link
+                                    href={`/${item.pageSlug}`}
+                                    className="btn-stroke btn-small h-6 mt-2"
+                                    onPointerEnter={() => prefetch(`/${item.pageSlug}`)}
+                                    onFocus={() => prefetch(`/${item.pageSlug}`)}
+                                >
+                                    View
+                                </Link>
                             </div>
                         </div>
                     </div>

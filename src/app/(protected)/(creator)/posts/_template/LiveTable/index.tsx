@@ -14,6 +14,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import DeletePostModal from "@/components/modals/DeletePostModal";
 import { useDeleteLiveSession } from "@/hooks/queries";
+import { useRouter } from "next/navigation";
 
 // Mock data removed
 
@@ -33,6 +34,7 @@ const getStatusBadgeClass = (status: string) => {
 
 
 const LiveRow = ({ item }: { item: LiveSession }) => {
+    const router = useRouter();
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const { mutate: deleteSession, isPending } = useDeleteLiveSession();
 
@@ -88,7 +90,7 @@ const LiveRow = ({ item }: { item: LiveSession }) => {
                         {
                             icon: "external-link",
                             label: "Open control room",
-                            onClick: () => window.location.href = `/live-room/${item._id}/control`
+                            onClick: () => router.push(`/live-room/${item._id}/control`)
                         },
                         {
                             icon: "remove",

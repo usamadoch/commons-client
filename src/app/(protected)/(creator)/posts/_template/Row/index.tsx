@@ -1,10 +1,12 @@
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import ActionMenu from "@/components/ActionMenu";
 import { format } from "date-fns";
 import { getPostTypeIcon, getLinkMediaUrl } from "@/lib/media-helpers";
 import { useDeletePost } from "@/hooks/queries";
+import { usePrefetch } from "@/hooks/usePrefetch";
 
 import DeletePostModal from "@/components/modals/DeletePostModal";
 import Image from "@/components/Image";
@@ -34,6 +36,8 @@ type RowProps = {
 };
 
 const Row = ({ item, showActions = true }: RowProps) => {
+    const router = useRouter();
+    const { prefetch } = usePrefetch();
     const [isOpen, setIsOpen] = useState(false);
     const { mutate: deletePost, isPending } = useDeletePost();
 
@@ -72,6 +76,8 @@ const Row = ({ item, showActions = true }: RowProps) => {
                     <Link
                         className="inline-flex items-center text-sm transition-colors "
                         href={`/posts/${item._id}`}
+                        onPointerEnter={() => prefetch(`/posts/${item._id}`)}
+                        onFocus={() => prefetch(`/posts/${item._id}`)}
                     >
                         <div className="shrink-0 w-32 mr-5 border border-n-1 dark:border-n-6 overflow-hidden aspect-video relative flex justify-center items-center bg-n-2 dark:bg-n-7">
                             {(isImage || mediaUrl) && (
@@ -120,7 +126,7 @@ const Row = ({ item, showActions = true }: RowProps) => {
                                 {
                                     // icon: "edit",
                                     label: "Edit",
-                                    onClick: () => window.location.href = `/posts/${item._id}/edit`
+                                    onClick: () => router.push(`/posts/${item._id}/edit`)
                                 },
                                 {
                                     // icon: "remove",

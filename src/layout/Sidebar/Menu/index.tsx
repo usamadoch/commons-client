@@ -5,6 +5,7 @@ import { useSocket } from "@/store/socket";
 import { useAuth } from "@/store/auth";
 import LoginModal from "@/components/modals/LoginModal";
 import MenuItem from "./MenuItem";
+import { stopNavigationProgress } from "@/lib/navigation-progress";
 
 type MenuProps = {
     visible?: boolean;
@@ -22,6 +23,7 @@ const Menu = ({ visible, isMinimize }: MenuProps) => {
     const handleNavClick = (e: React.MouseEvent, link: NavigationItem) => {
         if (!isAuthenticated && !link.isPublicRoute) {
             e.preventDefault();
+            stopNavigationProgress();
             setShowLoginModal(true);
         }
     };

@@ -4,6 +4,7 @@ import { LucideIcon } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { NavigationItem } from "@/hooks/useNavigation";
 import { useRouter } from "next/navigation";
+import { usePrefetch } from "@/hooks/usePrefetch";
 
 type MenuItemProps = {
     link: NavigationItem;
@@ -27,6 +28,7 @@ const MenuItem = ({
     onShowLoginModal
 }: MenuItemProps) => {
     const router = useRouter();
+    const { prefetch } = usePrefetch();
 
     const hasDynamicCounter = typeof dynamicCount === "number";
     const showCounter = hasDynamicCounter ? dynamicCount > 0 : !!link.counter;
@@ -54,6 +56,8 @@ const MenuItem = ({
             href={link.url}
             target={link.target}
             onClick={(e) => onNavClick(e, link)}
+            onPointerEnter={() => prefetch(link.url)}
+            onFocus={() => prefetch(link.url)}
         >
             <Icon
                 className={`shrink-0 ${visible ? "mr-3" : isMinimize ? "mr-0" : "mr-3 xl:mr-0"}`}
@@ -68,6 +72,7 @@ const MenuItem = ({
                         : "opacity-50 hover:opacity-100 p-1"
                         } ${visible ? "" : isMinimize ? "hidden!" : "xl:hidden!"}`}
                     onClick={handleSuffixClick}
+                    onPointerEnter={() => link.suffixUrl && prefetch(link.suffixUrl)}
                 >
                     {link.suffixText && (
                         <span

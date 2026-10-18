@@ -5,6 +5,7 @@ import { ChevronRight, FileText, Plus } from "@/lib/icons";
 import Loader from "@/components/Loader";
 import { PostStatus } from "@/types";
 import { useAnalyticsPosts } from "@/hooks/queries";
+import { usePrefetch } from "@/hooks/usePrefetch";
 
 // Explicit view model for the panel
 interface RecentPostViewModel {
@@ -19,6 +20,7 @@ interface RecentPostViewModel {
 
 const RecentPostsPanel = () => {
     const { data: postsData, isLoading } = useAnalyticsPosts();
+    const { prefetch } = usePrefetch();
 
     const draftsCount = 0; // TODO: Fetch real draft count
 
@@ -45,7 +47,12 @@ const RecentPostsPanel = () => {
         <div className="card">
             <div className="flex items-center justify-between p-5">
                 <h3 className="font-semibold text-n-1 dark:text-n-9">Recent Posts</h3>
-                <Link href="/posts" className="text-sm text-purple-1 capitalize flex items-center ">
+                <Link
+                    href="/posts"
+                    onPointerEnter={() => prefetch("/posts")}
+                    onFocus={() => prefetch("/posts")}
+                    className="text-sm text-purple-1 capitalize flex items-center "
+                >
                     View All
                     <Icon icon={ChevronRight} size={18} />
                 </Link>
@@ -63,6 +70,8 @@ const RecentPostsPanel = () => {
                                 <Link
                                     key={post._id}
                                     href={`/posts/${post._id}`}
+                                    onPointerEnter={() => prefetch(`/posts/${post._id}`)}
+                                    onFocus={() => prefetch(`/posts/${post._id}`)}
                                     className=" hover:bg-n-3/10 dark:hover:bg-white/10 transition-colors"
                                 >
                                     <div className="flex items-end justify-between px-5 py-2">
@@ -106,6 +115,8 @@ const RecentPostsPanel = () => {
 
                         <Link
                             href="/posts/new"
+                            onPointerEnter={() => prefetch("/posts/new")}
+                            onFocus={() => prefetch("/posts/new")}
                             className="btn-purple btn-medium w-full flex items-center justify-center gap-2"
                         >
                             <Icon icon={Plus} strokeWidth={2.5} />

@@ -14,6 +14,7 @@ import PostCardLinkPreview from "./LinkPreview";
 import LockedOverlay from "@/components/LockedOverlay";
 
 import { Post, CreatorPage, isLockedMedia, Poll } from "@/types";
+import { usePrefetch } from "@/hooks/usePrefetch";
 
 const DUMMY_TEASERS = [
     " Unlock this post to continue reading exclusive member content. Join the community to access the full post, view all media attachments, and participate in the comments section with other members.",
@@ -31,6 +32,7 @@ type PostCardProps = {
 };
 
 const PostCard = ({ post, page, isOwner = false, imageBig, onCommentClick }: PostCardProps) => {
+    const { prefetch } = usePrefetch();
     const creator = getCreatorInfo(post, page);
 
     // Pick a deterministic dummy text for this post
@@ -119,6 +121,8 @@ const PostCard = ({ post, page, isOwner = false, imageBig, onCommentClick }: Pos
                     <Link
                         href={`/${item.pageSlug}`}
                         onClick={(e) => e.stopPropagation()}
+                        onPointerEnter={() => prefetch(`/${item.pageSlug}`)}
+                        onFocus={() => prefetch(`/${item.pageSlug}`)}
                         className="flex items-center min-w-0 cursor-pointer"
                     >
                         <div className="relative shrink-0 w-8.5 h-8.5 mr-3.5 rounded-full overflow-hidden">
@@ -164,6 +168,8 @@ const PostCard = ({ post, page, isOwner = false, imageBig, onCommentClick }: Pos
                         <Link
                             href={`/posts/${item.id}/edit`}
                             onClick={(e) => e.stopPropagation()}
+                            onPointerEnter={() => prefetch(`/posts/${item.id}/edit`)}
+                            onFocus={() => prefetch(`/posts/${item.id}/edit`)}
                             className="btn-stroke btn-small rounded-xs"
                         >
                             <Icon icon={Pencil} className="icon-16" /> Edit

@@ -1,19 +1,22 @@
 import Link from "next/link";
 import Image from "@/components/Image";
-
 import { DashboardPost } from "@/types";
+import { usePrefetch } from "@/hooks/usePrefetch";
 
 type ItemProps = {
     item: DashboardPost;
 };
 
 const Item = ({ item }: ItemProps) => {
+    const { prefetch } = usePrefetch();
     const imageUrl = item.mediaAttachments?.[0]?.url;
 
     return (
         <Link
             className="flex items-center p-4 border-b border-n-1 text-sm last:border-none dark:border-white"
             href={`/posts/${item._id}`}
+            onPointerEnter={() => prefetch(`/posts/${item._id}`)}
+            onFocus={() => prefetch(`/posts/${item._id}`)}
         >
             <div className="shrink-0 w-[4.25rem] border border-n-1">
                 <Image

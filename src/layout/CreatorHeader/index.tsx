@@ -15,6 +15,7 @@ import { useCreatorPage, usePost, usePublicLiveSession } from "@/hooks/queries";
 
 import { useCreatorHeader } from "@/context/CreatorHeaderContext";
 import { useAuth } from "@/store/auth";
+import { usePrefetch } from "@/hooks/usePrefetch";
 
 type CreatorHeaderProps = {
     pageSlug?: string;
@@ -33,6 +34,7 @@ const navLinks = [
 ];
 
 const CreatorHeader = ({ pageSlug, initialPageData }: CreatorHeaderProps) => {
+    const { prefetch } = usePrefetch();
     const [headerStyle, setHeaderStyle] = useState<boolean>(false);
     const { isHeaderHidden } = useCreatorHeader();
     const { isAuthenticated, user, isLoading: isAuthLoading } = useAuth();
@@ -117,7 +119,12 @@ const CreatorHeader = ({ pageSlug, initialPageData }: CreatorHeaderProps) => {
                                 <div className="font-bold capitalize dark:text-n-9 truncate whitespace-nowrap">{page?.displayName || "Creator Page"}</div>
                             </div>
                         ) : (
-                            <Link href={`/${page?.pageSlug || slug || ''}`} className="flex items-center gap-2 mr-24 mobile:mr-4" >
+                            <Link
+                                href={`/${page?.pageSlug || slug || ''}`}
+                                className="flex items-center gap-2 mr-24 mobile:mr-4"
+                                onPointerEnter={() => prefetch(`/${page?.pageSlug || slug || ''}`)}
+                                onFocus={() => prefetch(`/${page?.pageSlug || slug || ''}`)}
+                            >
                                 <div className="relative shrink-0 w-9 h-9 rounded-full overflow-hidden">
                                     <Image
                                         className="object-cover mb-0"
@@ -150,6 +157,8 @@ const CreatorHeader = ({ pageSlug, initialPageData }: CreatorHeaderProps) => {
                         <Link
                             key={index}
                             href={`/${slug}${link.url}`}
+                            onPointerEnter={() => prefetch(`/${slug}${link.url}`)}
+                            onFocus={() => prefetch(`/${slug}${link.url}`)}
                             className={`btn btn-medium border-none ${isLinkActive(link.url)
                                 ? "text-purple-1 fill-purple-1"
                                 : "text-n-1 fill-n-1 dark:text-n-9 dark:fill-n-9 "
@@ -162,6 +171,8 @@ const CreatorHeader = ({ pageSlug, initialPageData }: CreatorHeaderProps) => {
                     {!isAuthenticated && !isOwner && !isMember && !isLoading && !isAuthLoading && (
                         <Link
                             href="/login"
+                            onPointerEnter={() => prefetch("/login")}
+                            onFocus={() => prefetch("/login")}
                             className="btn-purple btn-medium px-10 ml-2"
                         >
                             Login
@@ -177,6 +188,8 @@ const CreatorHeader = ({ pageSlug, initialPageData }: CreatorHeaderProps) => {
                         <Link
                             key={index}
                             href={`/${slug}${link.url}`}
+                            onPointerEnter={() => prefetch(`/${slug}${link.url}`)}
+                            onFocus={() => prefetch(`/${slug}${link.url}`)}
                             className={`btn btn-medium border-none px-3! font-bold ${isLinkActive(link.url)
                                 ? "text-purple-1 fill-purple-1"
                                 : "text-n-1 fill-n-1 dark:text-n-9 dark:fill-n-9 "
@@ -190,6 +203,8 @@ const CreatorHeader = ({ pageSlug, initialPageData }: CreatorHeaderProps) => {
                 {!isAuthenticated && !isOwner && !isMember && !isLoading && !isAuthLoading && (
                     <Link
                         href="/login"
+                        onPointerEnter={() => prefetch("/login")}
+                        onFocus={() => prefetch("/login")}
                         className="text-sm font-bold text-n-1 dark:text-n-9 underline"
                     >
                         Login
