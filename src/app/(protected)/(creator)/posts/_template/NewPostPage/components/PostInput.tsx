@@ -13,7 +13,7 @@ const PostInput = ({ content, setContent, attachmentCount, children }: PostInput
     const { data: page } = useMyPage();
 
     return (
-        <div className="flex items-start mt-2 text-sm font-bold">
+        <div className="flex items-start mt-2 text-sm font-bold w-full">
             <div className="relative ml-2 w-10 h-10 mr-2.5 shrink-0">
                 <Image
                     className="object-cover rounded-full"

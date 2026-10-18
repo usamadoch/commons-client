@@ -67,7 +67,7 @@ const EditPostPage = ({ params }: EditPostProps) => {
         );
     }
     return (
-        <>
+        <div className="w-full">
             <PostForm formState={formState} submitLabel="Update Post" />
             {/* 
             <UnsavedChangesModal
@@ -75,7 +75,7 @@ const EditPostPage = ({ params }: EditPostProps) => {
                 onClose={() => setShowUnsavedModal(false)}
                 onConfirm={confirmNavigation}
             /> */}
-        </>
+        </div>
     );
 };
 

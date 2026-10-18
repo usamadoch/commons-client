@@ -32,12 +32,12 @@ const AnalyticsPage = () => {
     // if (!mounted) return null;
 
     return (
-        <>
+        <div className="w-full">
             <Tabs
                 items={tabs}
                 value={activeTab}
                 setValue={(value) => setActiveTab(value as TabValue)}
-                className="flex-wrap!"
+                className="flex-wrap! mb-6"
             />
 
             {/* Tab Content */}
@@ -59,7 +59,7 @@ const AnalyticsPage = () => {
             )}
             {activeTab === "earnings" && <EarningsTab />}
 
-        </>
+        </div>
     );
 };
 

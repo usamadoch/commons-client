@@ -43,11 +43,11 @@ const LiveHeader = ({
     onEndStream,
 }: LiveHeaderProps) => {
     return (
-        <div className={`flex justify-between items-center shrink-0 ${className}`}>
+        <div className={`flex justify-between items-center shrink-0 pb-4 border-b border-n-4 dark:border-n-6 ${className}`}>
             <div className="flex items-center gap-4">
                 <Link
                     href={backHref}
-                    className="btn-medium btn-stroke btn-square rounded-full bg-white dark:bg-n-1"
+                    className="btn-stroke btn-square btn-medium"
                     title={backTitle}
                 >
                     <Icon icon={X} strokeWidth={2.5} className="text-n-1 dark:text-n-9" />
@@ -65,9 +65,9 @@ const LiveHeader = ({
                     {showCopyLink && (
                         <button
                             onClick={onCopyLink}
-                            className="btn btn-medium btn-stroke px-4"
+                            className="btn-stroke btn-medium px-4"
                         >
-                            <Icon icon={Copy} className=" text-n-1 dark:text-n-9" /> Copy link
+                            <Icon icon={Copy} className="text-n-1 dark:text-n-9" /> Copy link
                         </button>
                     )}
                     {isEnded ? null : (
@@ -75,25 +75,25 @@ const LiveHeader = ({
                             {showStartLive && (
                                 <div className="flex items-center gap-3">
                                     {startLiveDisabled && startLiveDisabledReason && (
-                                        <span className="text-xs text-red-500 font-medium">
+                                        <span className="text-xs text-pink-1 font-medium">
                                             {startLiveDisabledReason}
                                         </span>
                                     )}
                                     <button
                                         onClick={onStartLive}
                                         disabled={startLiveDisabled}
-                                        className="btn btn-medium btn-purple cursor-pointer btn-shadow rounded-sm bg-red-500 text-n-9 hover:bg-red-600 hover:text-n-9 px-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+                                        className="btn-purple btn-medium btn-shadow px-4 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
                                     >
-                                        <Icon icon={Radio} className="text-n-9" /> Start Live
+                                        <Icon icon={Radio} className="text-n-1" /> Start Live
                                     </button>
                                 </div>
                             )}
                             {showEndStream && (
                                 <button
                                     onClick={onEndStream}
-                                    className="btn btn-medium btn-purple btn-shadow bg-red-500 text-n-9 hover:bg-red-600 hover:text-n-9 px-4"
+                                    className="btn-purple btn-medium btn-shadow px-4 cursor-pointer"
                                 >
-                                    <Icon icon={Square} className="text-n-9" /> End Stream
+                                    <Icon icon={Square} className="text-n-1" /> End Stream
                                 </button>
                             )}
                         </>

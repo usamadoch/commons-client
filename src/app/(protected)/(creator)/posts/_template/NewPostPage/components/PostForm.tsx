@@ -43,10 +43,10 @@ const PostForm = ({ formState, submitLabel = "Post" }: PostFormProps) => {
     const [isAddingPoll, setIsAddingPoll] = useState(false);
 
     return (
-        <div className="flex lg:block">
-            <div className="grow lg:mb-6 lg:bg-transparent lg:p-0 lg:border-none dark:lg:bg-transparent">
+        <div className="flex w-full items-start lg:block">
+            <div className="flex-1 min-w-0 lg:mb-6 lg:bg-transparent lg:p-0 lg:border-none dark:lg:bg-transparent">
                 <form
-                    className="flex flex-col pl-1 py-1 pr-5 bg-white border border-n-4 md:pr-4 dark:bg-n-1 dark:border-n-6"
+                    className="flex flex-col pl-1 py-1 pr-5 bg-white border border-n-4 md:pr-4 dark:bg-n-1 dark:border-n-6 w-full"
                     onSubmit={(e) => {
                         e.preventDefault();
                         handleSubmit();

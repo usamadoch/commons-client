@@ -134,7 +134,7 @@ const PostsPage = () => {
     }, [pagination.totalPages]);
 
     return (
-        <>
+        <div className="w-full">
             <div className="mb-6 border-b border-n-6 pb-4 md:overflow-auto md:-mx-5 md:scrollbar-none md:before:w-5 md:before:shrink-0 md:after:w-5 md:after:shrink-0">
                 <Tabs
                     items={tabs}
@@ -165,7 +165,7 @@ const PostsPage = () => {
                     <LiveTable items={liveSessionsData || []} isLoading={isLoadingLiveSessions} />
                 </div>
             )}
-        </>
+        </div>
     );
 };
 

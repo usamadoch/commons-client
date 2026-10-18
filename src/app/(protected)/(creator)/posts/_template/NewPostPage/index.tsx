@@ -7,7 +7,9 @@ const NewPostPage = () => {
     const formState = usePostForm();
 
     return (
-        <PostForm formState={formState} />
+        <div className="w-full">
+            <PostForm formState={formState} />
+        </div>
     );
 };
 

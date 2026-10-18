@@ -52,7 +52,7 @@ const Layout = ({
                                 </aside>
                             </div>
                         ) : (
-                            <main className="w-full min-w-0 flex justify-center">
+                            <main className="w-full min-w-0">
                                 {children}
                             </main>
                         )}

@@ -96,7 +96,7 @@ const MembersPage = () => {
     if (!mounted) return null;
 
     return (
-        <>
+        <div className="w-full">
             {isMobile ? (
                 <MembersMobileList memberships={memberships} />
             ) : (
@@ -109,7 +109,7 @@ const MembersPage = () => {
                 hasPrevPage={pagination.hasPrevPage}
                 onPageChange={handlePageChange}
             />
-        </>
+        </div>
     );
 };
 
