@@ -26,7 +26,7 @@ const PrivacyPage = () => {
                 </p>
                 <div className="flex flex-col gap-2 text-base font-normal text-n-3 dark:text-n-8 leading-relaxed pl-6 border-l-2 border-purple-1">
                     <p><strong className="font-bold text-n-1 dark:text-n-9">Account Information:</strong> Your name, email, profile picture, and login credentials.</p>
-                    <p><strong className="font-bold text-n-1 dark:text-n-9">Payment Information:</strong> Payments for subscriptions and Super Messages are processed by our payment service provider, Safepay. Card details (card number, expiry date, and security code) are entered directly into secure payment fields hosted by Safepay and are sent to Safepay, not to Commons servers. Commons does not receive or store your full card number or security code. To support saved cards and recurring billing, we store reference tokens issued by Safepay, and we keep records of your transactions (such as amount, date, the creator or membership purchased, and payment status). We may display limited card details provided by Safepay, such as the card brand and last four digits, so you can recognise a saved card.</p>
+                    <p><strong className="font-bold text-n-1 dark:text-n-9">Payment Information:</strong> Payments for subscriptions and Super Messages are processed by our authorized, PCI-DSS compliant payment service providers. Card details (card number, expiry date, and security code) are entered directly into secure payment fields hosted by our payment service providers and are sent directly to their secure servers, not to Commons servers. Commons does not receive or store your full card number or security code. To support saved cards and recurring billing, we store secure reference tokens issued by our payment providers, and we keep records of your transactions (such as amount, date, the creator or membership purchased, and payment status). We may display limited card details provided by the payment provider, such as the card brand and last four digits, so you can recognise a saved card.</p>
                     <p><strong className="font-bold text-n-1 dark:text-n-9">Creator Payout and Verification Information:</strong> If you receive payouts as a creator, we collect the information needed to verify your identity and pay you, including your name, date of birth, address, bank name, account holder name, IBAN, and identity document type and number.</p>
                     <p><strong className="font-bold text-n-1 dark:text-n-9">Usage Data:</strong> Basic information about how you interact with the site to help us fix bugs and improve performance.</p>
                 </div>
@@ -42,7 +42,7 @@ const PrivacyPage = () => {
             <section className="flex flex-col gap-2">
                 <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">3. Sharing Your Information</h2>
                 <p className="text-base font-normal text-n-3 dark:text-n-8 leading-relaxed">
-                    We do not sell your personal data to advertisers or third parties. We only share data with trusted partners necessary to run the platform, such as our payment service provider, Safepay (to process payments, save cards you choose to store, and handle recurring billing and refunds), and secure cloud servers (to host the website and your content). Safepay processes payment data in accordance with its own privacy policy and terms. We may also disclose information where required by law or to investigate fraud and payment disputes.
+                    We do not sell your personal data to advertisers or third parties. We only share data with trusted partners necessary to run the platform, such as our authorized payment service providers (to process payments, save cards you choose to store, and handle recurring billing and refunds), and secure cloud servers (to host the website and your content). Our payment partners process payment data in accordance with their own privacy policies, security standards, and applicable financial regulations. We may also disclose information where required by law or to investigate fraud and payment disputes.
                 </p>
             </section>
 
@@ -72,7 +72,7 @@ const PrivacyPage = () => {
             <section className="flex flex-col gap-2">
                 <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">7. Payment Security</h2>
                 <p className="text-base font-normal text-n-3 dark:text-n-8 leading-relaxed">
-                    Card payments are handled by Safepay. Card details are captured in secure fields hosted by Safepay and are not transmitted to or stored on Commons servers. Commons does not store full card numbers or card security codes; we only keep the Safepay reference tokens and transaction records described in Section 1.
+                    Card payments are handled by our authorized PCI-DSS compliant payment service providers. Card details are captured in secure fields hosted by our payment partners and are not transmitted to or stored on Commons servers. Commons does not store full card numbers or card security codes; we only keep the secure reference tokens and transaction records described in Section 1.
                 </p>
             </section>
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BUSINESS } from "@/constants/business";
+import { BUSINESS, telHref } from "@/constants/business";
 import StaticPageWrapper from "../_components/StaticPageWrapper";
 
 export const metadata: Metadata = {
@@ -40,6 +40,14 @@ const OwnershipStatementPage = () => {
                         <strong className="font-bold text-n-1 dark:text-n-9">Contact Email:</strong>{" "}
                         <a href={`mailto:${BUSINESS.generalEmail}`} className={linkClass}>{BUSINESS.generalEmail}</a>
                     </p>
+                    {BUSINESS.supportPhone && (
+                        <p>
+                            <strong className="font-bold text-n-1 dark:text-n-9">Phone:</strong>{" "}
+                            <a href={telHref(BUSINESS.supportPhone)} className={linkClass}>
+                                {BUSINESS.supportPhone}
+                            </a>
+                        </p>
+                    )}
                 </div>
             </section>
 
@@ -60,9 +68,20 @@ const OwnershipStatementPage = () => {
                 </p>
                 <div className="flex flex-col gap-1 text-base font-normal text-n-3 dark:text-n-8 leading-relaxed pl-6 border-l-2 border-purple-1">
                     <p className="font-bold text-n-1 dark:text-n-9">{BUSINESS.legalName}</p>
+                    {BUSINESS.registeredAddress && (
+                        <p>Address: {BUSINESS.registeredAddress}</p>
+                    )}
                     <p>
                         Email: <a href={`mailto:${BUSINESS.generalEmail}`} className={linkClass}>{BUSINESS.generalEmail}</a>
                     </p>
+                    {BUSINESS.supportPhone && (
+                        <p>
+                            Phone:{" "}
+                            <a href={telHref(BUSINESS.supportPhone)} className={linkClass}>
+                                {BUSINESS.supportPhone}
+                            </a>
+                        </p>
+                    )}
                     <p>
                         Website: <a href={BUSINESS.websiteUrl} className={linkClass}>{BUSINESS.websiteLabel}</a>
                     </p>

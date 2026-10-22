@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Hero from "./_components/Hero";
 import ProblemStatement from "./_components/ProblemStatement";
 import CreatorToolkit from "./_components/CreatorToolkit";
+import PlatformServices from "./_components/PlatformServices";
 import CommunityFocus from "./_components/CommunityFocus";
 import PlatformFreedom from "./_components/PlatformFreedom";
 import LocalPricing from "./_components/LocalPricing";
@@ -28,6 +29,7 @@ const About = () => {
                 <Hero />
                 <ProblemStatement />
                 <CreatorToolkit />
+                <PlatformServices />
                 <CommunityFocus />
                 <PlatformFreedom />
                 <LocalPricing />

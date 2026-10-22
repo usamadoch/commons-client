@@ -134,6 +134,13 @@ const TermsPage = () => {
                     If you pay with a card issued outside Pakistan, your bank will convert the charge to your local currency at their exchange rate, and may apply an additional international transaction fee.
                 </p>
             </section>
+
+            <section className="flex flex-col gap-2">
+                <h2 className="text-2xl font-normal tracking-tight text-n-1 dark:text-n-9">14. Governing Law and Dispute Jurisdiction</h2>
+                <p className="text-base font-normal text-n-3 dark:text-n-8 leading-relaxed">
+                    These Terms and Conditions and any dispute or claim arising out of or in connection with them or their subject matter or formation shall be governed by and construed in accordance with the laws of the Islamic Republic of Pakistan. The competent courts in Lahore, Pakistan shall have exclusive jurisdiction to settle any dispute or claim arising out of or in connection with these Terms or your use of Commons.
+                </p>
+            </section>
         </StaticPageWrapper>
     );
 };

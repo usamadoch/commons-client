@@ -6,7 +6,7 @@
  * SECP incorporation certificate). Any field left as `null` is simply not
  * rendered on the site — no placeholder text is ever shown publicly.
  *
- * Required by Safepay's website checklist and still pending confirmation:
+ * Required by payment gateway compliance checklist:
  *  - registeredAddress
  *  - supportPhone
  *  - complaintResolutionBusinessDays
